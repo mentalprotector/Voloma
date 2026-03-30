@@ -1,25 +1,18 @@
 import BHeader from '../version-b/BHeader';
 import BHero from '../version-b/BHero';
-import BSeries from '../version-b/BSeries';
 import BShowcase from '../version-b/BShowcase';
 import BTrust from '../version-b/BTrust';
-import BCtaFlow from '../version-b/BCtaFlow';
-import StickyMobileCta from '../StickyMobileCta';
 
 const VersionB = () => {
   return (
-    <div className="min-h-screen bg-[#e9e4da] text-[#171411] selection:bg-[#6a503d]/20 selection:text-[#6a503d]">
+    <div className="min-h-screen bg-[#f2ede6] text-[#171411] selection:bg-[#735843]/15 selection:text-[#171411]">
       <BHeader />
 
-      <main className="pb-16 pt-20">
+      <main>
         <BHero />
-        <BSeries />
         <BShowcase />
         <BTrust />
-        <BCtaFlow />
       </main>
-
-      <StickyMobileCta />
     </div>
   );
 };

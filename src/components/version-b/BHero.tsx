@@ -1,74 +1,150 @@
-import { ArrowUpRight } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { ArrowUpRight } from 'lucide-react';
+import BPlanterVisual from './BPlanterVisual';
+
+const heroObjects = [
+  {
+    title: 'Квадратное',
+    note: 'скоро',
+    href: '/b/configurator',
+    wrapClass: 'absolute left-[2%] top-[30%] hidden w-[19%] md:block',
+    labelClass: 'left-1/2 top-[-2.75rem] -translate-x-1/2',
+    shape: 'square' as const,
+    tone: 'dark' as const,
+    ghost: true,
+  },
+  {
+    title: 'Прямоугольное',
+    note: 'основная серия',
+    href: '/b/configurator',
+    wrapClass:
+      'absolute left-1/2 top-[16%] w-[78%] max-w-[760px] -translate-x-1/2 sm:w-[72%] lg:w-[56%]',
+    labelClass: 'left-1/2 top-[-3.25rem] -translate-x-1/2',
+    shape: 'rect' as const,
+    tone: 'natural' as const,
+    ghost: false,
+  },
+  {
+    title: 'Узкое',
+    note: 'скоро',
+    href: '/b/configurator',
+    wrapClass: 'absolute right-[4%] top-[24%] hidden w-[13%] md:block',
+    labelClass: 'left-1/2 top-[-2.75rem] -translate-x-1/2',
+    shape: 'slim' as const,
+    tone: 'warm' as const,
+    ghost: true,
+  },
+];
 
 const BHero = () => {
   return (
-    <section className="px-4 pt-4 md:px-6">
-      <div className="mx-auto max-w-6xl">
+    <section className="px-4 pb-6 pt-24 md:px-6 md:pb-8">
+      <div className="mx-auto max-w-[1280px]">
         <motion.div
           initial={{ opacity: 0, y: 18 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, ease: 'easeOut' }}
-          className="relative overflow-hidden rounded-[34px] bg-white shadow-[0_40px_120px_rgba(29,24,20,0.12)]"
+          transition={{ duration: 0.75, ease: 'easeOut' }}
+          className="relative overflow-hidden rounded-[44px] bg-[linear-gradient(180deg,#faf8f4_0%,#f2ede6_100%)] shadow-[0_34px_110px_rgba(37,27,20,0.08)]"
         >
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_22%_18%,rgba(244,235,224,0.9),rgba(255,255,255,0)_28%),radial-gradient(circle_at_78%_20%,rgba(235,225,212,0.68),rgba(255,255,255,0)_26%),linear-gradient(180deg,#fffdfa_0%,#f8f4ee_58%,#f2ebe1_100%)]" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_18%,rgba(255,255,255,0.92),rgba(255,255,255,0)_34%),radial-gradient(circle_at_18%_22%,rgba(231,224,214,0.7),rgba(231,224,214,0)_34%),radial-gradient(circle_at_84%_18%,rgba(235,228,219,0.85),rgba(235,228,219,0)_30%)]" />
 
-          <div className="relative min-h-[74svh] overflow-hidden px-5 pb-6 pt-6 sm:px-8 lg:px-10">
-            <div className="absolute inset-x-[14%] top-[10%] h-28 rounded-full bg-[#a78160]/10 blur-3xl sm:h-36" />
+          <div className="relative min-h-[calc(100svh-2rem)] px-4 pb-44 pt-6 sm:px-8 lg:px-12 lg:pb-36 lg:pt-10">
+            <div className="flex items-start justify-between gap-4">
+              <div>
+                <p className="text-[10px] font-semibold uppercase tracking-[0.3em] text-black/34">
+                  VOLOMA
+                </p>
+                <p className="mt-3 max-w-[18rem] text-sm leading-relaxed text-black/48">
+                  Прямоугольные кашпо для спокойных и сильных пространств.
+                </p>
+              </div>
+              <a
+                href="/b/configurator"
+                className="hidden rounded-full bg-white/84 px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.24em] text-[#171411] ring-1 ring-black/5 backdrop-blur-xl md:inline-flex"
+              >
+                Собрать
+              </a>
+            </div>
 
-            <div className="relative flex min-h-[calc(74svh-3rem)] flex-col justify-between">
-              <div className="flex items-start justify-start">
-                <div className="rounded-full bg-white/78 px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.28em] text-black/56 shadow-[0_16px_40px_rgba(41,29,20,0.06)] backdrop-blur-xl">
-                  Волома
+            <div className="relative mt-6 min-h-[62svh] sm:mt-8">
+              <div className="absolute inset-x-[18%] bottom-[15%] h-[16%] rounded-full bg-[#7b6049]/10 blur-[44px]" />
+
+              {heroObjects.map((item, index) => (
+                <motion.a
+                  key={item.title}
+                  href={item.href}
+                  initial={{ opacity: 0, y: 24 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.7, delay: 0.12 + index * 0.08, ease: 'easeOut' }}
+                  className={`${item.wrapClass} group`}
+                >
+                  <span
+                    className={`absolute ${item.labelClass} whitespace-nowrap rounded-full bg-white/84 px-3 py-2 text-[10px] font-semibold uppercase tracking-[0.24em] text-black/42 shadow-[0_12px_28px_rgba(0,0,0,0.04)] ring-1 ring-black/5 backdrop-blur-xl`}
+                  >
+                    {item.title} · {item.note}
+                  </span>
+
+                  <BPlanterVisual
+                    shape={item.shape}
+                    tone={item.tone}
+                    ghost={item.ghost}
+                    className="transition duration-500 group-hover:translate-y-[-4px]"
+                  />
+                </motion.a>
+              ))}
+            </div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 22 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.28, ease: 'easeOut' }}
+              className="absolute bottom-5 left-1/2 z-20 w-[min(100%,520px)] -translate-x-1/2 rounded-[32px] bg-white/96 p-5 shadow-[0_28px_70px_rgba(24,18,14,0.12)] ring-1 ring-black/5 backdrop-blur-xl sm:p-6"
+            >
+              <div className="flex items-start justify-between gap-4">
+                <div>
+                  <p className="text-[10px] font-semibold uppercase tracking-[0.3em] text-black/34">
+                    Серия
+                  </p>
+                  <h1 className="mt-2 text-[28px] font-semibold tracking-[-0.06em] text-[#171411] sm:text-[34px]">
+                    Прямоугольное / R100
+                  </h1>
+                </div>
+                <span className="rounded-full bg-[#f3eee7] px-3 py-2 text-[10px] font-semibold uppercase tracking-[0.22em] text-black/54">
+                  от 18 900 ₽
+                </span>
+              </div>
+
+              <div className="mt-5 grid gap-3 text-sm text-black/58 sm:grid-cols-2">
+                <div className="rounded-[22px] bg-[#f6f1ea] px-4 py-3">
+                  <p className="text-[10px] font-semibold uppercase tracking-[0.26em] text-black/34">
+                    Размер
+                  </p>
+                  <p className="mt-2 font-medium text-[#171411]">100 × 40 × 40 см</p>
+                </div>
+                <div className="rounded-[22px] bg-[#f6f1ea] px-4 py-3">
+                  <p className="text-[10px] font-semibold uppercase tracking-[0.26em] text-black/34">
+                    Тип спила
+                  </p>
+                  <p className="mt-2 font-medium text-[#171411]">Радиальный</p>
                 </div>
               </div>
 
-              <div className="relative flex flex-1 items-center justify-center py-10 sm:py-12 lg:py-14">
-                <motion.div
-                  initial={{ opacity: 0, y: 18, rotateX: 6 }}
-                  animate={{ opacity: 1, y: 0, rotateX: 0 }}
-                  transition={{ duration: 0.75, delay: 0.12, ease: 'easeOut' }}
-                  className="relative w-full max-w-[900px] px-2 [perspective:1800px] sm:px-6"
+              <div className="mt-5 flex flex-wrap items-center gap-3 border-t border-black/8 pt-4">
+                <a
+                  href="/b/configurator"
+                  className="inline-flex items-center gap-2 rounded-full bg-[#171411] px-5 py-3 text-[10px] font-semibold uppercase tracking-[0.22em] text-white transition hover:translate-y-[-1px]"
                 >
-                  <div className="relative mx-auto aspect-[2.1/1] w-[84%] min-w-[280px] max-w-[840px] translate-y-2 [transform:rotateX(16deg)_rotateY(-14deg)_rotateZ(1.5deg)] sm:w-[80%]">
-                    <div className="absolute inset-0 rounded-[34px] bg-[linear-gradient(180deg,#d4b392_0%,#b67f58_100%)] shadow-[0_52px_100px_rgba(70,48,28,0.22),inset_0_1px_0_rgba(255,255,255,0.42)]" />
-                    <div className="absolute inset-[1.5%] rounded-[32px] bg-[linear-gradient(135deg,rgba(255,255,255,0.24),rgba(255,255,255,0)_36%,rgba(104,68,43,0.14)_100%)]" />
-                    <div className="absolute inset-x-[5%] top-[10%] h-[12%] rounded-[24px] bg-[linear-gradient(180deg,rgba(255,255,255,0.24),rgba(255,255,255,0.03))] opacity-90" />
-                    <div className="absolute inset-y-[8%] right-0 w-[8%] rounded-r-[32px] bg-[linear-gradient(180deg,#8f6444_0%,#704b30_100%)] opacity-95 shadow-[inset_1px_0_0_rgba(255,255,255,0.16)]" />
-                    <div className="absolute left-[8%] top-[20%] h-[50%] w-[30%] rounded-[24px] bg-[linear-gradient(90deg,rgba(255,255,255,0.16),rgba(255,255,255,0.02))] blur-[2px]" />
-                    <div className="absolute right-[12%] top-[22%] h-[24%] w-[20%] rounded-[28px] bg-[radial-gradient(circle_at_30%_30%,rgba(255,255,255,0.22),rgba(255,255,255,0)_72%)]" />
-                  </div>
-                </motion.div>
-
-                <motion.a
-                  href="#series"
-                  initial={{ opacity: 0, y: 22 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.55, delay: 0.22 }}
-                  className="absolute bottom-[4%] left-1/2 z-10 w-[min(92%,420px)] -translate-x-1/2 rounded-[28px] bg-white/96 p-4 shadow-[0_24px_70px_rgba(31,22,14,0.14)] ring-1 ring-black/5 backdrop-blur-xl sm:bottom-[6%] sm:p-5"
+                  Открыть
+                  <ArrowUpRight size={14} />
+                </a>
+                <a
+                  href="/b/configurator"
+                  className="inline-flex items-center gap-2 rounded-full bg-[#f4efe8] px-5 py-3 text-[10px] font-semibold uppercase tracking-[0.22em] text-[#171411] transition hover:translate-y-[-1px]"
                 >
-                  <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-black/38">Модель</p>
-                  <h2 className="mt-2 text-[28px] font-semibold tracking-[-0.06em] text-[#171411] sm:text-[32px]">
-                    Прямоугольное / 100
-                  </h2>
-
-                  <div className="mt-4 flex flex-wrap gap-2 text-[10px] font-semibold uppercase tracking-[0.22em] text-black/48">
-                    <span className="rounded-full bg-[#f4efe8] px-3 py-2">100 x 40 см</span>
-                    <span className="rounded-full bg-[#f4efe8] px-3 py-2">Тангенциальный спил</span>
-                  </div>
-
-                  <div className="mt-5 flex items-center justify-between border-t border-black/8 pt-4">
-                    <span className="text-[11px] font-semibold uppercase tracking-[0.22em] text-black/52">
-                      от 12 400 ₽
-                    </span>
-                    <span className="inline-flex items-center gap-2 rounded-full bg-[#171411] px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.2em] text-white">
-                      Открыть
-                      <ArrowUpRight size={14} />
-                    </span>
-                  </div>
-                </motion.a>
+                  Собрать
+                </a>
               </div>
-            </div>
+            </motion.div>
           </div>
         </motion.div>
       </div>
