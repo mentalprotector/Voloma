@@ -7,9 +7,9 @@ const heroObjects = [
     title: 'Квадратное',
     note: 'скоро',
     href: '/b/configurator',
-    wrapClass: 'absolute left-[24%] top-[10%] hidden w-[17%] md:block',
+    wrapClass: 'absolute left-[18%] top-[22%] hidden w-[14%] md:block lg:left-[22%]',
     labelClass: 'left-1/2 top-[-2.75rem] -translate-x-1/2',
-    visualClass: '',
+    visualClass: 'opacity-80',
     shape: 'square' as const,
     tone: 'dark' as const,
     ghost: true,
@@ -19,7 +19,7 @@ const heroObjects = [
     note: 'основная серия',
     href: '/b/configurator',
     wrapClass:
-      'absolute left-1/2 top-[14%] w-[48%] max-w-[260px] -translate-x-1/2 sm:w-[40%] lg:w-[28%]',
+      'absolute left-1/2 top-[12%] w-[46%] max-w-[248px] -translate-x-1/2 sm:w-[36%] lg:w-[26%]',
     labelClass: 'left-1/2 top-[-3rem] -translate-x-1/2',
     visualClass: 'aspect-[0.92/1.42]',
     shape: 'rect' as const,
@@ -30,9 +30,9 @@ const heroObjects = [
     title: 'Узкое',
     note: 'скоро',
     href: '/b/configurator',
-    wrapClass: 'absolute right-[22%] top-[24%] hidden w-[12%] md:block',
+    wrapClass: 'absolute right-[16%] top-[32%] hidden w-[10%] md:block lg:right-[20%]',
     labelClass: 'left-1/2 top-[-2.75rem] -translate-x-1/2',
-    visualClass: '',
+    visualClass: 'opacity-80',
     shape: 'slim' as const,
     tone: 'warm' as const,
     ghost: true,
@@ -69,8 +69,8 @@ const BHero = () => {
               </a>
             </div>
 
-            <div className="relative mt-6 min-h-[48svh] sm:mt-8 lg:min-h-[50svh]">
-              <div className="absolute left-1/2 top-[66%] h-[14%] w-[42%] -translate-x-1/2 rounded-full bg-[#7b6049]/10 blur-[44px]" />
+            <div className="relative mt-6 min-h-[46svh] sm:mt-8 lg:min-h-[48svh]">
+              <div className="absolute left-1/2 top-[70%] h-[12%] w-[34%] -translate-x-1/2 rounded-full bg-[#7b6049]/10 blur-[44px]" />
 
               {heroObjects.map((item, index) => (
                 <motion.a
