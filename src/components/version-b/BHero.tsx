@@ -120,9 +120,9 @@ const BHero = () => {
               <div className="mt-5 grid gap-3 text-sm text-black/58 sm:grid-cols-2">
                 <div className="rounded-[22px] bg-[#f6f1ea] px-4 py-3">
                   <p className="text-[10px] font-semibold uppercase tracking-[0.26em] text-black/34">
-                    Размер
+                    Тип
                   </p>
-                  <p className="mt-2 font-medium text-[#171411]">100 × 40 × 40 см</p>
+                  <p className="mt-2 font-medium text-[#171411]">Кашпо</p>
                 </div>
                 <div className="rounded-[22px] bg-[#f6f1ea] px-4 py-3">
                   <p className="text-[10px] font-semibold uppercase tracking-[0.26em] text-black/34">
@@ -137,15 +137,12 @@ const BHero = () => {
                   href="/b/configurator"
                   className="inline-flex items-center gap-2 rounded-full bg-[#171411] px-5 py-3 text-[10px] font-semibold uppercase tracking-[0.22em] text-white transition hover:translate-y-[-1px]"
                 >
-                  Открыть
+                  Конструктор
                   <ArrowUpRight size={14} />
                 </a>
-                <a
-                  href="/b/configurator"
-                  className="inline-flex items-center gap-2 rounded-full bg-[#f4efe8] px-5 py-3 text-[10px] font-semibold uppercase tracking-[0.22em] text-[#171411] transition hover:translate-y-[-1px]"
-                >
-                  Собрать
-                </a>
+                <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-black/40">
+                  Переход к сборке
+                </span>
               </div>
             </motion.div>
           </div>
