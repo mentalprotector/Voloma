@@ -7,8 +7,9 @@ const heroObjects = [
     title: 'Квадратное',
     note: 'скоро',
     href: '/b/configurator',
-    wrapClass: 'absolute left-[2%] top-[30%] hidden w-[19%] md:block',
+    wrapClass: 'absolute left-[24%] top-[10%] hidden w-[17%] md:block',
     labelClass: 'left-1/2 top-[-2.75rem] -translate-x-1/2',
+    visualClass: '',
     shape: 'square' as const,
     tone: 'dark' as const,
     ghost: true,
@@ -18,8 +19,9 @@ const heroObjects = [
     note: 'основная серия',
     href: '/b/configurator',
     wrapClass:
-      'absolute left-1/2 top-[16%] w-[78%] max-w-[760px] -translate-x-1/2 sm:w-[72%] lg:w-[56%]',
-    labelClass: 'left-1/2 top-[-3.25rem] -translate-x-1/2',
+      'absolute left-1/2 top-[14%] w-[48%] max-w-[260px] -translate-x-1/2 sm:w-[40%] lg:w-[28%]',
+    labelClass: 'left-1/2 top-[-3rem] -translate-x-1/2',
+    visualClass: 'aspect-[0.92/1.42]',
     shape: 'rect' as const,
     tone: 'natural' as const,
     ghost: false,
@@ -28,8 +30,9 @@ const heroObjects = [
     title: 'Узкое',
     note: 'скоро',
     href: '/b/configurator',
-    wrapClass: 'absolute right-[4%] top-[24%] hidden w-[13%] md:block',
+    wrapClass: 'absolute right-[22%] top-[24%] hidden w-[12%] md:block',
     labelClass: 'left-1/2 top-[-2.75rem] -translate-x-1/2',
+    visualClass: '',
     shape: 'slim' as const,
     tone: 'warm' as const,
     ghost: true,
@@ -48,7 +51,7 @@ const BHero = () => {
         >
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_18%,rgba(255,255,255,0.92),rgba(255,255,255,0)_34%),radial-gradient(circle_at_18%_22%,rgba(231,224,214,0.7),rgba(231,224,214,0)_34%),radial-gradient(circle_at_84%_18%,rgba(235,228,219,0.85),rgba(235,228,219,0)_30%)]" />
 
-          <div className="relative min-h-[calc(100svh-2rem)] px-4 pb-44 pt-6 sm:px-8 lg:px-12 lg:pb-36 lg:pt-10">
+          <div className="relative min-h-[calc(100svh-2rem)] px-4 pb-40 pt-6 sm:px-8 lg:px-12 lg:pb-28 lg:pt-10">
             <div className="flex items-start justify-between gap-4">
               <div>
                 <p className="text-[10px] font-semibold uppercase tracking-[0.3em] text-black/34">
@@ -66,8 +69,8 @@ const BHero = () => {
               </a>
             </div>
 
-            <div className="relative mt-6 min-h-[62svh] sm:mt-8">
-              <div className="absolute inset-x-[18%] bottom-[15%] h-[16%] rounded-full bg-[#7b6049]/10 blur-[44px]" />
+            <div className="relative mt-6 min-h-[48svh] sm:mt-8 lg:min-h-[50svh]">
+              <div className="absolute left-1/2 top-[66%] h-[14%] w-[42%] -translate-x-1/2 rounded-full bg-[#7b6049]/10 blur-[44px]" />
 
               {heroObjects.map((item, index) => (
                 <motion.a
@@ -88,7 +91,7 @@ const BHero = () => {
                     shape={item.shape}
                     tone={item.tone}
                     ghost={item.ghost}
-                    className="transition duration-500 group-hover:translate-y-[-4px]"
+                    className={`${item.visualClass} transition duration-500 group-hover:translate-y-[-4px]`}
                   />
                 </motion.a>
               ))}
@@ -98,7 +101,7 @@ const BHero = () => {
               initial={{ opacity: 0, y: 22 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.28, ease: 'easeOut' }}
-              className="absolute bottom-5 left-1/2 z-20 w-[min(100%,520px)] -translate-x-1/2 rounded-[32px] bg-white/96 p-5 shadow-[0_28px_70px_rgba(24,18,14,0.12)] ring-1 ring-black/5 backdrop-blur-xl sm:p-6"
+              className="absolute bottom-4 left-1/2 z-20 w-[min(100%,500px)] -translate-x-1/2 rounded-[32px] bg-white/96 p-5 shadow-[0_28px_70px_rgba(24,18,14,0.12)] ring-1 ring-black/5 backdrop-blur-xl sm:p-6"
             >
               <div className="flex items-start justify-between gap-4">
                 <div>
