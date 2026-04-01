@@ -1,0 +1,72 @@
+.grid {
+  display: grid;
+  gap: 1.75rem;
+}
+
+.copy {
+  display: grid;
+  gap: 0.9rem;
+}
+
+.eyebrow {
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--color-muted);
+  font-size: 0.75rem;
+}
+
+.title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.9rem, 5vw, 3.3rem);
+  line-height: 1;
+  max-width: 13ch;
+}
+
+.description {
+  margin: 0;
+  color: var(--color-muted);
+  max-width: 40ch;
+}
+
+.list {
+  display: grid;
+  gap: 0.75rem;
+  margin: 0.25rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.point {
+  padding: 1rem 1.1rem;
+  border-radius: 1.25rem;
+  background: rgba(255, 252, 247, 0.92);
+  border: 1px solid rgba(115, 87, 56, 0.1);
+}
+
+.visuals {
+  display: block;
+}
+
+.imageCard {
+  border-radius: 1.6rem;
+  overflow: hidden;
+  border: 1px solid rgba(115, 87, 56, 0.1);
+  background: rgba(255, 252, 247, 0.92);
+}
+
+.image {
+  width: 100%;
+  height: clamp(24rem, 54vw, 42rem);
+  display: block;
+  object-fit: cover;
+  object-position: center 35%;
+}
+
+@media (min-width: 980px) {
+  .grid {
+    grid-template-columns: 0.95fr 1.05fr;
+    align-items: start;
+  }
+}

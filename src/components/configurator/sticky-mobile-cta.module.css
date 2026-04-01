@@ -1,0 +1,27 @@
+.bar {
+  position: fixed;
+  left: 0.75rem;
+  right: 0.75rem;
+  bottom: 0.75rem;
+  z-index: 40;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  border-radius: 1.4rem;
+  background: rgba(255, 250, 242, 0.9);
+  border: 1px solid rgba(115, 87, 56, 0.12);
+  box-shadow: 0 20px 40px rgba(60, 41, 24, 0.14);
+  backdrop-filter: blur(18px);
+}
+
+.primary {
+  width: 100%;
+}
+
+@media (min-width: 900px) {
+  .bar {
+    display: none;
+  }
+}
+

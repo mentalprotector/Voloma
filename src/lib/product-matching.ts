@@ -1,0 +1,101 @@
+import { colorLabels, qualityLabels, shapeLabels, sizeLabels } from "@/content/site-content";
+import type {
+  MatchType,
+  PlaceholderGalleryData,
+  ProductVariant,
+  ResolvedVariantMatch,
+  VariantSelection,
+} from "@/types/product";
+
+function buildVariantTitle(selection: VariantSelection) {
+  return `${shapeLabels[selection.shape]} кашпо ${sizeLabels[selection.size]}, ${colorLabels[
+    selection.color
+  ].toLowerCase()}, ${qualityLabels[selection.quality].toLowerCase()}`;
+}
+
+export function selectionToSlug(selection: VariantSelection) {
+  return `${selection.shape}-${selection.size}-${selection.color}-${selection.quality}`;
+}
+
+export function createPlaceholderData(selection: VariantSelection): PlaceholderGalleryData {
+  const slug = selectionToSlug(selection);
+
+  return {
+    ...selection,
+    slug,
+    title: buildVariantTitle(selection),
+    imagePath: `/public/images/products/${slug}/`,
+  };
+}
+
+function matchBy(
+  variants: ProductVariant[],
+  predicate: (variant: ProductVariant) => boolean,
+): ProductVariant | null {
+  return variants.find(predicate) ?? null;
+}
+
+export function resolveVariantMatch(
+  variants: ProductVariant[],
+  selection: VariantSelection,
+): ResolvedVariantMatch {
+  const placeholder = createPlaceholderData(selection);
+
+  const strategies: Array<{
+    type: MatchType;
+    label: string | null;
+    predicate: (variant: ProductVariant) => boolean;
+  }> = [
+    {
+      type: "exact",
+      label: null,
+      predicate: (variant) =>
+        variant.shape === selection.shape &&
+        variant.size === selection.size &&
+        variant.color === selection.color &&
+        variant.quality === selection.quality,
+    },
+    {
+      type: "shape_size_color",
+      label: "Показаны фото близкого варианта, оттенок или уровень качества может отличаться.",
+      predicate: (variant) =>
+        variant.shape === selection.shape &&
+        variant.size === selection.size &&
+        variant.color === selection.color,
+    },
+    {
+      type: "shape_color",
+      label: "Показаны фото близкого варианта, размер или оттенок может отличаться.",
+      predicate: (variant) =>
+        variant.shape === selection.shape && variant.color === selection.color,
+    },
+    {
+      type: "shape_only",
+      label: "Показаны фото близкого варианта, форма совпадает, но другие параметры могут отличаться.",
+      predicate: (variant) => variant.shape === selection.shape,
+    },
+  ];
+
+  for (const strategy of strategies) {
+    const matchedVariant = matchBy(variants, strategy.predicate);
+
+    if (matchedVariant) {
+      return {
+        matchType: strategy.type,
+        matchedVariant,
+        label: strategy.label,
+        images: matchedVariant.images,
+        placeholder,
+      };
+    }
+  }
+
+  return {
+    matchType: "none",
+    matchedVariant: null,
+    label: "Для этой комбинации пока нет близкого варианта. Оставьте запрос на индивидуальное изготовление.",
+    images: [],
+    placeholder,
+  };
+}
+

@@ -1,0 +1,179 @@
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  padding: max(0.45rem, env(safe-area-inset-top)) 0.75rem 0;
+  transition:
+    background-color 180ms ease,
+    backdrop-filter 180ms ease,
+    padding 180ms ease;
+}
+
+.inner {
+  width: min(100% - 1rem, 76rem);
+  min-height: 3.75rem;
+  margin: 0 auto;
+  padding: 0.6rem 0.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  border-radius: 1.15rem;
+  background: rgba(255, 255, 255, 0.38);
+  backdrop-filter: blur(4px);
+  transition:
+    background-color 180ms ease,
+    backdrop-filter 180ms ease,
+    box-shadow 180ms ease,
+    border-color 180ms ease;
+}
+
+.brand {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.72rem;
+  font-family: var(--font-display);
+  line-height: 1;
+  letter-spacing: 0.02em;
+  color: var(--color-ink-strong);
+  min-width: 0;
+}
+
+.brandMark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  flex: 0 0 2.5rem;
+}
+
+.brandLogo {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.brandText {
+  display: inline-block;
+  font-size: 1.25rem;
+  white-space: nowrap;
+  transform-origin: left center;
+  transition:
+    opacity 180ms ease,
+    transform 180ms ease,
+    max-width 180ms ease;
+  max-width: 12rem;
+  overflow: hidden;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.aboutLink {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.75rem;
+  padding: 0 0.75rem;
+  color: rgba(52, 38, 26, 0.76);
+  font-size: 0.94rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.orderButton {
+  min-height: 2.9rem;
+  padding-inline: 1rem;
+  border-radius: 0.9rem;
+  white-space: nowrap;
+  background: #6f4b32;
+  box-shadow: 0 12px 30px rgba(73, 48, 28, 0.16);
+}
+
+.orderButton:hover {
+  background: #5e3f2a;
+}
+
+.scrolled {
+  padding-top: max(0.25rem, env(safe-area-inset-top));
+}
+
+.scrolled .inner {
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(129, 98, 67, 0.12);
+  box-shadow: 0 12px 32px rgba(63, 44, 24, 0.08);
+  backdrop-filter: blur(10px);
+}
+
+.scrolled .brandText {
+  opacity: 0;
+  transform: translateX(-0.3rem) scaleX(0.92);
+  max-width: 0;
+}
+
+@media (max-width: 359px) {
+  .inner {
+    width: min(100% - 0.5rem, 76rem);
+    padding-inline: 0.6rem;
+  }
+
+  .actions {
+    gap: 0.15rem;
+  }
+
+  .aboutLink {
+    padding-inline: 0.5rem;
+    font-size: 0.88rem;
+  }
+
+  .orderButton {
+    padding-inline: 0.8rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .header {
+    padding-inline: 0.5rem;
+  }
+
+  .inner {
+    width: min(100% - 1.5rem, 80rem);
+    min-height: 4rem;
+    padding-inline: 1rem;
+    border-radius: 1.25rem;
+  }
+
+  .brand {
+    gap: 0.8rem;
+  }
+
+  .brandMark {
+    width: 2.8rem;
+    height: 2.8rem;
+    flex-basis: 2.8rem;
+  }
+
+  .brandText {
+    font-size: 1.4rem;
+  }
+
+  .actions {
+    gap: 0.55rem;
+  }
+
+  .aboutLink {
+    padding-inline: 0.9rem;
+    font-size: 0.98rem;
+  }
+
+  .orderButton {
+    min-height: 3rem;
+    padding-inline: 1.25rem;
+    border-radius: 1rem;
+  }
+}

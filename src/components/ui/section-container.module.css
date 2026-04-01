@@ -1,0 +1,19 @@
+.section {
+  padding: 4.5rem 0;
+}
+
+.inner {
+  width: min(100% - 2rem, 74rem);
+  margin: 0 auto;
+}
+
+@media (min-width: 768px) {
+  .section {
+    padding: 6rem 0;
+  }
+
+  .inner {
+    width: min(100% - 3rem, 74rem);
+  }
+}
+

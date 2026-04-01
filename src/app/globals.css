@@ -1,0 +1,51 @@
+:root {
+  --color-bg: #f7f1e8;
+  --color-bg-soft: #fcf8f1;
+  --color-paper: #fffaf2;
+  --color-wood: #eadbca;
+  --color-wood-strong: #c5a375;
+  --color-ink: #34261a;
+  --color-ink-strong: #22180f;
+  --color-muted: #715946;
+  --color-accent-soft: #d3b28b;
+  --font-body: var(--font-manrope);
+  --font-display: var(--font-fraunces);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  background:
+    radial-gradient(circle at top left, rgba(205, 178, 141, 0.14), transparent 24%),
+    linear-gradient(180deg, var(--color-bg) 0%, var(--color-bg-soft) 100%);
+  color: var(--color-ink);
+  font-family: var(--font-body), sans-serif;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img {
+  max-width: 100%;
+}
+
+main {
+  display: block;
+}
+
+::selection {
+  background: rgba(197, 163, 117, 0.28);
+}
+

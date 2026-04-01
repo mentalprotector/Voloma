@@ -1,0 +1,37 @@
+.layout {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.mediaColumn,
+.controlsColumn {
+  display: grid;
+  gap: 1rem;
+}
+
+.mediaColumn {
+  align-content: start;
+}
+
+.selectors {
+  display: grid;
+  gap: 1.25rem;
+  padding: 1.35rem;
+  border-radius: 1.5rem;
+  background: rgba(255, 252, 247, 0.92);
+  border: 1px solid rgba(115, 87, 56, 0.12);
+}
+
+@media (min-width: 1024px) {
+  .layout {
+    grid-template-columns: minmax(0, 1.06fr) minmax(22rem, 0.94fr);
+    gap: 1.5rem;
+    align-items: start;
+  }
+
+  .mediaColumn {
+    position: sticky;
+    top: 6rem;
+  }
+}
+

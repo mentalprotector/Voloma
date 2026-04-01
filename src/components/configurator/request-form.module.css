@@ -1,0 +1,108 @@
+.card {
+  display: grid;
+  gap: 1.25rem;
+  padding: 1.35rem;
+  margin-top: 1.25rem;
+  border-radius: 1.8rem;
+  background: rgba(255, 252, 247, 0.94);
+  border: 1px solid rgba(115, 87, 56, 0.12);
+}
+
+.header {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.eyebrow {
+  margin: 0 0 0.45rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--color-muted);
+  font-size: 0.75rem;
+}
+
+.title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.7rem, 4vw, 2.5rem);
+  line-height: 1;
+}
+
+.helper {
+  margin: 0;
+  color: var(--color-muted);
+  max-width: 50ch;
+}
+
+.selection {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.selection span {
+  padding: 0.55rem 0.75rem;
+  border-radius: 999px;
+  background: rgba(115, 87, 56, 0.08);
+  font-size: 0.92rem;
+}
+
+.form {
+  display: grid;
+  gap: 1rem;
+}
+
+.field {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.field span {
+  font-size: 0.92rem;
+  color: var(--color-muted);
+}
+
+.field input,
+.field textarea {
+  width: 100%;
+  border: 1px solid rgba(115, 87, 56, 0.16);
+  border-radius: 1rem;
+  padding: 0.95rem 1rem;
+  background: rgba(255, 255, 255, 0.76);
+  color: var(--color-ink);
+  font: inherit;
+}
+
+.field input:focus-visible,
+.field textarea:focus-visible {
+  outline: 2px solid var(--color-accent-soft);
+  outline-offset: 2px;
+}
+
+.actions {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.response {
+  margin: 0;
+  color: var(--color-muted);
+  font-size: 0.92rem;
+}
+
+@media (min-width: 768px) {
+  .form {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .fieldWide {
+    grid-column: 1 / -1;
+  }
+
+  .actions {
+    grid-column: 1 / -1;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+  }
+}
+
