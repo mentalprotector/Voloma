@@ -1,7 +1,7 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import { trackEvent } from "@/lib/analytics";
@@ -12,6 +12,8 @@ import styles from "./site-header.module.css";
 
 export function SiteHeader() {
   const [isScrolled, setIsScrolled] = useState(false);
+  const pathname = usePathname();
+  const isConfigurator = pathname === "/configurator";
 
   useEffect(() => {
     const handleScroll = () => {
@@ -25,38 +27,39 @@ export function SiteHeader() {
   }, []);
 
   return (
-    <header className={[styles.header, isScrolled ? styles.scrolled : ""].filter(Boolean).join(" ")}>
-      <div className={styles.inner}>
+    <header
+      className={[
+        styles.header,
+        isScrolled ? styles.scrolled : "",
+        isConfigurator ? styles.configuratorHeader : "",
+      ]
+        .filter(Boolean)
+        .join(" ")}
+    >
+      <div className={[styles.inner, isConfigurator ? styles.configuratorInner : ""].filter(Boolean).join(" ")}>
         <Link className={styles.brand} href="/">
-          <span className={styles.brandMark} aria-hidden="true">
-            <Image
-              src="/images/brand/voloma-logo.svg"
-              alt=""
-              width={40}
-              height={40}
-              className={styles.brandLogo}
-            />
-          </span>
-          <span className={styles.brandText}>Voloma wood</span>
+          Voloma
         </Link>
 
-        <nav className={styles.actions} aria-label="Основная навигация">
-          <a
-            className={styles.aboutLink}
-            href="#about"
-            onClick={() => trackEvent("hero_cta_click", { source: "header_about" })}
-          >
-            О кашпо
-          </a>
+        {isConfigurator ? null : (
+          <nav className={styles.actions} aria-label="Основная навигация">
+            <a
+              className={styles.aboutLink}
+              href="#about"
+              onClick={() => trackEvent("hero_cta_click", { source: "header_about" })}
+            >
+              О кашпо
+            </a>
 
-          <Button
-            href="/configurator"
-            className={styles.orderButton}
-            onClick={() => trackEvent("hero_cta_click", { source: "header_order" })}
-          >
-            Заказать
-          </Button>
-        </nav>
+            <Button
+              href="/configurator"
+              className={styles.orderButton}
+              onClick={() => trackEvent("hero_cta_click", { source: "header_order" })}
+            >
+              Заказать
+            </Button>
+          </nav>
+        )}
       </div>
     </header>
   );

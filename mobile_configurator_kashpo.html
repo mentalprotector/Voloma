@@ -1,0 +1,607 @@
+
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--font-sans); }
+
+  .phone-wrap {
+    display: flex;
+    justify-content: center;
+    padding: 2rem 1rem;
+  }
+
+  .phone {
+    width: 375px;
+    min-height: 812px;
+    background: var(--color-background-primary);
+    border: 0.5px solid var(--color-border-secondary);
+    border-radius: 36px;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .phone-inner {
+    flex: 1;
+    overflow-y: auto;
+    padding-bottom: 100px;
+    scrollbar-width: none;
+  }
+  .phone-inner::-webkit-scrollbar { display: none; }
+
+  /* Gallery */
+  .gallery {
+    width: 100%;
+    height: 220px;
+    background: #e8ddd0;
+    position: relative;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+  .gallery-img {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+  .gallery-svg {
+    width: 130px;
+    height: 130px;
+  }
+  .gallery-dots {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 5px;
+  }
+  .gallery-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: rgba(80,60,40,0.3);
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .gallery-dot.active { background: rgba(80,60,40,0.85); }
+
+  /* Summary bar */
+  .summary-bar {
+    padding: 10px 20px;
+    background: var(--color-background-secondary);
+    border-bottom: 0.5px solid var(--color-border-tertiary);
+    font-size: 13px;
+    color: var(--color-text-secondary);
+    font-weight: 400;
+    letter-spacing: 0.01em;
+  }
+  .summary-bar span {
+    color: var(--color-text-primary);
+    font-weight: 500;
+  }
+
+  /* Steps */
+  .steps-list {
+    padding: 8px 0 0;
+  }
+
+  .step-item {
+    border-bottom: 0.5px solid var(--color-border-tertiary);
+  }
+
+  .step-header {
+    display: flex;
+    align-items: center;
+    padding: 16px 20px;
+    cursor: pointer;
+    gap: 14px;
+    user-select: none;
+    transition: background 0.15s;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .step-header:active {
+    background: var(--color-background-secondary);
+  }
+
+  .step-num {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 500;
+    flex-shrink: 0;
+  }
+  .step-num.done {
+    background: #6b8c5a;
+    color: #fff;
+  }
+  .step-num.active {
+    background: #5c4033;
+    color: #fff;
+  }
+  .step-num.pending {
+    background: var(--color-background-secondary);
+    color: var(--color-text-tertiary);
+    border: 0.5px solid var(--color-border-secondary);
+  }
+
+  .step-label-wrap {
+    flex: 1;
+  }
+  .step-label {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--color-text-primary);
+  }
+  .step-sublabel {
+    font-size: 13px;
+    color: var(--color-text-secondary);
+    margin-top: 1px;
+  }
+
+  .step-arrow {
+    font-size: 16px;
+    color: var(--color-text-tertiary);
+    transition: transform 0.25s;
+  }
+  .step-arrow.open { transform: rotate(90deg); }
+
+  /* Panel */
+  .step-panel {
+    display: none;
+    padding: 0 20px 20px;
+  }
+  .step-panel.open { display: block; }
+
+  /* Options grid */
+  .opts-grid {
+    display: grid;
+    gap: 10px;
+  }
+  .opts-grid.cols2 { grid-template-columns: 1fr 1fr; }
+  .opts-grid.cols3 { grid-template-columns: 1fr 1fr 1fr; }
+
+  .opt-btn {
+    padding: 14px 10px;
+    border-radius: 12px;
+    border: 1.5px solid var(--color-border-secondary);
+    background: var(--color-background-primary);
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.15s;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .opt-btn:active { transform: scale(0.97); }
+  .opt-btn.selected {
+    border-color: #5c4033;
+    background: #fdf7f2;
+  }
+  .opt-icon {
+    font-size: 22px;
+    margin-bottom: 5px;
+    display: block;
+  }
+  .opt-label {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--color-text-primary);
+    display: block;
+  }
+  .opt-desc {
+    font-size: 11px;
+    color: var(--color-text-secondary);
+    margin-top: 2px;
+    display: block;
+  }
+
+  /* Color swatches */
+  .swatches {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .swatch {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .swatch-circle {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 2.5px solid transparent;
+    transition: all 0.15s;
+  }
+  .swatch.selected .swatch-circle {
+    border-color: #5c4033;
+    box-shadow: 0 0 0 2px #fff, 0 0 0 4px #5c4033;
+  }
+  .swatch-name {
+    font-size: 11px;
+    color: var(--color-text-secondary);
+  }
+
+  /* Progress hint */
+  .step-progress {
+    font-size: 11px;
+    color: var(--color-text-tertiary);
+    margin-bottom: 14px;
+    text-align: right;
+  }
+
+  /* Sticky CTA */
+  .sticky-cta {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 12px 20px 22px;
+    background: var(--color-background-primary);
+    border-top: 0.5px solid var(--color-border-tertiary);
+    z-index: 10;
+  }
+  .cta-price-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+  .cta-price-label {
+    font-size: 13px;
+    color: var(--color-text-secondary);
+  }
+  .cta-price {
+    font-size: 20px;
+    font-weight: 500;
+    color: var(--color-text-primary);
+  }
+  .cta-btn {
+    width: 100%;
+    padding: 16px;
+    background: #5c4033;
+    color: #fff;
+    border: none;
+    border-radius: 14px;
+    font-size: 17px;
+    font-weight: 500;
+    cursor: pointer;
+    letter-spacing: 0.01em;
+    transition: background 0.15s;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .cta-btn:active { background: #4a3028; }
+
+  /* Checkmark */
+  .check { display: inline-block; }
+</style>
+
+<div class="phone-wrap">
+  <div class="phone">
+    <div class="phone-inner" id="scrollContainer">
+
+      <!-- Gallery -->
+      <div class="gallery">
+        <div class="gallery-img" id="galleryImg">
+          <svg class="gallery-svg" viewBox="0 0 130 130" fill="none" xmlns="http://www.w3.org/2000/svg" id="plantSvg">
+            <!-- pot -->
+            <path d="M32 90 L38 118 H92 L98 90 Z" fill="#8B5E3C"/>
+            <path d="M28 82 Q28 90 32 90 H98 Q102 90 102 82 L102 74 Q102 66 94 66 H36 Q28 66 28 74 Z" fill="#A0694A"/>
+            <!-- rim -->
+            <rect x="24" y="62" width="82" height="10" rx="5" fill="#7A4F2F"/>
+            <!-- plant stem -->
+            <path d="M65 62 C65 40 50 30 40 15" stroke="#4a7c3f" stroke-width="3" fill="none" stroke-linecap="round"/>
+            <path d="M65 55 C65 35 78 28 85 12" stroke="#4a7c3f" stroke-width="3" fill="none" stroke-linecap="round"/>
+            <path d="M65 48 C60 35 65 22 65 10" stroke="#4a7c3f" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+            <!-- leaves -->
+            <ellipse cx="38" cy="15" rx="12" ry="6" fill="#5a9e4e" transform="rotate(-30 38 15)"/>
+            <ellipse cx="87" cy="12" rx="12" ry="6" fill="#4a8a40" transform="rotate(25 87 12)"/>
+            <ellipse cx="64" cy="9" rx="10" ry="5" fill="#6ab05a" transform="rotate(-5 64 9)"/>
+          </svg>
+        </div>
+        <div class="gallery-dots">
+          <div class="gallery-dot active" data-i="0"></div>
+          <div class="gallery-dot" data-i="1"></div>
+          <div class="gallery-dot" data-i="2"></div>
+        </div>
+      </div>
+
+      <!-- Summary bar -->
+      <div class="summary-bar">
+        <span id="summaryText">Квадратное · S · Дуб · Premium</span>
+      </div>
+
+      <!-- Steps -->
+      <div class="steps-list" id="stepsList">
+      </div>
+
+    </div>
+
+    <!-- Sticky CTA -->
+    <div class="sticky-cta">
+      <div class="cta-price-row">
+        <span class="cta-price-label">Итого:</span>
+        <span class="cta-price" id="totalPrice">3 200 ₽</span>
+      </div>
+      <button class="cta-btn" id="ctaBtn">Добавить в корзину</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const config = {
+  shape: 'square',
+  size: 'S',
+  color: 'oak',
+  quality: 'premium',
+  wheels: 'no'
+};
+
+const steps = [
+  {
+    id: 'shape',
+    label: 'Форма',
+    sublabel: () => shapes.find(s=>s.id===config.shape)?.label || '',
+    options: null,
+    render: renderShape
+  },
+  {
+    id: 'size',
+    label: 'Размер',
+    sublabel: () => sizes.find(s=>s.id===config.size)?.label || '',
+    options: null,
+    render: renderSize
+  },
+  {
+    id: 'color',
+    label: 'Цвет древесины',
+    sublabel: () => colors.find(c=>c.id===config.color)?.label || '',
+    options: null,
+    render: renderColor
+  },
+  {
+    id: 'quality',
+    label: 'Качество',
+    sublabel: () => qualities.find(q=>q.id===config.quality)?.label || '',
+    options: null,
+    render: renderQuality
+  },
+  {
+    id: 'wheels',
+    label: 'Колёсики',
+    sublabel: () => config.wheels === 'yes' ? 'Да' : 'Нет',
+    options: null,
+    render: renderWheels
+  }
+];
+
+const shapes = [
+  { id:'square', label:'Квадратное', icon:'⬛', desc:'Классика' },
+  { id:'round', label:'Круглое', icon:'⚫', desc:'Мягкие линии' },
+  { id:'rect', label:'Прямоугольное', icon:'▬', desc:'Для подоконника' }
+];
+const sizes = [
+  { id:'XS', label:'XS', icon:'', desc:'15×15 см' },
+  { id:'S', label:'S', icon:'', desc:'20×20 см' },
+  { id:'M', label:'M', icon:'', desc:'25×25 см' },
+  { id:'L', label:'L', icon:'', desc:'30×30 см' }
+];
+const colors = [
+  { id:'oak', label:'Дуб', hex:'#c8904a' },
+  { id:'pine', label:'Сосна', hex:'#d4a96a' },
+  { id:'walnut', label:'Орех', hex:'#6b3e26' },
+  { id:'ash', label:'Ясень', hex:'#e8d5b4' },
+  { id:'ebony', label:'Эбен', hex:'#2c1810' }
+];
+const qualities = [
+  { id:'standard', label:'Standard', icon:'🪵', desc:'Натуральное дерево' },
+  { id:'premium', label:'Premium', icon:'✨', desc:'Отборная древесина' },
+  { id:'lux', label:'Lux', icon:'💎', desc:'Ручная работа' }
+];
+
+const basePrices = { XS:1800, S:2400, M:3200, L:4200 };
+const qualityMult = { standard:1, premium:1.35, lux:1.8 };
+const wheelAdd = 400;
+
+let openStep = 'shape';
+const doneSteps = new Set();
+
+function getPrice() {
+  let p = basePrices[config.size] * qualityMult[config.quality];
+  if (config.wheels === 'yes') p += wheelAdd;
+  return Math.round(p);
+}
+
+function fmt(n) {
+  return n.toLocaleString('ru-RU') + ' ₽';
+}
+
+function getSummary() {
+  const shapeL = shapes.find(s=>s.id===config.shape)?.label || '';
+  const colorL = colors.find(c=>c.id===config.color)?.label || '';
+  const qualL = qualities.find(q=>q.id===config.quality)?.label || '';
+  const wheelsL = config.wheels === 'yes' ? ' · Колёсики' : '';
+  return `${shapeL} · ${config.size} · ${colorL} · ${qualL}${wheelsL}`;
+}
+
+function renderSteps() {
+  const list = document.getElementById('stepsList');
+  list.innerHTML = '';
+  steps.forEach((step, idx) => {
+    const isDone = doneSteps.has(step.id);
+    const isOpen = openStep === step.id;
+    const isPending = !isDone && !isOpen;
+
+    const item = document.createElement('div');
+    item.className = 'step-item';
+
+    const numClass = isDone ? 'done' : (isOpen ? 'active' : 'pending');
+    const numContent = isDone ? '✓' : (idx+1);
+    const arrowClass = isOpen ? 'open' : '';
+    const sublabel = isDone || isOpen ? `<div class="step-sublabel">${step.sublabel()}</div>` : '';
+
+    item.innerHTML = `
+      <div class="step-header" data-id="${step.id}">
+        <div class="step-num ${numClass}">${numContent}</div>
+        <div class="step-label-wrap">
+          <div class="step-label">${step.label}</div>
+          ${sublabel}
+        </div>
+        <div class="step-arrow ${arrowClass}">›</div>
+      </div>
+      <div class="step-panel ${isOpen ? 'open' : ''}" id="panel-${step.id}">
+        <div class="step-progress">Шаг ${idx+1} из ${steps.length}</div>
+      </div>
+    `;
+
+    list.appendChild(item);
+
+    if (isOpen) {
+      const panel = item.querySelector('.step-panel');
+      step.render(panel);
+    }
+
+    item.querySelector('.step-header').addEventListener('click', () => {
+      openStep = step.id;
+      renderSteps();
+      setTimeout(() => {
+        item.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 60);
+    });
+  });
+
+  document.getElementById('summaryText').textContent = getSummary();
+  document.getElementById('totalPrice').textContent = fmt(getPrice());
+}
+
+function choose(stepId, nextStepId) {
+  doneSteps.add(stepId);
+  openStep = nextStepId || null;
+  renderSteps();
+  if (nextStepId) {
+    setTimeout(() => {
+      const el = document.getElementById('panel-'+nextStepId);
+      if (el) el.closest('.step-item').scrollIntoView({ behavior:'smooth', block:'start' });
+    }, 80);
+  }
+}
+
+function renderShape(panel) {
+  const grid = document.createElement('div');
+  grid.className = 'opts-grid cols3';
+  shapes.forEach(s => {
+    const btn = document.createElement('div');
+    btn.className = 'opt-btn' + (config.shape===s.id ? ' selected' : '');
+    btn.innerHTML = `<span class="opt-icon">${s.icon}</span><span class="opt-label">${s.label}</span><span class="opt-desc">${s.desc}</span>`;
+    btn.addEventListener('click', () => {
+      config.shape = s.id;
+      choose('shape', 'size');
+    });
+    grid.appendChild(btn);
+  });
+  panel.appendChild(grid);
+}
+
+function renderSize(panel) {
+  const grid = document.createElement('div');
+  grid.className = 'opts-grid cols2';
+  sizes.forEach(s => {
+    const btn = document.createElement('div');
+    btn.className = 'opt-btn' + (config.size===s.id ? ' selected' : '');
+    btn.innerHTML = `<span class="opt-label" style="font-size:20px;font-weight:500;">${s.label}</span><span class="opt-desc">${s.desc}</span>`;
+    btn.addEventListener('click', () => {
+      config.size = s.id;
+      choose('size', 'color');
+    });
+    grid.appendChild(btn);
+  });
+  panel.appendChild(grid);
+}
+
+function renderColor(panel) {
+  const sw = document.createElement('div');
+  sw.className = 'swatches';
+  colors.forEach(c => {
+    const wrap = document.createElement('div');
+    wrap.className = 'swatch' + (config.color===c.id ? ' selected' : '');
+    wrap.innerHTML = `<div class="swatch-circle" style="background:${c.hex}"></div><span class="swatch-name">${c.label}</span>`;
+    wrap.addEventListener('click', () => {
+      config.color = c.id;
+      updatePotColor(c.hex);
+      choose('color', 'quality');
+    });
+    sw.appendChild(wrap);
+  });
+  panel.appendChild(sw);
+}
+
+function renderQuality(panel) {
+  const grid = document.createElement('div');
+  grid.className = 'opts-grid cols3';
+  qualities.forEach(q => {
+    const btn = document.createElement('div');
+    btn.className = 'opt-btn' + (config.quality===q.id ? ' selected' : '');
+    btn.innerHTML = `<span class="opt-icon">${q.icon}</span><span class="opt-label">${q.label}</span><span class="opt-desc">${q.desc}</span>`;
+    btn.addEventListener('click', () => {
+      config.quality = q.id;
+      choose('quality', 'wheels');
+    });
+    grid.appendChild(btn);
+  });
+  panel.appendChild(grid);
+}
+
+function renderWheels(panel) {
+  const grid = document.createElement('div');
+  grid.className = 'opts-grid cols2';
+  [
+    { id:'no', label:'Без колёсиков', icon:'🪵', desc:'Стационарное' },
+    { id:'yes', label:'С колёсиками', icon:'🛞', desc:'+400 ₽' }
+  ].forEach(w => {
+    const btn = document.createElement('div');
+    btn.className = 'opt-btn' + (config.wheels===w.id ? ' selected' : '');
+    btn.innerHTML = `<span class="opt-icon">${w.icon}</span><span class="opt-label">${w.label}</span><span class="opt-desc">${w.desc}</span>`;
+    btn.addEventListener('click', () => {
+      config.wheels = w.id;
+      choose('wheels', null);
+    });
+    grid.appendChild(btn);
+  });
+  panel.appendChild(grid);
+}
+
+function updatePotColor(hex) {
+  const paths = document.querySelectorAll('#plantSvg path, #plantSvg rect');
+  const woodPaths = [paths[0], paths[1], paths[2]];
+  const tones = [hex, shadeColor(hex, -15), shadeColor(hex, -30)];
+  woodPaths.forEach((p, i) => { if(p) p.setAttribute('fill', tones[i] || hex); });
+}
+
+function shadeColor(hex, percent) {
+  const num = parseInt(hex.slice(1), 16);
+  const r = Math.min(255, Math.max(0, (num >> 16) + percent));
+  const g = Math.min(255, Math.max(0, ((num >> 8) & 0xff) + percent));
+  const b = Math.min(255, Math.max(0, (num & 0xff) + percent));
+  return '#' + ((1<<24)+(r<<16)+(g<<8)+b).toString(16).slice(1);
+}
+
+document.getElementById('ctaBtn').addEventListener('click', () => {
+  const btn = document.getElementById('ctaBtn');
+  btn.textContent = '✓ Добавлено в корзину';
+  btn.style.background = '#4a7c3f';
+  setTimeout(() => {
+    btn.textContent = 'Добавить в корзину';
+    btn.style.background = '#5c4033';
+  }, 2000);
+});
+
+renderSteps();
+</script>

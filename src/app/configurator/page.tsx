@@ -8,27 +8,18 @@ import styles from "./page.module.css";
 export const metadata: Metadata = {
   title: "Конфигуратор кашпо",
   description:
-    "Конфигуратор Voloma: подбор формы, размера, оттенка и уровня качества деревянного кашпо.",
+    "Простой конфигуратор Voloma: выбрать форму, размер, цвет, качество и отправить запрос в мессенджер.",
   openGraph: {
     title: "Конфигуратор Voloma",
     description:
-      "Подберите деревянное кашпо по форме, размеру, оттенку и уровню качества.",
+      "Выберите готовый вариант кашпо и сразу отправьте запрос в мессенджер.",
   },
 };
 
 export default function ConfiguratorPage() {
   return (
     <SectionContainer className={styles.section}>
-      <div className={styles.hero}>
-        <p className={styles.eyebrow}>Конфигуратор Voloma</p>
-        <h1 className={styles.title}>Подбор изделия без сложного калькулятора</h1>
-        <p className={styles.description}>
-          Выберите форму, размер, оттенок и качество. Если изображений конкретного варианта ещё
-          нет, интерфейс покажет placeholder и точный путь, куда их нужно добавить в проект.
-        </p>
-      </div>
       <Configurator />
     </SectionContainer>
   );
 }
-

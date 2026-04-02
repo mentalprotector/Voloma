@@ -50,6 +50,8 @@ export type MatchType =
   | "shape_only"
   | "none";
 
+export type GalleryState = "exact" | "fallback" | "placeholder" | "custom";
+
 export interface PlaceholderGalleryData extends VariantSelection {
   title: string;
   slug: string;
@@ -58,9 +60,9 @@ export interface PlaceholderGalleryData extends VariantSelection {
 
 export interface ResolvedVariantMatch {
   matchType: MatchType;
+  galleryState: GalleryState;
   matchedVariant: ProductVariant | null;
   label: string | null;
   images: ProductImage[];
   placeholder: PlaceholderGalleryData;
 }
-
