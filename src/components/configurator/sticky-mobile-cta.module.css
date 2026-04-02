@@ -4,46 +4,46 @@
   right: var(--safe-right);
   bottom: 0;
   z-index: 30;
-  padding: 0.45rem 0.75rem calc(0.5rem + var(--safe-bottom));
-  background:
-    linear-gradient(180deg, rgba(247, 241, 232, 0), rgba(247, 241, 232, 0.96) 32%, rgba(247, 241, 232, 1) 100%);
+  padding: 0.75rem 1.25rem calc(1.75rem + var(--safe-bottom));
+  background: var(--color-bg);
+  border-top: 1px solid var(--color-border);
 }
 
-.bar::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
+.barInner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  max-width: 27rem;
+  margin: 0 auto;
+}
+
+.price {
+  margin: 0;
+  font-size: 1.125rem;
+  font-weight: 500;
+  color: var(--color-text);
 }
 
 .cta {
-  position: relative;
-  display: block;
-  max-width: 34rem;
-  margin: 0 auto;
-  width: 100%;
   min-height: 3rem;
   border: 0;
-  border-radius: 1rem;
-  background: var(--color-ink);
-  color: var(--color-paper);
+  border-radius: 2px;
+  background: var(--color-accent);
+  color: var(--color-bg);
   font: inherit;
-  font-weight: 800;
-  box-shadow: 0 18px 44px rgba(48, 35, 22, 0.2);
-  transition:
-    transform 180ms ease,
-    box-shadow 180ms ease,
-    background-color 180ms ease;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  padding: 0.9375rem 1.5rem;
 }
 
 .cta:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 22px 52px rgba(48, 35, 22, 0.24);
+  background: var(--color-accent-hover);
 }
 
 .cta:focus-visible {
-  outline: 2px solid var(--color-accent-soft);
-  outline-offset: 3px;
+  outline-offset: 2px;
 }
 
 .overlay {
@@ -53,37 +53,36 @@
   display: grid;
   align-items: end;
   padding: 1rem max(1rem, var(--safe-right)) max(1rem, var(--safe-bottom)) max(1rem, var(--safe-left));
-  background: rgba(34, 24, 15, 0.28);
-  backdrop-filter: blur(6px);
+  background: rgba(26, 19, 16, 0.28);
 }
 
 .sheet {
   display: grid;
   gap: 1rem;
   padding: 1rem 1rem calc(1rem + var(--safe-bottom));
-  border-radius: 1.6rem 1.6rem 1rem 1rem;
-  background: var(--color-paper);
-  box-shadow: 0 24px 60px rgba(34, 24, 15, 0.22);
-  animation: sheet-up 220ms ease;
-  border: 1px solid rgba(115, 87, 56, 0.08);
+  border-radius: 4px 4px 0 0;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
 }
 
 .handle {
   width: 3rem;
-  height: 0.3rem;
+  height: 0.25rem;
   margin: 0 auto;
-  border-radius: 999px;
-  background: rgba(115, 87, 56, 0.22);
+  border-radius: 2px;
+  background: var(--color-border);
 }
 
 .title {
   margin: 0;
   font-size: 1.2rem;
+  font-family: var(--font-display);
+  font-weight: 400;
 }
 
 .subtitle {
   margin: -0.5rem 0 0;
-  color: var(--color-muted);
+  color: var(--color-text-secondary);
 }
 
 .actions {
@@ -94,38 +93,32 @@
 .actionButton,
 .closeButton {
   min-height: 3.4rem;
-  border-radius: 1rem;
+  border-radius: 4px;
   font: inherit;
 }
 
 .actionButton {
-  border: 1px solid rgba(115, 87, 56, 0.14);
-  background: rgba(255, 252, 247, 0.92);
-  font-weight: 700;
-}
-
-.actionButton:hover,
-.closeButton:hover {
-  transform: translateY(-1px);
+  border: 1px solid var(--color-border);
+  background: var(--color-bg);
+  font-weight: 500;
 }
 
 .actionButton:focus-visible,
 .closeButton:focus-visible {
-  outline: 2px solid var(--color-accent-soft);
-  outline-offset: 3px;
+  outline-offset: 2px;
 }
 
 .preview {
-  padding: 0.95rem;
-  border-radius: 1rem;
-  background: rgba(115, 87, 56, 0.07);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.44);
+  padding: 1rem;
+  border-radius: 4px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
 }
 
 .previewLabel {
   margin: 0 0 0.45rem;
   font-size: 0.84rem;
-  color: var(--color-muted);
+  color: var(--color-text-muted);
 }
 
 .previewText {
@@ -137,30 +130,22 @@
 
 .copyStatus {
   margin: -0.2rem 0 0;
-  color: var(--color-muted);
+  color: var(--color-text-secondary);
   font-size: 0.92rem;
 }
 
 .closeButton {
-  border: 0;
-  background: var(--color-wood);
-  color: var(--color-ink);
-  font-weight: 700;
-}
-
-@keyframes sheet-up {
-  from {
-    opacity: 0;
-    transform: translateY(14px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font-weight: 500;
 }
 
 @media (min-width: 1024px) {
+  .bar {
+    display: none;
+  }
+
   .bar {
     padding-left: 1.5rem;
     padding-right: 1.5rem;

@@ -26,6 +26,7 @@ import {
 } from "@/types/product";
 
 import { ImageGallery } from "./ImageGallery";
+import { ProductSummary } from "./ProductSummary";
 import { StickyMobileCTA } from "./StickyMobileCTA";
 import styles from "./configurator.module.css";
 
@@ -39,9 +40,9 @@ const wheelsLabels: Record<WheelsOption, string> = {
 };
 
 const colorSwatchStyles: Record<Color, string> = {
-  oak: "linear-gradient(135deg, #d9bc8f 0%, #b98f5c 100%)",
-  walnut: "linear-gradient(135deg, #8e643f 0%, #5c3a1f 100%)",
-  charcoal: "linear-gradient(135deg, #66625d 0%, #343231 100%)",
+  oak: "#C8904A",
+  walnut: "#6B3E26",
+  charcoal: "#4A4540",
 };
 
 const messengerTargets: Record<MessengerKey, string> = {
@@ -122,6 +123,11 @@ export function Configurator() {
   );
 
   const orderMessage = buildMessage(selectionWithWheels);
+  const selectionLine = `${shapeLabels[selection.shape]} · ${sizeLabels[selection.size]} · ${
+    colorLabels[selection.color]
+  } · ${qualityLabels[selection.quality]}`;
+  const livePrice = resolvedMatch.matchedVariant?.price ?? 6900;
+  const selectionKey = `${selection.shape}-${selection.size}-${selection.color}-${selection.quality}-${wheels}`;
 
   useEffect(() => {
     window.scrollTo({
@@ -203,6 +209,11 @@ export function Configurator() {
     }
   }
 
+  function completeWheels(value: WheelsOption) {
+    setWheels(value);
+    setActiveStep("shape");
+  }
+
   async function openMessenger(target: MessengerKey) {
     const copied = await copyToClipboard(orderMessage);
     const textParam = encodeURIComponent(orderMessage);
@@ -230,6 +241,16 @@ export function Configurator() {
           />
         </div>
         <div className={styles.controlsColumn}>
+          <section className={styles.headerBlock} aria-label="Информация о товаре">
+            <div className={styles.summaryRow}>
+              <div className={styles.titleBlock}>
+                <p className={styles.kicker}>Voloma Configurator</p>
+                <h1 className={styles.productName}>Кашпо Voloma</h1>
+              </div>
+              <p className={styles.price}>{livePrice.toLocaleString("ru-RU")} ₽</p>
+            </div>
+            <ProductSummary key={selectionKey} selectionLine={selectionLine} />
+          </section>
           <section className={styles.selectors} aria-label="Выбор параметров кашпо">
             <div
               className={[styles.group, activeStep === "shape" ? styles.groupOpen : ""].filter(Boolean).join(" ")}
@@ -245,7 +266,9 @@ export function Configurator() {
                 onClick={() => advanceToStep("shape")}
               >
                 <span className={styles.groupTitle}>1. Форма</span>
-                <span className={styles.groupValue}>{getStepValue("shape")}</span>
+                <span className={styles.groupValue}>
+                  {activeStep === "shape" ? getStepValue("shape") : `✓ ${getStepValue("shape")}`}
+                </span>
               </button>
               <div className={styles.groupPanel} id="config-step-shape">
                 <div className={styles.shapeGrid}>
@@ -264,18 +287,8 @@ export function Configurator() {
                       type="button"
                       onClick={() => updateSelection("shape", shape)}
                     >
-                      <span
-                        className={[
-                          styles.shapeIcon,
-                          shape === "square"
-                            ? styles.square
-                            : shape === "rect"
-                              ? styles.rect
-                              : styles.long,
-                        ].join(" ")}
-                        aria-hidden="true"
-                      />
                       <span className={styles.shapeLabel}>{shapeLabels[shape]}</span>
+                      <span className={styles.shapeMeta}>Форма</span>
                     </button>
                   ))}
                 </div>
@@ -296,7 +309,9 @@ export function Configurator() {
                 onClick={() => advanceToStep("size")}
               >
                 <span className={styles.groupTitle}>2. Размер</span>
-                <span className={styles.groupValue}>{getStepValue("size")}</span>
+                <span className={styles.groupValue}>
+                  {activeStep === "size" ? getStepValue("size") : `✓ ${getStepValue("size")}`}
+                </span>
               </button>
               <div className={styles.groupPanel} id="config-step-size">
                 <div className={styles.sizeGrid}>
@@ -345,7 +360,9 @@ export function Configurator() {
                 onClick={() => advanceToStep("color")}
               >
                 <span className={styles.groupTitle}>3. Цвет</span>
-                <span className={styles.groupValue}>{getStepValue("color")}</span>
+                <span className={styles.groupValue}>
+                  {activeStep === "color" ? getStepValue("color") : `✓ ${getStepValue("color")}`}
+                </span>
               </button>
               <div className={styles.groupPanel} id="config-step-color">
                 <div className={styles.colorGrid}>
@@ -391,7 +408,9 @@ export function Configurator() {
                 onClick={() => advanceToStep("quality")}
               >
                 <span className={styles.groupTitle}>4. Качество</span>
-                <span className={styles.groupValue}>{getStepValue("quality")}</span>
+                <span className={styles.groupValue}>
+                  {activeStep === "quality" ? getStepValue("quality") : `✓ ${getStepValue("quality")}`}
+                </span>
               </button>
               <div className={styles.groupPanel} id="config-step-quality">
                 <div className={styles.qualityGrid}>
@@ -411,6 +430,7 @@ export function Configurator() {
                       onClick={() => updateSelection("quality", quality)}
                     >
                       <span className={styles.qualityTitle}>{qualityLabels[quality]}</span>
+                      <span className={styles.qualityMeta}>Визуальный отбор</span>
                     </button>
                   ))}
                 </div>
@@ -431,7 +451,9 @@ export function Configurator() {
                 onClick={() => advanceToStep("wheels")}
               >
                 <span className={styles.groupTitle}>5. Колёсики</span>
-                <span className={styles.groupValue}>{getStepValue("wheels")}</span>
+                <span className={styles.groupValue}>
+                  {activeStep === "wheels" ? getStepValue("wheels") : `✓ ${getStepValue("wheels")}`}
+                </span>
               </button>
               <div className={styles.groupPanel} id="config-step-wheels">
                 <div className={styles.radioGrid} role="radiogroup" aria-label="Колёсики">
@@ -444,17 +466,29 @@ export function Configurator() {
                         .join(" ")}
                       role="radio"
                       type="button"
-                      onClick={() => {
-                        setWheels(value);
-                      }}
+                      onClick={() => completeWheels(value)}
                     >
-                      <span className={styles.radioDot} aria-hidden="true" />
                       <span>{wheelsLabels[value]}</span>
+                      <span className={styles.qualityMeta}>Опция</span>
                     </button>
                   ))}
                 </div>
               </div>
             </div>
+          </section>
+
+          <section className={styles.desktopCta} aria-label="Оформление заказа">
+            <p className={styles.desktopCtaCaption}>
+              Подготовим сообщение с выбранной конфигурацией и откроем удобный мессенджер.
+            </p>
+            {copyStatus ? (
+              <p className={styles.desktopCopyStatus} aria-live="polite">
+                {copyStatus}
+              </p>
+            ) : null}
+            <button className={styles.desktopCtaButton} type="button" onClick={() => setSheetOpen(true)}>
+              Обсудить заказ
+            </button>
           </section>
         </div>
       </div>
@@ -463,6 +497,7 @@ export function Configurator() {
         copyStatus={copyStatus}
         isOpen={sheetOpen}
         message={orderMessage}
+        price={livePrice}
         onClose={() => setSheetOpen(false)}
         onMessengerClick={openMessenger}
         onOpen={() => setSheetOpen(true)}
