@@ -13,6 +13,20 @@ export function AboutSection() {
           <p className={styles.eyebrow}>О нас</p>
           <h2 className={styles.title}>{siteContent.about.title}</h2>
           <p className={styles.description}>{siteContent.about.description}</p>
+          <div className={styles.facts} aria-label="Факты о Voloma">
+            <div className={styles.factCard}>
+              <span className={styles.factValue}>2</span>
+              <span className={styles.factLabel}>уровня отбора</span>
+            </div>
+            <div className={styles.factCard}>
+              <span className={styles.factValue}>3</span>
+              <span className={styles.factLabel}>базовых оттенка</span>
+            </div>
+            <div className={styles.factCard}>
+              <span className={styles.factValue}>1</span>
+              <span className={styles.factLabel}>спокойный стиль</span>
+            </div>
+          </div>
           <ul className={styles.list}>
             {siteContent.about.points.map((point) => (
               <li className={styles.point} key={point}>

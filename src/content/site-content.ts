@@ -1,5 +1,18 @@
 import type { Color, Quality, Shape, Size } from "@/types/product";
 
+export type FeatureImageTone = "sand" | "linen" | "clay" | "mist" | "forest";
+
+export interface SiteFeature {
+  title: string;
+  description: string;
+  image?: {
+    alt: string;
+    position?: string;
+    src?: string;
+    tone?: FeatureImageTone;
+  };
+}
+
 export const siteContent = {
   brandName: "Voloma",
   siteTitle: "Voloma",
@@ -12,22 +25,55 @@ export const siteContent = {
   },
   features: [
     {
-      title: "Натуральная древесина",
-      description: "Живой материал с мягкой фактурой и теплотой, заметной даже на расстоянии.",
+      title: "Карельская сосна",
+      description:
+        "Спокойная фактура и плотная древесина, отобранная для аккуратного внешнего вида.",
+      image: {
+        src: "/images/features/voloma-feature.jpg",
+        alt: "Деревянное кашпо Voloma в общем ракурсе",
+        position: "center 38%",
+        tone: "sand",
+      },
     },
     {
-      title: "Защитная пропитка",
-      description: "Помогает сохранить внешний вид и делает поверхность практичной для интерьера.",
+      title: "Живая текстура",
+      description: "Каждое изделие сохраняет естественный рисунок дерева.",
+      image: {
+        src: "/images/hero/voloma-hero-edge.jpg",
+        alt: "Крупный план текстуры дерева на кашпо Voloma",
+        position: "center center",
+        tone: "linen",
+      },
     },
     {
-      title: "Два уровня качества",
-      description: "Standard и premium с понятной разницей в визуальном отборе древесины.",
+      title: "Аккуратная сборка",
+      description: "Точные соединения и ровная геометрия.",
+      image: {
+        src: "/images/hero/voloma-hero.jpg",
+        alt: "Деталь угла и аккуратных соединений деревянного кашпо",
+        position: "center 58%",
+        tone: "clay",
+      },
     },
     {
-      title: "Кастомизация",
-      description: "Можно подобрать размер, оттенок и конфигурацию под конкретное пространство.",
+      title: "Пропитка DUFA",
+      description: "Защищает поверхность от влаги и повседневного износа.",
+      image: {
+        src: "/images/hero/voloma-hero-mobile.webp",
+        alt: "Поверхность кашпо с ровным защитным покрытием",
+        position: "center 48%",
+        tone: "mist",
+      },
     },
-  ],
+    {
+      title: "Под ваш размер и цвет",
+      description: "Выбирайте форму, размер и оттенок под своё пространство.",
+      image: {
+        alt: "Несколько вариантов деревянных кашпо Voloma рядом",
+        tone: "forest",
+      },
+    },
+  ] satisfies SiteFeature[],
   howItWorks: [
     "Выберите форму и размер",
     "Подберите цвет и качество",

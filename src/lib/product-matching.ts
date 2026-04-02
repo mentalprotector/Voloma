@@ -1,5 +1,6 @@
 import { colorLabels, qualityLabels, shapeLabels, sizeLabels } from "@/content/site-content";
 import type {
+  GalleryState,
   MatchType,
   PlaceholderGalleryData,
   ProductVariant,
@@ -33,6 +34,22 @@ function matchBy(
   predicate: (variant: ProductVariant) => boolean,
 ): ProductVariant | null {
   return variants.find(predicate) ?? null;
+}
+
+function hasImages(variant: ProductVariant | null) {
+  return Boolean(variant?.images?.length);
+}
+
+function getGalleryState(matchType: MatchType, matchedVariant: ProductVariant | null): GalleryState {
+  if (!matchedVariant) {
+    return "custom";
+  }
+
+  if (!hasImages(matchedVariant)) {
+    return matchType === "exact" ? "placeholder" : "custom";
+  }
+
+  return matchType === "exact" ? "exact" : "fallback";
 }
 
 export function resolveVariantMatch(
@@ -80,10 +97,20 @@ export function resolveVariantMatch(
     const matchedVariant = matchBy(variants, strategy.predicate);
 
     if (matchedVariant) {
+      const galleryState = getGalleryState(strategy.type, matchedVariant);
+
       return {
         matchType: strategy.type,
+        galleryState,
         matchedVariant,
-        label: strategy.label,
+        label:
+          galleryState === "fallback"
+            ? "Показан близкий вариант"
+            : galleryState === "placeholder"
+              ? "Изготавливаем под заказ"
+              : galleryState === "custom"
+                ? "Сделаем под ваш вариант"
+                : null,
         images: matchedVariant.images,
         placeholder,
       };
@@ -92,10 +119,10 @@ export function resolveVariantMatch(
 
   return {
     matchType: "none",
+    galleryState: "custom",
     matchedVariant: null,
-    label: "Для этой комбинации пока нет близкого варианта. Оставьте запрос на индивидуальное изготовление.",
+    label: "Сделаем под ваш вариант",
     images: [],
     placeholder,
   };
 }
-

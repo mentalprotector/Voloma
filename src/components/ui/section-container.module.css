@@ -9,11 +9,20 @@
 
 @media (min-width: 768px) {
   .section {
-    padding: 6rem 0;
+    padding: 6.75rem 0;
   }
 
   .inner {
-    width: min(100% - 3rem, 74rem);
+    width: min(100% - 3.5rem, 74rem);
   }
 }
 
+@media (min-width: 1280px) {
+  .section {
+    padding: 7.5rem 0;
+  }
+
+  .inner {
+    width: min(100% - 5rem, 78rem);
+  }
+}

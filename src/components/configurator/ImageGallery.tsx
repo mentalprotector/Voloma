@@ -1,69 +1,91 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
-import { trackEvent } from "@/lib/analytics";
-import type { ProductImage } from "@/types/product";
+import type { GalleryState, ProductImage } from "@/types/product";
 
 import styles from "./image-gallery.module.css";
 
 interface ImageGalleryProps {
-  title: string;
   images: ProductImage[];
-  label?: string | null;
+  placeholderTitle: string;
+  state: GalleryState;
+  note: string | null;
 }
 
-export function ImageGallery({ title, images, label }: ImageGalleryProps) {
+export function ImageGallery({ images, placeholderTitle, state, note }: ImageGalleryProps) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [touchStartX, setTouchStartX] = useState<number | null>(null);
   const resolvedIndex = images[activeIndex] ? activeIndex : 0;
-
-  useEffect(() => {
-    const activeImage = images[resolvedIndex];
-
-    if (!activeImage) {
-      return;
-    }
-
-    trackEvent("gallery_image_view", {
-      image: activeImage.url,
-      title,
-      index: resolvedIndex + 1,
-    });
-  }, [images, resolvedIndex, title]);
-
   const activeImage = images[resolvedIndex];
-
-  if (!activeImage) {
-    return null;
-  }
+  const showGallery = images.length > 0 && (state === "exact" || state === "fallback");
 
   return (
     <section className={styles.gallery}>
-      {label ? <div className={styles.notice}>{label}</div> : null}
-      <div className={styles.stage}>
-        {!isLoaded ? <div className={styles.skeleton} aria-hidden="true" /> : null}
-        <Image
-          alt={activeImage.alt}
-          className={styles.image}
-          fill
-          priority
-          sizes="(max-width: 1023px) 100vw, 52rem"
-          src={activeImage.url}
-          onLoad={() => setIsLoaded(true)}
-        />
+      <div
+        className={styles.stage}
+        aria-live="polite"
+        onTouchEnd={(event) => {
+          if (touchStartX === null || images.length < 2 || !showGallery) {
+            return;
+          }
+
+          const delta = touchStartX - event.changedTouches[0].clientX;
+
+          if (Math.abs(delta) < 40) {
+            setTouchStartX(null);
+            return;
+          }
+
+          if (delta > 0) {
+            setActiveIndex((current) => (current + 1) % images.length);
+          } else {
+            setActiveIndex((current) => (current - 1 + images.length) % images.length);
+          }
+
+          setIsLoaded(false);
+          setTouchStartX(null);
+        }}
+        onTouchStart={(event) => setTouchStartX(event.touches[0].clientX)}
+      >
+        {showGallery && activeImage ? (
+          <>
+            {!isLoaded ? <div className={styles.skeleton} aria-hidden="true" /> : null}
+            <Image
+              alt={activeImage.alt}
+              className={styles.image}
+              fill
+              priority
+              sizes="(max-width: 1023px) 100vw, 52rem"
+              src={activeImage.url}
+              onLoad={() => setIsLoaded(true)}
+            />
+            <div className={styles.counter} aria-hidden="true">
+              {resolvedIndex + 1}/{images.length}
+            </div>
+          </>
+        ) : (
+          <div className={styles.placeholder}>
+            <div className={styles.placeholderIcon} aria-hidden="true" />
+            <p className={styles.placeholderTitle}>Фото скоро добавим</p>
+            <p className={styles.placeholderText}>
+              {state === "custom" ? "Сделаем под ваш вариант" : "Изготавливаем под заказ"}
+            </p>
+            <p className={styles.placeholderMeta}>{placeholderTitle}</p>
+          </div>
+        )}
       </div>
-      {images.length > 1 ? (
+      {note ? <p className={styles.note}>{note}</p> : null}
+      {showGallery && images.length > 1 ? (
         <div className={styles.thumbs}>
           {images.map((image, index) => (
             <button
               key={image.url}
               aria-label={`Показать изображение ${index + 1}`}
-                className={[
-                styles.thumb,
-                index === resolvedIndex ? styles.thumbActive : "",
-              ]
+              aria-pressed={index === resolvedIndex}
+              className={[styles.thumb, index === resolvedIndex ? styles.thumbActive : ""]
                 .filter(Boolean)
                 .join(" ")}
               type="button"
@@ -81,6 +103,7 @@ export function ImageGallery({ title, images, label }: ImageGalleryProps) {
                 src={image.url}
                 width={108}
               />
+              <span className={styles.thumbLabel}>0{index + 1}</span>
             </button>
           ))}
         </div>

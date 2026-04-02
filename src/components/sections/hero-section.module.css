@@ -9,8 +9,9 @@
 
 .hero {
   position: relative;
-  min-height: 100svh;
-  padding: calc(env(safe-area-inset-top) + 5.4rem) 0.9rem 1rem;
+  min-height: calc(100svh - 3.25rem - var(--safe-top));
+  min-height: calc(100dvh - 3.25rem - var(--safe-top));
+  padding: 0.55rem 0.7rem 0.55rem;
   border-radius: 0;
   overflow: hidden;
   background:
@@ -23,14 +24,24 @@
   position: absolute;
   inset: 0;
   z-index: 1;
+  transform: scale(1.01);
+}
+
+.picture {
+  display: block;
+  width: 100%;
+  height: 100%;
 }
 
 .image {
+  display: block;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
-  object-position: center 34%;
-  filter: saturate(0.94) contrast(1.02);
-  transform: scale(0.86);
-  transform-origin: center center;
+  object-position: center 46%;
+  filter: saturate(0.97) contrast(1.01);
+  transform: scale(1.015);
+  transition: transform 1.2s ease, filter 260ms ease;
 }
 
 .tone {
@@ -42,18 +53,35 @@
     linear-gradient(180deg, rgba(37, 24, 12, 0) 52%, rgba(37, 24, 12, 0.08) 74%, rgba(37, 24, 12, 0.16) 100%);
 }
 
+.tone::after {
+  content: "";
+  position: absolute;
+  inset: auto auto 0 0;
+  width: min(42vw, 18rem);
+  aspect-ratio: 1;
+  border-radius: 999px;
+  background: radial-gradient(circle, rgba(255, 244, 227, 0.32) 0%, rgba(255, 244, 227, 0) 72%);
+  transform: translate(-18%, 22%);
+}
+
+.hero:hover .image {
+  transform: scale(1.03);
+  filter: saturate(1) contrast(1.03);
+}
+
 .overlayCard {
   position: absolute;
-  left: 0.8rem;
-  right: 0.8rem;
-  bottom: calc(2.75rem + env(safe-area-inset-bottom));
+  left: 0.65rem;
+  right: 0.65rem;
+  bottom: calc(2.15rem + var(--safe-bottom));
   z-index: 5;
+  animation: hero-rise 540ms cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 .scrollHint {
   position: absolute;
   left: 50%;
-  bottom: max(0.8rem, calc(env(safe-area-inset-bottom) + 0.35rem));
+  bottom: max(0.18rem, calc(var(--safe-bottom) + 0.1rem));
   z-index: 5;
   transform: translateX(-50%);
   display: inline-flex;
@@ -65,6 +93,20 @@
   font-size: 0.94rem;
   background: rgba(255, 250, 242, 0.74);
   backdrop-filter: blur(12px);
+  transition:
+    transform 180ms ease,
+    background-color 180ms ease,
+    color 180ms ease;
+}
+
+.scrollHint:hover {
+  transform: translateX(-50%) translateY(-1px);
+  background: rgba(255, 250, 242, 0.88);
+}
+
+.scrollHint:focus-visible {
+  outline: 2px solid rgba(52, 38, 26, 0.28);
+  outline-offset: 2px;
 }
 
 .scrollArrow {
@@ -75,35 +117,66 @@
 }
 
 @media (min-width: 768px) {
+  .shell {
+    position: relative;
+  }
+
+  .shell::before,
+  .shell::after {
+    content: "";
+    position: absolute;
+    z-index: 0;
+    pointer-events: none;
+    filter: blur(18px);
+  }
+
+  .shell::before {
+    top: 4rem;
+    left: 2rem;
+    width: 11rem;
+    height: 11rem;
+    background: radial-gradient(circle, rgba(217, 188, 143, 0.22), transparent 70%);
+  }
+
+  .shell::after {
+    right: 6%;
+    bottom: 4rem;
+    width: 14rem;
+    height: 14rem;
+    background: radial-gradient(circle, rgba(255, 247, 236, 0.28), transparent 70%);
+  }
+}
+
+@media (min-width: 768px) {
   .hero {
-    min-height: min(100svh, 62rem);
-    padding: calc(env(safe-area-inset-top) + 6rem) 1.25rem 1.35rem;
+    min-height: min(calc(100svh - 4rem), 60rem);
+    min-height: min(calc(100dvh - 4rem), 60rem);
+    padding: 0.8rem 1.25rem 0.8rem;
   }
 
   .image {
-    object-position: center 42%;
-    transform: scale(0.94);
+    object-position: center 54%;
   }
 
   .overlayCard {
     left: 1.35rem;
     right: 1.35rem;
-    bottom: 4rem;
+    bottom: 2.6rem;
   }
 
   .scrollHint {
-    bottom: 1.2rem;
+    bottom: 0.6rem;
   }
 }
 
 @media (min-width: 1100px) {
   .hero {
-    min-height: min(100svh, 64rem);
+    min-height: min(calc(100svh - 0.35rem), 61rem);
+    min-height: min(calc(100dvh - 0.35rem), 61rem);
   }
 
   .image {
-    object-position: center 44%;
-    transform: scale(1);
+    object-position: center 52%;
   }
 
   .overlayCard {
@@ -122,5 +195,17 @@
   50% {
     transform: translateY(0.22rem);
     opacity: 1;
+  }
+}
+
+@keyframes hero-rise {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
