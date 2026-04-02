@@ -24,7 +24,6 @@
   position: absolute;
   inset: 0;
   z-index: 1;
-  transform: scale(1.01);
 }
 
 .picture {
@@ -40,8 +39,7 @@
   object-fit: cover;
   object-position: center 46%;
   filter: saturate(0.97) contrast(1.01);
-  transform: scale(1.015);
-  transition: transform 1.2s ease, filter 260ms ease;
+  transition: filter 260ms ease;
 }
 
 .tone {
@@ -62,11 +60,6 @@
   border-radius: 999px;
   background: radial-gradient(circle, rgba(255, 244, 227, 0.32) 0%, rgba(255, 244, 227, 0) 72%);
   transform: translate(-18%, 22%);
-}
-
-.hero:hover .image {
-  transform: scale(1.03);
-  filter: saturate(1) contrast(1.03);
 }
 
 .overlayCard {
@@ -149,9 +142,9 @@
 
 @media (min-width: 768px) {
   .hero {
-    min-height: min(calc(100svh - 4rem), 60rem);
-    min-height: min(calc(100dvh - 4rem), 60rem);
-    padding: 0.8rem 1.25rem 0.8rem;
+    min-height: min(calc(100svh - 5rem), 56rem);
+    min-height: min(calc(100dvh - 5rem), 56rem);
+    padding: 0.7rem 1.1rem 0.65rem;
   }
 
   .image {
@@ -159,20 +152,20 @@
   }
 
   .overlayCard {
-    left: 1.35rem;
-    right: 1.35rem;
-    bottom: 2.6rem;
+    left: 1.1rem;
+    right: 1.1rem;
+    bottom: 3.2rem;
   }
 
   .scrollHint {
-    bottom: 0.6rem;
+    bottom: 0.45rem;
   }
 }
 
 @media (min-width: 1100px) {
   .hero {
-    min-height: min(calc(100svh - 0.35rem), 61rem);
-    min-height: min(calc(100dvh - 0.35rem), 61rem);
+    min-height: min(calc(100svh - 5.2rem), 54rem);
+    min-height: min(calc(100dvh - 5.2rem), 54rem);
   }
 
   .image {
@@ -181,7 +174,7 @@
 
   .overlayCard {
     left: auto;
-    width: min(36rem, calc(100% - 3rem));
+    width: min(33rem, calc(100% - 2.2rem));
   }
 }
 
