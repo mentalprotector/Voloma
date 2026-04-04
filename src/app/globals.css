@@ -1,20 +1,23 @@
 :root {
-  --color-bg: #f7f1e8;
-  --color-bg-soft: #fcf8f1;
-  --color-paper: #fffaf2;
-  --color-wood: #eadbca;
-  --color-wood-strong: #c5a375;
-  --color-ink: #34261a;
-  --color-ink-strong: #22180f;
-  --color-muted: #715946;
-  --color-accent-soft: #d3b28b;
-  --color-accent-glow: rgba(214, 184, 142, 0.42);
-  --color-line-soft: rgba(115, 87, 56, 0.12);
-  --shadow-soft: 0 18px 44px rgba(43, 29, 15, 0.08);
-  --shadow-medium: 0 24px 64px rgba(43, 29, 15, 0.14);
-  --shadow-premium: 0 36px 100px rgba(43, 29, 15, 0.18);
-  --font-body: var(--font-manrope);
-  --font-display: var(--font-fraunces);
+  --color-bg: #faf8f5;
+  --color-surface: #f0ebe3;
+  --color-surface-soft: #f5eee6;
+  --color-gallery: #ede6dc;
+  --color-border: #ddd3c5;
+  --color-text: #1a1310;
+  --color-text-secondary: #7a6a5a;
+  --color-text-muted: #a89880;
+  --color-accent: #4a3728;
+  --color-accent-hover: #3a2a1e;
+  --color-paper: var(--color-bg);
+  --color-ink: var(--color-text);
+  --color-ink-strong: var(--color-text);
+  --color-muted: var(--color-text-secondary);
+  --color-accent-soft: var(--color-accent);
+  --color-bg-soft: var(--color-surface-soft);
+  --color-wood: var(--color-surface);
+  --font-body: var(--font-body);
+  --font-display: var(--font-display);
   --safe-top: env(safe-area-inset-top, 0px);
   --safe-right: env(safe-area-inset-right, 0px);
   --safe-bottom: env(safe-area-inset-bottom, 0px);
@@ -41,13 +44,11 @@ body {
   margin: 0;
   min-width: 320px;
   overflow-x: hidden;
-  background:
-    radial-gradient(circle at 12% 0%, rgba(226, 199, 160, 0.18), transparent 26%),
-    radial-gradient(circle at 88% 18%, rgba(255, 250, 242, 0.72), transparent 22%),
-    radial-gradient(circle at top left, rgba(205, 178, 141, 0.14), transparent 24%),
-    linear-gradient(180deg, var(--color-bg) 0%, var(--color-bg-soft) 100%);
-  color: var(--color-ink);
+  background: var(--color-bg);
+  color: var(--color-text);
   font-family: var(--font-body), sans-serif;
+  font-size: 16px;
+  line-height: 1.65;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
 }
@@ -72,6 +73,20 @@ input,
 textarea,
 select {
   touch-action: manipulation;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -89,5 +104,5 @@ select {
 }
 
 ::selection {
-  background: rgba(197, 163, 117, 0.28);
+  background: rgba(74, 55, 40, 0.18);
 }

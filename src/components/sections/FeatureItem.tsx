@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
 
 import type { FeatureImageTone, SiteFeature } from "@/content/site-content";
 
@@ -23,48 +22,12 @@ const toneClassNames: Record<FeatureImageTone, string> = {
 };
 
 export function FeatureItem({ description, image, index, title }: FeatureItemProps) {
-  const ref = useRef<HTMLElement | null>(null);
-  const [isVisible, setIsVisible] = useState(index < 2);
-
-  useEffect(() => {
-    const node = ref.current;
-
-    if (!node) {
-      return;
-    }
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-          observer.disconnect();
-        }
-      },
-      {
-        rootMargin: "0px 0px -12% 0px",
-        threshold: 0.2,
-      },
-    );
-
-    observer.observe(node);
-
-    return () => observer.disconnect();
-  }, []);
-
   const toneClassName = toneClassNames[image?.tone ?? "sand"];
   const isReversed = index % 2 === 1;
 
   return (
     <article
-      className={[
-        styles.item,
-        isVisible ? styles.visible : "",
-        isReversed ? styles.reversed : "",
-      ]
-        .filter(Boolean)
-        .join(" ")}
-      ref={ref}
-      style={{ ["--item-index" as string]: index }}
+      className={[styles.item, isReversed ? styles.reversed : ""].filter(Boolean).join(" ")}
     >
       <div className={[styles.visual, toneClassName].join(" ")}>
         {image?.src ? (

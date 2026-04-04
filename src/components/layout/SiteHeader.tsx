@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -13,6 +14,7 @@ import styles from "./site-header.module.css";
 export function SiteHeader() {
   const [isScrolled, setIsScrolled] = useState(false);
   const pathname = usePathname();
+  const isHome = pathname === "/";
   const isConfigurator = pathname === "/configurator";
 
   useEffect(() => {
@@ -30,15 +32,31 @@ export function SiteHeader() {
     <header
       className={[
         styles.header,
+        isHome ? styles.homeHeader : "",
         isScrolled ? styles.scrolled : "",
         isConfigurator ? styles.configuratorHeader : "",
       ]
         .filter(Boolean)
         .join(" ")}
     >
-      <div className={[styles.inner, isConfigurator ? styles.configuratorInner : ""].filter(Boolean).join(" ")}>
+      <div
+        className={[
+          styles.inner,
+          isHome ? styles.homeInner : "",
+          isConfigurator ? styles.configuratorInner : "",
+        ]
+          .filter(Boolean)
+          .join(" ")}
+      >
         <Link className={styles.brand} href="/">
-          Voloma
+          <Image
+            src="/voloma-logo.svg"
+            alt="Voloma"
+            width={220}
+            height={80}
+            className={styles.brandLogo}
+            priority
+          />
         </Link>
 
         {isConfigurator ? null : (

@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Lora, Manrope } from "next/font/google";
+import { Cormorant_Garamond, Inter } from "next/font/google";
 import type { ReactNode } from "react";
 
 import { SiteFooter } from "@/components/layout/SiteFooter";
@@ -8,15 +8,15 @@ import { siteContent } from "@/content/site-content";
 
 import "./globals.css";
 
-const lora = Lora({
+const cormorant = Cormorant_Garamond({
   subsets: ["latin", "cyrillic"],
-  variable: "--font-fraunces",
-  weight: ["500", "600"],
+  variable: "--font-display",
+  weight: ["400", "500"],
 });
 
-const manrope = Manrope({
+const inter = Inter({
   subsets: ["latin", "cyrillic"],
-  variable: "--font-manrope",
+  variable: "--font-body",
   weight: ["400", "500", "600", "700"],
 });
 
@@ -38,13 +38,13 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#f7f1e8",
+  themeColor: "#FAF8F5",
 };
 
 export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
   return (
     <html lang="ru" suppressHydrationWarning>
-      <body className={`${lora.variable} ${manrope.variable}`}>
+      <body className={`${cormorant.variable} ${inter.variable}`}>
         <SiteHeader />
         <main>{children}</main>
         <SiteFooter />

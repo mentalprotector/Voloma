@@ -9,6 +9,7 @@ type MessengerKey = "telegram" | "vk" | "max";
 interface StickyMobileCTAProps {
   isOpen: boolean;
   message: string;
+  price: number;
   copyStatus: string | null;
   onOpen: () => void;
   onClose: () => void;
@@ -18,6 +19,7 @@ interface StickyMobileCTAProps {
 export function StickyMobileCTA({
   isOpen,
   message,
+  price,
   copyStatus,
   onOpen,
   onClose,
@@ -47,9 +49,12 @@ export function StickyMobileCTA({
   return (
     <>
       <div className={styles.bar}>
-        <button className={styles.cta} type="button" onClick={onOpen}>
-          Обсудить заказ
-        </button>
+        <div className={styles.barInner}>
+          <p className={styles.price}>{price.toLocaleString("ru-RU")} ₽</p>
+          <button className={styles.cta} type="button" onClick={onOpen}>
+            {copyStatus ? "✓ Заявка отправлена" : "Обсудить заказ"}
+          </button>
+        </div>
       </div>
 
       {isOpen ? (

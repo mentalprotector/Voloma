@@ -27,13 +27,13 @@ export function AboutSection() {
               <span className={styles.factLabel}>спокойный стиль</span>
             </div>
           </div>
-          <ul className={styles.list}>
+          <div className={styles.list}>
             {siteContent.about.points.map((point) => (
-              <li className={styles.point} key={point}>
+              <p className={styles.point} key={point}>
                 {point}
-              </li>
+              </p>
             ))}
-          </ul>
+          </div>
         </div>
         <div className={styles.visuals}>
           <div className={styles.imageCard}>

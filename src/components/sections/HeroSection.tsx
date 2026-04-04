@@ -1,6 +1,4 @@
-"use client";
-
-import { OverlayCard } from "./OverlayCard";
+import { Button } from "../ui/Button";
 import styles from "./hero-section.module.css";
 
 export function HeroSection() {
@@ -25,24 +23,13 @@ export function HeroSection() {
             </picture>
           </div>
 
-          <div className={styles.tone} aria-hidden="true" />
-
-          <div className={styles.overlayCard}>
-            <OverlayCard
-              title="Соберите своё кашпо"
-              subtitle="Выберите форму, размер и цвет"
-              priceLabel="от 6900 ₽"
-              ctaLabel="Собрать"
-              ctaHref="/configurator"
-            />
+          <div className={styles.copy}>
+            <p className={styles.subtitle}>Форма, размер и оттенок под ваше пространство.</p>
+            <h1 className={styles.title}>Деревянные кашпо для интерьера</h1>
+            <Button href="/configurator" size="lg">
+              Собрать своё кашпо
+            </Button>
           </div>
-
-          <a className={styles.scrollHint} href="#details">
-            <span className={styles.scrollArrow} aria-hidden="true">
-              ↓
-            </span>
-            <span>Подробнее</span>
-          </a>
         </div>
       </div>
     </section>

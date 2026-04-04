@@ -72,7 +72,7 @@
 .group {
   scroll-margin-top: 0.75rem;
   border-radius: 4px;
-  background: var(--color-bg);
+  background: transparent;
   border: 1px solid var(--color-border);
   overflow: clip;
   position: relative;
@@ -173,7 +173,7 @@
 .colorButton {
   width: 100%;
   border: 1px solid var(--color-border);
-  background: var(--color-bg);
+  background: transparent;
   color: var(--color-text);
   transition:
     border-color 180ms ease,
@@ -350,7 +350,8 @@
 
   .mediaColumn {
     position: sticky;
-    top: 1.5rem;
+    top: 0;
+    align-self: start;
   }
 
   .controlsColumn {
@@ -393,8 +394,8 @@
   }
 
   .group {
-    border-radius: 10px;
-    background: rgba(250, 248, 245, 0.7);
+    border-radius: 8px;
+    background: transparent;
   }
 
   .groupToggle {
@@ -445,7 +446,7 @@
   .qualityCard,
   .radioButton {
     min-height: 5rem;
-    border-radius: 8px;
+    border-radius: 6px;
   }
 
   .shapeButton:hover,
@@ -486,8 +487,8 @@
     gap: 0.7rem;
     padding: 1rem 0.75rem;
     border: 1px solid var(--color-border);
-    border-radius: 8px;
-    background: var(--color-bg);
+    border-radius: 6px;
+    background: transparent;
   }
 
   .swatch {
@@ -501,8 +502,8 @@
     margin-top: 0.5rem;
     padding: 1.25rem;
     border: 1px solid var(--color-border);
-    border-radius: 10px;
-    background: linear-gradient(180deg, rgba(245, 238, 230, 0.8) 0%, rgba(250, 248, 245, 0.96) 100%);
+    border-radius: 8px;
+    background: transparent;
   }
 
   .desktopCtaCaption {

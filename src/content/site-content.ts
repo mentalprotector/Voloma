@@ -29,9 +29,9 @@ export const siteContent = {
       description:
         "Спокойная фактура и плотная древесина, отобранная для аккуратного внешнего вида.",
       image: {
-        src: "/images/features/voloma-feature.jpg",
-        alt: "Деревянное кашпо Voloma в общем ракурсе",
-        position: "center 38%",
+        src: "/images/features/custom/feature-01.jpg",
+        alt: "Деревянное кашпо Voloma из фотоархива бренда",
+        position: "center 48%",
         tone: "sand",
       },
     },
@@ -39,9 +39,9 @@ export const siteContent = {
       title: "Живая текстура",
       description: "Каждое изделие сохраняет естественный рисунок дерева.",
       image: {
-        src: "/images/hero/voloma-hero-edge.jpg",
-        alt: "Крупный план текстуры дерева на кашпо Voloma",
-        position: "center center",
+        src: "/images/features/custom/feature-02.jpg",
+        alt: "Фактура дерева и поверхность кашпо Voloma крупным планом",
+        position: "center 54%",
         tone: "linen",
       },
     },
@@ -49,9 +49,7 @@ export const siteContent = {
       title: "Аккуратная сборка",
       description: "Точные соединения и ровная геометрия.",
       image: {
-        src: "/images/hero/voloma-hero.jpg",
-        alt: "Деталь угла и аккуратных соединений деревянного кашпо",
-        position: "center 58%",
+        alt: "Блок для фото аккуратной сборки; исходный кадр пока в формате NEF",
         tone: "clay",
       },
     },
@@ -69,7 +67,9 @@ export const siteContent = {
       title: "Под ваш размер и цвет",
       description: "Выбирайте форму, размер и оттенок под своё пространство.",
       image: {
-        alt: "Несколько вариантов деревянных кашпо Voloma рядом",
+        src: "/images/features/custom/feature-05.jpg",
+        alt: "Разные варианты деревянных кашпо Voloma на фото",
+        position: "center 52%",
         tone: "forest",
       },
     },

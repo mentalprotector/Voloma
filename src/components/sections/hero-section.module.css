@@ -11,11 +11,10 @@
   position: relative;
   min-height: calc(100svh - 3.25rem - var(--safe-top));
   min-height: calc(100dvh - 3.25rem - var(--safe-top));
-  padding: 0.55rem 0.7rem 0.55rem;
+  padding: 0;
   border-radius: 0;
   overflow: hidden;
-  background:
-    linear-gradient(180deg, #fbf6ef 0%, #f0e4d5 100%);
+  background: var(--color-bg);
   display: grid;
   align-items: stretch;
 }
@@ -38,127 +37,53 @@
   height: 100%;
   object-fit: cover;
   object-position: center 46%;
-  filter: saturate(0.97) contrast(1.01);
-  transition: filter 260ms ease;
 }
 
-.tone {
+.copy {
   position: absolute;
-  inset: 0;
-  z-index: 2;
-  background:
-    linear-gradient(180deg, rgba(251, 247, 241, 0.82) 0%, rgba(251, 247, 241, 0.18) 17%, rgba(251, 247, 241, 0) 34%),
-    linear-gradient(180deg, rgba(37, 24, 12, 0) 52%, rgba(37, 24, 12, 0.08) 74%, rgba(37, 24, 12, 0.16) 100%);
-}
-
-.tone::after {
-  content: "";
-  position: absolute;
-  inset: auto auto 0 0;
-  width: min(42vw, 18rem);
-  aspect-ratio: 1;
-  border-radius: 999px;
-  background: radial-gradient(circle, rgba(255, 244, 227, 0.32) 0%, rgba(255, 244, 227, 0) 72%);
-  transform: translate(-18%, 22%);
-}
-
-.overlayCard {
-  position: absolute;
-  left: 0.65rem;
-  right: 0.65rem;
-  bottom: calc(2.15rem + var(--safe-bottom));
+  left: 1rem;
+  right: 1rem;
+  bottom: calc(1.5rem + var(--safe-bottom));
   z-index: 5;
-  animation: hero-rise 540ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  display: grid;
+  gap: 0.75rem;
+  max-width: 18rem;
+  padding: 1.25rem;
+  background: rgba(250, 248, 245, 0.92);
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
 }
 
-.scrollHint {
-  position: absolute;
-  left: 50%;
-  bottom: max(0.18rem, calc(var(--safe-bottom) + 0.1rem));
-  z-index: 5;
-  transform: translateX(-50%);
-  display: inline-flex;
-  align-items: center;
-  gap: 0.45rem;
-  padding: 0.35rem 0.7rem;
-  border-radius: 999px;
-  color: rgba(52, 38, 26, 0.74);
-  font-size: 0.94rem;
-  background: rgba(255, 250, 242, 0.74);
-  backdrop-filter: blur(12px);
-  transition:
-    transform 180ms ease,
-    background-color 180ms ease,
-    color 180ms ease;
+.subtitle {
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  letter-spacing: 0.05em;
+  color: var(--color-text-secondary);
 }
 
-.scrollHint:hover {
-  transform: translateX(-50%) translateY(-1px);
-  background: rgba(255, 250, 242, 0.88);
-}
-
-.scrollHint:focus-visible {
-  outline: 2px solid rgba(52, 38, 26, 0.28);
-  outline-offset: 2px;
-}
-
-.scrollArrow {
-  display: inline-flex;
-  font-size: 1.05rem;
+.title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 2.25rem;
+  font-weight: 400;
   line-height: 1;
-  animation: hero-bounce 2.2s ease-in-out infinite;
-}
-
-@media (min-width: 768px) {
-  .shell {
-    position: relative;
-  }
-
-  .shell::before,
-  .shell::after {
-    content: "";
-    position: absolute;
-    z-index: 0;
-    pointer-events: none;
-    filter: blur(18px);
-  }
-
-  .shell::before {
-    top: 4rem;
-    left: 2rem;
-    width: 11rem;
-    height: 11rem;
-    background: radial-gradient(circle, rgba(217, 188, 143, 0.22), transparent 70%);
-  }
-
-  .shell::after {
-    right: 6%;
-    bottom: 4rem;
-    width: 14rem;
-    height: 14rem;
-    background: radial-gradient(circle, rgba(255, 247, 236, 0.28), transparent 70%);
-  }
+  color: var(--color-text);
 }
 
 @media (min-width: 768px) {
   .hero {
     min-height: min(calc(100svh - 5rem), 56rem);
     min-height: min(calc(100dvh - 5rem), 56rem);
-    padding: 0.7rem 1.1rem 0.65rem;
   }
 
   .image {
     object-position: center 54%;
   }
 
-  .overlayCard {
-    left: 1.1rem;
-    right: 1.1rem;
-    bottom: 3.2rem;
-  }
-
-  .scrollHint {
-    bottom: 0.45rem;
+  .copy {
+    left: 1.5rem;
+    bottom: 1.5rem;
   }
 }
 
@@ -172,33 +97,7 @@
     object-position: center 52%;
   }
 
-  .overlayCard {
-    left: auto;
-    width: min(33rem, calc(100% - 2.2rem));
-  }
-}
-
-@keyframes hero-bounce {
-  0%,
-  100% {
-    transform: translateY(0);
-    opacity: 0.78;
-  }
-
-  50% {
-    transform: translateY(0.22rem);
-    opacity: 1;
-  }
-}
-
-@keyframes hero-rise {
-  from {
-    opacity: 0;
-    transform: translateY(16px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
+  .copy {
+    left: 2rem;
   }
 }

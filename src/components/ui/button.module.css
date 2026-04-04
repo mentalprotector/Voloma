@@ -3,89 +3,55 @@
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  position: relative;
-  overflow: hidden;
-  border-radius: 999px;
+  border-radius: 2px;
   border: 1px solid transparent;
-  font-weight: 600;
+  font-weight: 500;
   line-height: 1;
-  transition:
-    transform 160ms ease,
-    background-color 160ms ease,
-    color 160ms ease,
-    border-color 160ms ease,
-    box-shadow 160ms ease;
-}
-
-.button::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(120deg, transparent 20%, rgba(255, 255, 255, 0.24) 50%, transparent 80%);
-  transform: translateX(-120%);
-  transition: transform 480ms ease;
-  pointer-events: none;
 }
 
 .button:focus-visible {
-  outline: 2px solid var(--color-accent-soft);
-  outline-offset: 3px;
-}
-
-.button:hover {
-  transform: translateY(-1px);
-}
-
-.button:hover::before {
-  transform: translateX(120%);
-}
-
-.button:active {
-  transform: translateY(0);
+  outline-offset: 2px;
 }
 
 .md {
   min-height: 3rem;
-  padding: 0 1.15rem;
-  font-size: 0.96rem;
+  padding: 0.9375rem 1.5rem;
+  font-size: 0.9375rem;
+  letter-spacing: 0.03em;
 }
 
 .lg {
-  min-height: 3.35rem;
-  padding: 0 1.4rem;
-  font-size: 1rem;
+  min-height: 3rem;
+  padding: 0.9375rem 1.5rem;
+  font-size: 0.9375rem;
+  letter-spacing: 0.03em;
 }
 
 .primary {
-  background: linear-gradient(180deg, #5f412b 0%, var(--color-ink) 100%);
-  color: var(--color-paper);
-  box-shadow:
-    0 16px 40px rgba(48, 35, 22, 0.18),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  background: var(--color-accent);
+  color: var(--color-bg);
 }
 
 .primary:hover {
-  background: linear-gradient(180deg, #6e4b31 0%, var(--color-ink-strong) 100%);
+  background: var(--color-accent-hover);
 }
 
 .secondary {
-  background: rgba(255, 250, 242, 0.82);
-  border-color: rgba(115, 87, 56, 0.15);
-  color: var(--color-ink);
-  backdrop-filter: blur(10px);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.64);
+  background: var(--color-bg);
+  border-color: var(--color-border);
+  color: var(--color-text);
 }
 
 .secondary:hover {
-  background: rgba(255, 250, 242, 0.92);
+  background: var(--color-surface);
 }
 
 .ghost {
-  color: var(--color-ink);
+  color: var(--color-text);
   background: transparent;
-  border-color: rgba(115, 87, 56, 0.14);
+  border-color: var(--color-border);
 }
 
 .ghost:hover {
-  background: rgba(255, 250, 242, 0.55);
+  background: var(--color-surface);
 }
