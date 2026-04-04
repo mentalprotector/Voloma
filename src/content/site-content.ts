@@ -49,7 +49,9 @@ export const siteContent = {
       title: "Аккуратная сборка",
       description: "Точные соединения и ровная геометрия.",
       image: {
-        alt: "Блок для фото аккуратной сборки; исходный кадр пока в формате NEF",
+        src: "/images/features/custom/feature-03.jpg",
+        alt: "Аккуратная сборка деревянного кашпо Voloma",
+        position: "center 54%",
         tone: "clay",
       },
     },
