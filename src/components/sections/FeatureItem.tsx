@@ -27,6 +27,7 @@ export function FeatureItem({ description, image, index, title }: FeatureItemPro
 
   return (
     <article
+      id={`feature-${String(index + 1).padStart(2, "0")}`}
       className={[styles.item, isReversed ? styles.reversed : ""].filter(Boolean).join(" ")}
     >
       <div className={[styles.visual, toneClassName].join(" ")}>

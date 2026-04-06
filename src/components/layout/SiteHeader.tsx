@@ -50,11 +50,19 @@ export function SiteHeader() {
       >
         <Link className={styles.brand} href="/">
           <Image
-            src="/voloma-logo.svg"
+            src="/voloma-symbol.svg"
             alt="Voloma"
-            width={220}
-            height={80}
-            className={styles.brandLogo}
+            width={386}
+            height={411}
+            className={styles.brandSymbol}
+            priority
+          />
+          <Image
+            src="/voloma-wordmark.svg"
+            alt="Волома Вуд"
+            width={802}
+            height={132}
+            className={styles.brandWordmark}
             priority
           />
         </Link>
@@ -63,7 +71,7 @@ export function SiteHeader() {
           <nav className={styles.actions} aria-label="Основная навигация">
             <a
               className={styles.aboutLink}
-              href="#about"
+              href="#feature-01"
               onClick={() => trackEvent("hero_cta_click", { source: "header_about" })}
             >
               О кашпо

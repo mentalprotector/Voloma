@@ -7,10 +7,10 @@
 
 .selection {
   margin: 0;
-  font-size: 0.82rem;
+  font-size: 0.95rem;
   font-weight: 400;
-  line-height: 1.55;
-  color: var(--color-text-muted);
+  line-height: 1.45;
+  color: var(--color-text-secondary);
 }
 
 @keyframes summaryFade {
@@ -27,7 +27,7 @@
 
 @media (min-width: 1024px) {
   .selection {
-    font-size: 0.95rem;
+    font-size: 1rem;
     max-width: 42ch;
   }
 }

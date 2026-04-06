@@ -10,6 +10,8 @@ interface StickyMobileCTAProps {
   isOpen: boolean;
   message: string;
   price: number;
+  productName: string;
+  selectionLine: string;
   copyStatus: string | null;
   onOpen: () => void;
   onClose: () => void;
@@ -20,6 +22,8 @@ export function StickyMobileCTA({
   isOpen,
   message,
   price,
+  productName,
+  selectionLine,
   copyStatus,
   onOpen,
   onClose,
@@ -50,6 +54,10 @@ export function StickyMobileCTA({
     <>
       <div className={styles.bar}>
         <div className={styles.barInner}>
+          <div className={styles.summary}>
+            <p className={styles.name}>{productName}</p>
+            <p className={styles.selection}>{selectionLine}</p>
+          </div>
           <p className={styles.price}>{price.toLocaleString("ru-RU")} ₽</p>
           <button className={styles.cta} type="button" onClick={onOpen}>
             {copyStatus ? "✓ Заявка отправлена" : "Обсудить заказ"}

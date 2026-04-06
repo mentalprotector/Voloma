@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 
 import { Configurator } from "@/components/configurator/Configurator";
-import { SectionContainer } from "@/components/ui/SectionContainer";
 
 import styles from "./page.module.css";
 
@@ -18,8 +17,10 @@ export const metadata: Metadata = {
 
 export default function ConfiguratorPage() {
   return (
-    <SectionContainer className={styles.section}>
-      <Configurator />
-    </SectionContainer>
+    <section className={styles.section}>
+      <div className={styles.inner}>
+        <Configurator />
+      </div>
+    </section>
   );
 }

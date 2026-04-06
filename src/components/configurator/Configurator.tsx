@@ -51,6 +51,8 @@ const messengerTargets: Record<MessengerKey, string> = {
   max: "https://max.ru/",
 };
 
+const orderedSteps: ConfigStep[] = ["shape", "size", "color", "quality", "wheels"];
+
 function getSizeDimensions(variants: ProductVariant[], shape: Shape, size: Size) {
   const variant = variants.find((item) => item.shape === shape && item.size === size);
 
@@ -69,10 +71,10 @@ function buildMessage(selection: {
   wheels: WheelsOption;
 }) {
   return `Здравствуйте!
-Хочу кашпо:
-${shapeLabels[selection.shape]}, ${sizeLabels[selection.size]}, ${colorLabels[
-    selection.color
-  ]}, ${qualityLabels[selection.quality]}, ${wheelsLabels[selection.wheels]}`;
+Хочу заказать кашпо Voloma:
+${shapeLabels[selection.shape]}, ${sizeLabels[selection.size]}, ${colorLabels[selection.color]}, ${
+    qualityLabels[selection.quality]
+  }, ${wheelsLabels[selection.wheels]}`;
 }
 
 async function copyToClipboard(text: string) {
@@ -95,6 +97,7 @@ export function Configurator() {
   const [sheetOpen, setSheetOpen] = useState(false);
   const [copyStatus, setCopyStatus] = useState<string | null>(null);
   const hasMountedRef = useRef(false);
+  const controlsViewportRef = useRef<HTMLDivElement | null>(null);
   const stepRefs = useRef<Record<ConfigStep, HTMLDivElement | null>>({
     shape: null,
     size: null,
@@ -143,6 +146,10 @@ export function Configurator() {
       return;
     }
 
+    if (window.matchMedia("(min-width: 1024px)").matches) {
+      return;
+    }
+
     const element = stepRefs.current[activeStep];
 
     if (!element) {
@@ -150,6 +157,20 @@ export function Configurator() {
     }
 
     window.setTimeout(() => {
+      const container = controlsViewportRef.current;
+
+      if (container) {
+        const containerTop = container.getBoundingClientRect().top;
+        const elementTop = element.getBoundingClientRect().top;
+        const offset = elementTop - containerTop + container.scrollTop - 10;
+
+        container.scrollTo({
+          top: Math.max(offset, 0),
+          behavior: "smooth",
+        });
+        return;
+      }
+
       element.scrollIntoView({
         behavior: "smooth",
         block: "start",
@@ -159,6 +180,12 @@ export function Configurator() {
 
   function advanceToStep(step: ConfigStep) {
     setActiveStep(step);
+  }
+
+  function advanceToNextStep(currentStep: ConfigStep) {
+    const currentIndex = orderedSteps.indexOf(currentStep);
+    const nextStep = orderedSteps[currentIndex + 1];
+    setActiveStep(nextStep ?? "shape");
   }
 
   function getStepValue(step: ConfigStep) {
@@ -198,15 +225,7 @@ export function Configurator() {
       }),
     );
 
-    if (key === "shape") {
-      advanceToStep("size");
-    } else if (key === "size") {
-      advanceToStep("color");
-    } else if (key === "color") {
-      advanceToStep("quality");
-    } else {
-      advanceToStep("wheels");
-    }
+    advanceToNextStep(key);
   }
 
   function completeWheels(value: WheelsOption) {
@@ -232,264 +251,290 @@ export function Configurator() {
     <>
       <div className={styles.layout}>
         <div className={styles.mediaColumn}>
-          <ImageGallery
-            key={resolvedMatch.matchedVariant?.slug ?? resolvedMatch.placeholder.slug}
-            images={resolvedMatch.images}
-            placeholderTitle={resolvedMatch.placeholder.title}
-            state={resolvedMatch.galleryState}
-            note={resolvedMatch.galleryState === "fallback" ? "Показан близкий вариант" : null}
-          />
+          <div className={styles.mediaSticky}>
+            <ImageGallery
+              key={resolvedMatch.matchedVariant?.slug ?? resolvedMatch.placeholder.slug}
+              images={resolvedMatch.images}
+              placeholderTitle={resolvedMatch.placeholder.title}
+              state={resolvedMatch.galleryState}
+              note={resolvedMatch.galleryState === "fallback" ? "Показан близкий вариант" : null}
+            />
+          </div>
         </div>
         <div className={styles.controlsColumn}>
-          <section className={styles.headerBlock} aria-label="Информация о товаре">
-            <div className={styles.summaryRow}>
-              <div className={styles.titleBlock}>
-                <p className={styles.kicker}>Voloma Configurator</p>
-                <h1 className={styles.productName}>Кашпо Voloma</h1>
-              </div>
-              <p className={styles.price}>{livePrice.toLocaleString("ru-RU")} ₽</p>
-            </div>
-            <ProductSummary key={selectionKey} selectionLine={selectionLine} />
-          </section>
-          <section className={styles.selectors} aria-label="Выбор параметров кашпо">
-            <div
-              className={[styles.group, activeStep === "shape" ? styles.groupOpen : ""].filter(Boolean).join(" ")}
-              ref={(element) => {
-                stepRefs.current.shape = element;
-              }}
-            >
-              <button
-                aria-controls="config-step-shape"
-                aria-expanded={activeStep === "shape"}
-                className={styles.groupToggle}
-                type="button"
-                onClick={() => advanceToStep("shape")}
-              >
-                <span className={styles.groupTitle}>1. Форма</span>
-                <span className={styles.groupValue}>
-                  {activeStep === "shape" ? getStepValue("shape") : `✓ ${getStepValue("shape")}`}
-                </span>
-              </button>
-              <div className={styles.groupPanel} id="config-step-shape">
-                <div className={styles.shapeGrid}>
-                  {SHAPES.map((shape) => (
-                    <button
-                      key={shape}
-                      aria-pressed={selection.shape === shape}
-                      disabled={!availableShapes.includes(shape)}
-                      className={[
-                        styles.shapeButton,
-                        selection.shape === shape ? styles.shapeButtonActive : "",
-                        !availableShapes.includes(shape) ? styles.optionDisabled : "",
-                      ]
-                        .filter(Boolean)
-                        .join(" ")}
-                      type="button"
-                      onClick={() => updateSelection("shape", shape)}
-                    >
-                      <span className={styles.shapeLabel}>{shapeLabels[shape]}</span>
-                      <span className={styles.shapeMeta}>Форма</span>
-                    </button>
-                  ))}
+          <div className={styles.controlsViewport} ref={controlsViewportRef}>
+            <section className={styles.headerBlock} aria-label="Информация о товаре">
+              <div className={styles.summaryRow}>
+                <div className={styles.titleBlock}>
+                  <p className={styles.kicker}>Voloma</p>
+                  <h1 className={styles.productName}>Кашпо Voloma</h1>
                 </div>
+                <p className={styles.price}>{livePrice.toLocaleString("ru-RU")} ₽</p>
               </div>
-            </div>
+              <ProductSummary key={selectionKey} selectionLine={selectionLine} />
+            </section>
 
-            <div
-              className={[styles.group, activeStep === "size" ? styles.groupOpen : ""].filter(Boolean).join(" ")}
-              ref={(element) => {
-                stepRefs.current.size = element;
-              }}
-            >
-              <button
-                aria-controls="config-step-size"
-                aria-expanded={activeStep === "size"}
-                className={styles.groupToggle}
-                type="button"
-                onClick={() => advanceToStep("size")}
+            <section className={styles.selectors} aria-label="Выбор параметров кашпо">
+              <div
+                className={[styles.group, activeStep === "shape" ? styles.groupOpen : ""].filter(Boolean).join(" ")}
+                ref={(element) => {
+                  stepRefs.current.shape = element;
+                }}
               >
-                <span className={styles.groupTitle}>2. Размер</span>
-                <span className={styles.groupValue}>
-                  {activeStep === "size" ? getStepValue("size") : `✓ ${getStepValue("size")}`}
-                </span>
-              </button>
-              <div className={styles.groupPanel} id="config-step-size">
-                <div className={styles.sizeGrid}>
-                  {SIZES.map((size) => {
-                    const isAvailable = availableSizes.includes(size);
-
-                    return (
+                <button
+                  aria-controls="config-step-shape"
+                  aria-expanded={activeStep === "shape"}
+                  className={styles.groupToggle}
+                  type="button"
+                  onClick={() => advanceToStep("shape")}
+                >
+                  <span className={styles.groupHeading}>
+                    <span className={styles.groupTitle}>1. Форма</span>
+                    <span className={styles.groupValue}>
+                      {activeStep === "shape" ? getStepValue("shape") : `✓ ${getStepValue("shape")}`}
+                    </span>
+                  </span>
+                </button>
+                <div className={styles.groupPanel} id="config-step-shape">
+                  <div className={styles.shapeGrid}>
+                    {SHAPES.map((shape) => (
                       <button
-                        key={size}
-                        aria-pressed={selection.size === size}
+                        key={shape}
+                        aria-pressed={selection.shape === shape}
+                        disabled={!availableShapes.includes(shape)}
                         className={[
-                          styles.sizeChip,
-                          selection.size === size ? styles.sizeChipActive : "",
-                          !isAvailable ? styles.optionDisabled : "",
+                          styles.shapeButton,
+                          styles[`shapeButton${shape}`],
+                          selection.shape === shape ? styles.shapeButtonActive : "",
+                          !availableShapes.includes(shape) ? styles.optionDisabled : "",
                         ]
                           .filter(Boolean)
                           .join(" ")}
-                        disabled={!isAvailable}
                         type="button"
-                        onClick={() => updateSelection("size", size)}
+                        onClick={() => updateSelection("shape", shape)}
                       >
-                        <span className={styles.sizeLabel}>{sizeLabels[size]}</span>
-                        <span className={styles.sizeMeta}>
-                          {isAvailable
-                            ? getSizeDimensions(productVariants, selection.shape, size)
-                            : "Нет в этой форме"}
+                        <span className={styles.shapeIcon} aria-hidden="true" />
+                        <span className={styles.shapeLabel}>{shapeLabels[shape]}</span>
+                        <span className={styles.shapeMeta}>Форма</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              <div
+                className={[styles.group, activeStep === "size" ? styles.groupOpen : ""].filter(Boolean).join(" ")}
+                ref={(element) => {
+                  stepRefs.current.size = element;
+                }}
+              >
+                <button
+                  aria-controls="config-step-size"
+                  aria-expanded={activeStep === "size"}
+                  className={styles.groupToggle}
+                  type="button"
+                  onClick={() => advanceToStep("size")}
+                >
+                  <span className={styles.groupHeading}>
+                    <span className={styles.groupTitle}>2. Размер</span>
+                    <span className={styles.groupValue}>
+                      {activeStep === "size" ? getStepValue("size") : `✓ ${getStepValue("size")}`}
+                    </span>
+                  </span>
+                </button>
+                <div className={styles.groupPanel} id="config-step-size">
+                  <div className={styles.sizeGrid}>
+                    {SIZES.map((size) => {
+                      const isAvailable = availableSizes.includes(size);
+
+                      return (
+                        <button
+                          key={size}
+                          aria-pressed={selection.size === size}
+                          className={[
+                            styles.sizeChip,
+                            selection.size === size ? styles.sizeChipActive : "",
+                            !isAvailable ? styles.optionDisabled : "",
+                          ]
+                            .filter(Boolean)
+                            .join(" ")}
+                          disabled={!isAvailable}
+                          type="button"
+                          onClick={() => updateSelection("size", size)}
+                        >
+                          <span className={styles.sizeLabel}>{sizeLabels[size]}</span>
+                          <span className={styles.sizeMeta}>
+                            {isAvailable
+                              ? getSizeDimensions(productVariants, selection.shape, size)
+                              : "Нет в этой форме"}
+                          </span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
+
+              <div
+                className={[styles.group, activeStep === "color" ? styles.groupOpen : ""].filter(Boolean).join(" ")}
+                ref={(element) => {
+                  stepRefs.current.color = element;
+                }}
+              >
+                <button
+                  aria-controls="config-step-color"
+                  aria-expanded={activeStep === "color"}
+                  className={styles.groupToggle}
+                  type="button"
+                  onClick={() => advanceToStep("color")}
+                >
+                  <span className={styles.groupHeading}>
+                    <span className={styles.groupTitle}>3. Цвет</span>
+                    <span className={styles.groupValue}>
+                      {activeStep === "color" ? getStepValue("color") : `✓ ${getStepValue("color")}`}
+                    </span>
+                  </span>
+                </button>
+                <div className={styles.groupPanel} id="config-step-color">
+                  <div className={styles.colorGrid}>
+                    {COLORS.map((color) => (
+                      <button
+                        key={color}
+                        aria-label={`Цвет: ${colorLabels[color]}`}
+                        aria-pressed={selection.color === color}
+                        className={[
+                          styles.colorButton,
+                          selection.color === color ? styles.colorButtonActive : "",
+                          !availableColors.includes(color) ? styles.optionDisabled : "",
+                        ]
+                          .filter(Boolean)
+                          .join(" ")}
+                        disabled={!availableColors.includes(color)}
+                        type="button"
+                        onClick={() => updateSelection("color", color)}
+                      >
+                        <span
+                          className={styles.swatch}
+                          style={{ background: colorSwatchStyles[color] }}
+                          aria-hidden="true"
+                        />
+                        <span className={styles.colorName}>{colorLabels[color]}</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              <div
+                className={[styles.group, activeStep === "quality" ? styles.groupOpen : ""].filter(Boolean).join(" ")}
+                ref={(element) => {
+                  stepRefs.current.quality = element;
+                }}
+              >
+                <button
+                  aria-controls="config-step-quality"
+                  aria-expanded={activeStep === "quality"}
+                  className={styles.groupToggle}
+                  type="button"
+                  onClick={() => advanceToStep("quality")}
+                >
+                  <span className={styles.groupHeading}>
+                    <span className={styles.groupTitle}>4. Качество</span>
+                    <span className={styles.groupValue}>
+                      {activeStep === "quality" ? getStepValue("quality") : `✓ ${getStepValue("quality")}`}
+                    </span>
+                  </span>
+                </button>
+                <div className={styles.groupPanel} id="config-step-quality">
+                  <div className={styles.qualityGrid}>
+                    {QUALITIES.map((quality) => (
+                      <button
+                        key={quality}
+                        aria-pressed={selection.quality === quality}
+                        className={[
+                          styles.qualityCard,
+                          selection.quality === quality ? styles.qualityCardActive : "",
+                          !availableQualities.includes(quality) ? styles.optionDisabled : "",
+                        ]
+                          .filter(Boolean)
+                          .join(" ")}
+                        disabled={!availableQualities.includes(quality)}
+                        type="button"
+                        onClick={() => updateSelection("quality", quality)}
+                      >
+                        <span className={styles.qualityTitle}>{qualityLabels[quality]}</span>
+                        <span className={styles.qualityMeta}>
+                          {quality === "premium" ? "Отбор по фактуре и тону" : "Аккуратный базовый отбор"}
                         </span>
                       </button>
-                    );
-                  })}
+                    ))}
+                  </div>
                 </div>
               </div>
-            </div>
 
-            <div
-              className={[styles.group, activeStep === "color" ? styles.groupOpen : ""].filter(Boolean).join(" ")}
-              ref={(element) => {
-                stepRefs.current.color = element;
-              }}
-            >
-              <button
-                aria-controls="config-step-color"
-                aria-expanded={activeStep === "color"}
-                className={styles.groupToggle}
-                type="button"
-                onClick={() => advanceToStep("color")}
+              <div
+                className={[styles.group, activeStep === "wheels" ? styles.groupOpen : ""].filter(Boolean).join(" ")}
+                ref={(element) => {
+                  stepRefs.current.wheels = element;
+                }}
               >
-                <span className={styles.groupTitle}>3. Цвет</span>
-                <span className={styles.groupValue}>
-                  {activeStep === "color" ? getStepValue("color") : `✓ ${getStepValue("color")}`}
-                </span>
-              </button>
-              <div className={styles.groupPanel} id="config-step-color">
-                <div className={styles.colorGrid}>
-                  {COLORS.map((color) => (
-                    <button
-                      key={color}
-                      aria-label={`Цвет: ${colorLabels[color]}`}
-                      aria-pressed={selection.color === color}
-                      className={[
-                        styles.colorButton,
-                        selection.color === color ? styles.colorButtonActive : "",
-                        !availableColors.includes(color) ? styles.optionDisabled : "",
-                      ]
-                        .filter(Boolean)
-                        .join(" ")}
-                      disabled={!availableColors.includes(color)}
-                      type="button"
-                      onClick={() => updateSelection("color", color)}
-                    >
-                      <span
-                        className={styles.swatch}
-                        style={{ background: colorSwatchStyles[color] }}
-                        aria-hidden="true"
-                      />
-                      <span className={styles.colorName}>{colorLabels[color]}</span>
-                    </button>
-                  ))}
+                <button
+                  aria-controls="config-step-wheels"
+                  aria-expanded={activeStep === "wheels"}
+                  className={styles.groupToggle}
+                  type="button"
+                  onClick={() => advanceToStep("wheels")}
+                >
+                  <span className={styles.groupHeading}>
+                    <span className={styles.groupTitle}>5. Колёсики</span>
+                    <span className={styles.groupValue}>
+                      {activeStep === "wheels" ? getStepValue("wheels") : `✓ ${getStepValue("wheels")}`}
+                    </span>
+                  </span>
+                </button>
+                <div className={styles.groupPanel} id="config-step-wheels">
+                  <div className={styles.radioGrid} role="radiogroup" aria-label="Колёсики">
+                    {(["without", "with"] as const).map((value) => (
+                      <button
+                        key={value}
+                        aria-checked={wheels === value}
+                        className={[styles.radioButton, wheels === value ? styles.radioButtonActive : ""]
+                          .filter(Boolean)
+                          .join(" ")}
+                        role="radio"
+                        type="button"
+                        onClick={() => completeWheels(value)}
+                      >
+                        <span>{wheelsLabels[value]}</span>
+                        <span className={styles.qualityMeta}>
+                          {value === "with" ? "Для лёгкого перемещения" : "Чистый минималистичный вид"}
+                        </span>
+                      </button>
+                    ))}
+                  </div>
                 </div>
               </div>
-            </div>
+            </section>
 
-            <div
-              className={[styles.group, activeStep === "quality" ? styles.groupOpen : ""].filter(Boolean).join(" ")}
-              ref={(element) => {
-                stepRefs.current.quality = element;
-              }}
-            >
-              <button
-                aria-controls="config-step-quality"
-                aria-expanded={activeStep === "quality"}
-                className={styles.groupToggle}
-                type="button"
-                onClick={() => advanceToStep("quality")}
-              >
-                <span className={styles.groupTitle}>4. Качество</span>
-                <span className={styles.groupValue}>
-                  {activeStep === "quality" ? getStepValue("quality") : `✓ ${getStepValue("quality")}`}
-                </span>
-              </button>
-              <div className={styles.groupPanel} id="config-step-quality">
-                <div className={styles.qualityGrid}>
-                  {QUALITIES.map((quality) => (
-                    <button
-                      key={quality}
-                      aria-pressed={selection.quality === quality}
-                      className={[
-                        styles.qualityCard,
-                        selection.quality === quality ? styles.qualityCardActive : "",
-                        !availableQualities.includes(quality) ? styles.optionDisabled : "",
-                      ]
-                        .filter(Boolean)
-                        .join(" ")}
-                      disabled={!availableQualities.includes(quality)}
-                      type="button"
-                      onClick={() => updateSelection("quality", quality)}
-                    >
-                      <span className={styles.qualityTitle}>{qualityLabels[quality]}</span>
-                      <span className={styles.qualityMeta}>Визуальный отбор</span>
-                    </button>
-                  ))}
-                </div>
+            <div className={styles.mobileBottomSpacer} aria-hidden="true" />
+
+            <section className={styles.desktopCta} aria-label="Оформление заказа">
+              <div className={styles.desktopCtaMeta}>
+                <p className={styles.desktopCtaPrice}>{livePrice.toLocaleString("ru-RU")} ₽</p>
+                <p className={styles.desktopCtaCaption}>Подготовим сообщение и откроем удобный мессенджер.</p>
               </div>
-            </div>
-
-            <div
-              className={[styles.group, activeStep === "wheels" ? styles.groupOpen : ""].filter(Boolean).join(" ")}
-              ref={(element) => {
-                stepRefs.current.wheels = element;
-              }}
-            >
-              <button
-                aria-controls="config-step-wheels"
-                aria-expanded={activeStep === "wheels"}
-                className={styles.groupToggle}
-                type="button"
-                onClick={() => advanceToStep("wheels")}
-              >
-                <span className={styles.groupTitle}>5. Колёсики</span>
-                <span className={styles.groupValue}>
-                  {activeStep === "wheels" ? getStepValue("wheels") : `✓ ${getStepValue("wheels")}`}
-                </span>
-              </button>
-              <div className={styles.groupPanel} id="config-step-wheels">
-                <div className={styles.radioGrid} role="radiogroup" aria-label="Колёсики">
-                  {(["without", "with"] as const).map((value) => (
-                    <button
-                      key={value}
-                      aria-checked={wheels === value}
-                      className={[styles.radioButton, wheels === value ? styles.radioButtonActive : ""]
-                        .filter(Boolean)
-                        .join(" ")}
-                      role="radio"
-                      type="button"
-                      onClick={() => completeWheels(value)}
-                    >
-                      <span>{wheelsLabels[value]}</span>
-                      <span className={styles.qualityMeta}>Опция</span>
-                    </button>
-                  ))}
-                </div>
+              <div className={styles.desktopCtaActions}>
+                {copyStatus ? (
+                  <p className={styles.desktopCopyStatus} aria-live="polite">
+                    {copyStatus}
+                  </p>
+                ) : null}
+                <button className={styles.desktopCtaButton} type="button" onClick={() => setSheetOpen(true)}>
+                  Обсудить заказ
+                </button>
               </div>
-            </div>
-          </section>
-
-          <section className={styles.desktopCta} aria-label="Оформление заказа">
-            <p className={styles.desktopCtaCaption}>
-              Подготовим сообщение с выбранной конфигурацией и откроем удобный мессенджер.
-            </p>
-            {copyStatus ? (
-              <p className={styles.desktopCopyStatus} aria-live="polite">
-                {copyStatus}
-              </p>
-            ) : null}
-            <button className={styles.desktopCtaButton} type="button" onClick={() => setSheetOpen(true)}>
-              Обсудить заказ
-            </button>
-          </section>
+            </section>
+          </div>
         </div>
       </div>
 
@@ -498,6 +543,8 @@ export function Configurator() {
         isOpen={sheetOpen}
         message={orderMessage}
         price={livePrice}
+        productName="Кашпо Voloma"
+        selectionLine={selectionLine}
         onClose={() => setSheetOpen(false)}
         onMessengerClick={openMessenger}
         onOpen={() => setSheetOpen(true)}

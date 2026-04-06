@@ -1,18 +1,31 @@
 .section {
-  padding-top: 0.35rem;
-  padding-bottom: 6.5rem;
+  padding-top: 0.2rem;
+  padding-bottom: 6rem;
+}
+
+.inner {
+  width: min(100% - 1.5rem, 31rem);
+  margin: 0 auto;
 }
 
 @media (min-width: 768px) {
   .section {
-    padding-top: 1rem;
-    padding-bottom: 6.5rem;
+    padding-top: 0.7rem;
+    padding-bottom: 6rem;
+  }
+
+  .inner {
+    width: min(100% - 2.5rem, 44rem);
   }
 }
 
 @media (min-width: 1024px) {
   .section {
-    padding-top: 1rem;
-    padding-bottom: 1.25rem;
+    padding-top: 0.8rem;
+    padding-bottom: 0.8rem;
+  }
+
+  .inner {
+    width: min(100% - 3.5rem, 92rem);
   }
 }
