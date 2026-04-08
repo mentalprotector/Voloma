@@ -40,6 +40,20 @@ const finishDisplayLabels: Record<Finish, string> = {
   rosewood_stain: "Под палисандр +800 ₽",
 };
 
+/** Short finish labels for desktop swatches */
+const finishShortLabels: Record<Finish, string> = {
+  natural: "Натуральная",
+  oak_stain: "Дуб",
+  rosewood_stain: "Палисандр",
+};
+
+/** Price surcharge for finish options */
+const finishPrices: Record<Finish, string> = {
+  natural: "",
+  oak_stain: "+800 ₽",
+  rosewood_stain: "+800 ₽",
+};
+
 const finishHints: Record<Finish, string> = {
   natural: "Натуральная сосна без дополнительной обработки",
   oak_stain: "Декоративная пропитка под дуб. Доплата 800 ₽.",
@@ -167,7 +181,10 @@ export function ConfiguratorControls({
                 className={[styles.swatch, finish === item ? styles.swatchActive : ""].filter(Boolean).join(" ")}
                 style={{ background: finishSwatchStyles[item] }}
               />
-              <span className={styles.swatchLabel}>{finishDisplayLabels[item]}</span>
+              <span className={styles.swatchLabel}>
+                {finishShortLabels[item]}
+                {finishPrices[item] ? <span className={styles.swatchPrice}>{finishPrices[item]}</span> : null}
+              </span>
             </button>
           ))}
         </div>
