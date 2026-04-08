@@ -9,18 +9,28 @@ import styles from "./image-gallery.module.css";
 
 interface ImageGalleryProps {
   images: ProductImage[];
-  placeholderTitle: string;
+  placeholderTitle?: string;
+  placeholderSubtitle?: string;
   state: GalleryState;
   note: string | null;
+  imageSrc?: string | null;
 }
 
-export function ImageGallery({ images, placeholderTitle, state, note }: ImageGalleryProps) {
+export function ImageGallery({
+  images,
+  placeholderTitle,
+  placeholderSubtitle,
+  state,
+  note,
+  imageSrc,
+}: ImageGalleryProps) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isLoaded, setIsLoaded] = useState(false);
   const [touchStartX, setTouchStartX] = useState<number | null>(null);
   const resolvedIndex = images[activeIndex] ? activeIndex : 0;
   const activeImage = images[resolvedIndex];
   const showGallery = images.length > 0 && (state === "exact" || state === "fallback");
+  const hasDynamicImage = typeof imageSrc === "string" && imageSrc.length > 0;
 
   return (
     <section className={styles.gallery}>
@@ -66,14 +76,26 @@ export function ImageGallery({ images, placeholderTitle, state, note }: ImageGal
               {resolvedIndex + 1}/{images.length}
             </div>
           </>
+        ) : hasDynamicImage ? (
+          <>
+            {!isLoaded ? <div className={styles.skeleton} aria-hidden="true" /> : null}
+            <Image
+              alt={placeholderTitle ?? "Ваше кашпо"}
+              className={styles.image}
+              fill
+              priority
+              sizes="(max-width: 1023px) 100vw, 52rem"
+              src={imageSrc}
+              onLoad={() => setIsLoaded(true)}
+            />
+          </>
         ) : (
           <div className={styles.placeholder}>
             <div className={styles.placeholderIcon} aria-hidden="true" />
-            <p className={styles.placeholderTitle}>Фото скоро добавим</p>
-            <p className={styles.placeholderText}>
-              {state === "custom" ? "Сделаем под ваш вариант" : "Изготавливаем под заказ"}
-            </p>
-            <p className={styles.placeholderMeta}>{placeholderTitle}</p>
+            <p className={styles.placeholderTitle}>{placeholderTitle ?? "Ваше кашпо"}</p>
+            {placeholderSubtitle && (
+              <p className={styles.placeholderText}>{placeholderSubtitle}</p>
+            )}
           </div>
         )}
       </div>

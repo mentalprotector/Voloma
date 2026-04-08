@@ -1,31 +1,31 @@
 .section {
-  padding-top: 0.2rem;
-  padding-bottom: 6rem;
+  padding-top: 0.1rem;
+  padding-bottom: 0;
 }
 
 .inner {
-  width: min(100% - 1.5rem, 31rem);
+  width: 100%;
   margin: 0 auto;
 }
 
 @media (min-width: 768px) {
   .section {
-    padding-top: 0.7rem;
-    padding-bottom: 6rem;
+    padding-top: 0.25rem;
+    padding-bottom: 0.5rem;
   }
 
   .inner {
-    width: min(100% - 2.5rem, 44rem);
+    width: min(100% - 1rem, 92rem);
   }
 }
 
 @media (min-width: 1024px) {
   .section {
-    padding-top: 0.8rem;
-    padding-bottom: 0.8rem;
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
   }
 
   .inner {
-    width: min(100% - 3.5rem, 92rem);
+    width: min(100% - 2rem, 92rem);
   }
 }

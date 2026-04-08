@@ -52,6 +52,22 @@ function getGalleryState(matchType: MatchType, matchedVariant: ProductVariant | 
   return matchType === "exact" ? "exact" : "fallback";
 }
 
+/**
+ * Resolves the best matching product variant for a given selection
+ * and determines the appropriate gallery state.
+ *
+ * Matching strategies (in order of priority):
+ * 1. Exact match - all properties match (shape, size, color, quality)
+ * 2. Shape + size + color - quality differs
+ * 3. Shape + color - size and quality may differ
+ * 4. Shape only - only the shape matches
+ *
+ * Returns gallery state:
+ * - "exact": Perfect match with images
+ * - "fallback": Close match, showing similar variant
+ * - "placeholder": Match found but no images
+ * - "custom": No match, custom configuration
+ */
 export function resolveVariantMatch(
   variants: ProductVariant[],
   selection: VariantSelection,

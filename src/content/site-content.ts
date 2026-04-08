@@ -134,6 +134,11 @@ export const qualityLabels: Record<Quality, string> = {
   premium: "Premium",
 };
 
+export const woodTypeHints: Record<Quality, string> = {
+  standard: "Натуральная фактура дерева, допускаются сучки",
+  premium: "Более ровная и однородная поверхность",
+};
+
 export const availabilityLabels = {
   in_stock: "В наличии",
   made_to_order: "Изготовление под заказ",

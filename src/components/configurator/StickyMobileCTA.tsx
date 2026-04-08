@@ -1,106 +1,88 @@
 "use client";
 
-import { useEffect } from "react";
+import type { MessengerKey } from "@/types/messenger";
 
+import { usePriceAnimation } from "@/hooks/usePriceAnimation";
+import { OrderSheet } from "./OrderSheet";
 import styles from "./sticky-mobile-cta.module.css";
 
-type MessengerKey = "telegram" | "vk" | "max";
-
 interface StickyMobileCTAProps {
+  copied: boolean;
+  copyStatus: string | null;
   isOpen: boolean;
+  leadTime: string;
   message: string;
   price: number;
+  pricePulseKey: number;
   productName: string;
   selectionLine: string;
-  copyStatus: string | null;
-  onOpen: () => void;
+  summaryMeta: string;
   onClose: () => void;
+  onCopyMessage: () => void;
   onMessengerClick: (target: MessengerKey) => void;
+  onOpen: () => void;
 }
 
 export function StickyMobileCTA({
+  copied,
+  copyStatus,
   isOpen,
+  leadTime,
   message,
   price,
   productName,
   selectionLine,
-  copyStatus,
-  onOpen,
+  summaryMeta,
   onClose,
+  onCopyMessage,
   onMessengerClick,
+  onOpen,
 }: StickyMobileCTAProps) {
-  useEffect(() => {
-    if (!isOpen) {
-      document.body.style.overflow = "";
-      return;
-    }
-
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        onClose();
-      }
-    };
-
-    document.body.style.overflow = "hidden";
-    window.addEventListener("keydown", handleKeyDown);
-
-    return () => {
-      document.body.style.overflow = "";
-      window.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [isOpen, onClose]);
+  const { elementRef: priceRef } = usePriceAnimation();
 
   return (
     <>
       <div className={styles.bar}>
         <div className={styles.barInner}>
-          <div className={styles.summary}>
-            <p className={styles.name}>{productName}</p>
-            <p className={styles.selection}>{selectionLine}</p>
+          <div className={styles.infoRow}>
+            <div className={styles.infoLeft}>
+              <p className={styles.name}>{productName}</p>
+              <p className={styles.selection}>{selectionLine}</p>
+              <p className={styles.meta}>{summaryMeta}</p>
+            </div>
+            <div className={styles.priceColumn}>
+              <p className={styles.price}>
+                <span ref={priceRef}>{price.toLocaleString("ru-RU")} ₽</span>
+              </p>
+              <p className={styles.leadTime}>Изготовим за {leadTime}</p>
+            </div>
           </div>
-          <p className={styles.price}>{price.toLocaleString("ru-RU")} ₽</p>
-          <button className={styles.cta} type="button" onClick={onOpen}>
-            {copyStatus ? "✓ Заявка отправлена" : "Обсудить заказ"}
+          <button
+            className={[styles.cta, copied ? styles.ctaCopied : ""].filter(Boolean).join(" ")}
+            type="button"
+            onClick={onOpen}
+          >
+            <span className={styles.icon} aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="M21.2 4.8 18 19.9c-.2.9-.7 1.1-1.5.7L11.6 17l-2.4 2.3c-.3.3-.5.5-1 .5l.4-5.1 9.2-8.3c.4-.4-.1-.6-.6-.2L5.8 13.4.9 11.9c-1-.3-1-.9.2-1.4L20 3.2c.9-.3 1.6.2 1.2 1.6Z"
+                  fill="currentColor"
+                />
+              </svg>
+            </span>
+            Написать менеджеру
           </button>
         </div>
       </div>
 
-      {isOpen ? (
-        <div className={styles.overlay} role="presentation" onClick={onClose}>
-          <section
-            aria-label="Выбор мессенджера"
-            className={styles.sheet}
-            onClick={(event) => event.stopPropagation()}
-          >
-            <div className={styles.handle} aria-hidden="true" />
-            <h2 className={styles.title}>Куда отправить запрос?</h2>
-            <p className={styles.subtitle}>Сообщение уже подготовлено.</p>
-            <div className={styles.actions}>
-              <button className={styles.actionButton} type="button" onClick={() => onMessengerClick("telegram")}>
-                Telegram
-              </button>
-              <button className={styles.actionButton} type="button" onClick={() => onMessengerClick("vk")}>
-                VK
-              </button>
-              <button className={styles.actionButton} type="button" onClick={() => onMessengerClick("max")}>
-                MAX
-              </button>
-            </div>
-            <div className={styles.preview}>
-              <p className={styles.previewLabel}>Текст сообщения</p>
-              <pre className={styles.previewText}>{message}</pre>
-            </div>
-            {copyStatus ? (
-              <p className={styles.copyStatus} aria-live="polite">
-                {copyStatus}
-              </p>
-            ) : null}
-            <button className={styles.closeButton} type="button" onClick={onClose}>
-              Закрыть
-            </button>
-          </section>
-        </div>
-      ) : null}
+      <OrderSheet
+        isOpen={isOpen}
+        message={message}
+        copyStatus={copyStatus}
+        onClose={onClose}
+        onCopyMessage={onCopyMessage}
+        onMessengerClick={onMessengerClick}
+      />
     </>
   );
 }

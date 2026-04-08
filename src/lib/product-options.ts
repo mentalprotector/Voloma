@@ -1,5 +1,14 @@
+/**
+ * Utilities for managing available product options based on current selection.
+ *
+ * These functions analyze the product variants and determine which options
+ * (shapes, sizes, colors, qualities) are available given the current selection.
+ */
 import type { Color, ProductVariant, Quality, Shape, Size, VariantSelection } from "@/types/product";
 
+/**
+ * Create a VariantSelection from a ProductVariant
+ */
 export function createSelectionFromVariant(variant: ProductVariant): VariantSelection {
   return {
     shape: variant.shape,
@@ -9,20 +18,32 @@ export function createSelectionFromVariant(variant: ProductVariant): VariantSele
   };
 }
 
+/**
+ * Get initial selection from the first variant in the list
+ */
 export function getInitialSelection(variants: ProductVariant[]): VariantSelection {
   return createSelectionFromVariant(variants[0]);
 }
 
+/**
+ * Get all unique shapes available across all variants
+ */
 export function getAvailableShapes(variants: ProductVariant[]): Shape[] {
   return Array.from(new Set(variants.map((variant) => variant.shape))) as Shape[];
 }
 
+/**
+ * Get sizes available for a specific shape
+ */
 export function getAvailableSizes(variants: ProductVariant[], shape: Shape): Size[] {
   return Array.from(
     new Set(variants.filter((variant) => variant.shape === shape).map((variant) => variant.size)),
   ) as Size[];
 }
 
+/**
+ * Get colors available for a specific shape and size combination
+ */
 export function getAvailableColors(
   variants: ProductVariant[],
   shape: Shape,
@@ -37,6 +58,9 @@ export function getAvailableColors(
   ) as Color[];
 }
 
+/**
+ * Get qualities (standard/premium) available for a specific shape, size, and color
+ */
 export function getAvailableQualities(
   variants: ProductVariant[],
   shape: Shape,
@@ -55,6 +79,11 @@ export function getAvailableQualities(
   ) as Quality[];
 }
 
+/**
+ * Reconcile a selection against available variants.
+ * Ensures that the selected options are actually available,
+ * falling back to the first available option if not.
+ */
 export function reconcileSelection(
   variants: ProductVariant[],
   selection: VariantSelection,

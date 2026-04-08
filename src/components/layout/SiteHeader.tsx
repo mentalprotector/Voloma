@@ -48,26 +48,47 @@ export function SiteHeader() {
           .filter(Boolean)
           .join(" ")}
       >
-        <Link className={styles.brand} href="/">
-          <Image
-            src="/voloma-symbol.svg"
-            alt="Voloma"
-            width={386}
-            height={411}
-            className={styles.brandSymbol}
-            priority
-          />
-          <Image
-            src="/voloma-wordmark.svg"
-            alt="Волома Вуд"
-            width={802}
-            height={132}
-            className={styles.brandWordmark}
-            priority
-          />
-        </Link>
+        {isConfigurator ? (
+          <>
+            <Link className={styles.configuratorBack} href="/">
+              <span className={styles.configuratorBackIcon} aria-hidden="true">
+                ←
+              </span>
+              Назад
+            </Link>
 
-        {isConfigurator ? null : (
+            <Link className={styles.brand} href="/">
+              <Image
+                src="/voloma-symbol.svg"
+                alt="Voloma"
+                width={386}
+                height={411}
+                className={styles.brandSymbol}
+                priority
+              />
+            </Link>
+          </>
+        ) : (
+          <>
+            <Link className={styles.brand} href="/">
+              <Image
+                src="/voloma-symbol.svg"
+                alt="Voloma"
+                width={386}
+                height={411}
+                className={styles.brandSymbol}
+                priority
+              />
+              <Image
+                src="/voloma-wordmark.svg"
+                alt="Voloma Wood"
+                width={802}
+                height={132}
+                className={styles.brandWordmark}
+                priority
+              />
+            </Link>
+
           <nav className={styles.actions} aria-label="Основная навигация">
             <a
               className={styles.aboutLink}
@@ -85,8 +106,10 @@ export function SiteHeader() {
               Заказать
             </Button>
           </nav>
+          </>
         )}
       </div>
     </header>
   );
 }
+

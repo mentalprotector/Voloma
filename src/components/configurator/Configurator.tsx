@@ -1,554 +1,221 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useMemo, useState } from "react";
 
-import { colorLabels, qualityLabels, shapeLabels, sizeLabels } from "@/content/site-content";
+import { getInitialSize, isSizeAvailable } from "@/config/availability";
+import { calculateTotalPrice } from "@/config/pricing";
+import { colorLabels, shapeLabels, sizeLabels } from "@/content/site-content";
 import { productVariants } from "@/data/product-variants";
-import {
-  getAvailableColors,
-  getAvailableQualities,
-  getAvailableShapes,
-  getAvailableSizes,
-  getInitialSelection,
-  reconcileSelection,
-} from "@/lib/product-options";
+import { useCopyToClipboard, usePriceAnimation, useVibration } from "@/hooks";
+import { buildMessengerUrl } from "@/lib/messenger-links";
 import { resolveVariantMatch } from "@/lib/product-matching";
-import {
-  COLORS,
-  QUALITIES,
-  SHAPES,
-  SIZES,
-  type Color,
-  type ProductVariant,
-  type Quality,
-  type Shape,
-  type Size,
-} from "@/types/product";
+import type { MessengerKey } from "@/types/messenger";
+import type { Color, Quality, Shape, Size } from "@/types/product";
 
+import { ConfiguratorControls } from "./ConfiguratorControls";
 import { ImageGallery } from "./ImageGallery";
-import { ProductSummary } from "./ProductSummary";
 import { StickyMobileCTA } from "./StickyMobileCTA";
 import styles from "./configurator.module.css";
 
-type WheelsOption = "with" | "without";
-type MessengerKey = "telegram" | "vk" | "max";
-type ConfigStep = "shape" | "size" | "color" | "quality" | "wheels";
-
-const wheelsLabels: Record<WheelsOption, string> = {
-  with: "С колёсиками",
-  without: "Без колёсиков",
+const woodTypeLabels: Record<Quality, string> = {
+  standard: "Стандарт",
+  premium: "Без сучков +800 ₽",
 };
-
-const colorSwatchStyles: Record<Color, string> = {
-  oak: "#C8904A",
-  walnut: "#6B3E26",
-  charcoal: "#4A4540",
-};
-
-const messengerTargets: Record<MessengerKey, string> = {
-  telegram: "https://t.me/share/url?url=https%3A%2F%2Fvoloma.ru%2Fconfigurator",
-  vk: "https://vk.com/share.php?url=https%3A%2F%2Fvoloma.ru%2Fconfigurator",
-  max: "https://max.ru/",
-};
-
-const orderedSteps: ConfigStep[] = ["shape", "size", "color", "quality", "wheels"];
-
-function getSizeDimensions(variants: ProductVariant[], shape: Shape, size: Size) {
-  const variant = variants.find((item) => item.shape === shape && item.size === size);
-
-  if (!variant?.dimensions?.length || !variant.dimensions.width || !variant.dimensions.height) {
-    return "Размер уточним";
-  }
-
-  return `${variant.dimensions.length}×${variant.dimensions.width}×${variant.dimensions.height} см`;
-}
-
-function buildMessage(selection: {
-  shape: Shape;
-  size: Size;
-  color: Color;
-  quality: Quality;
-  wheels: WheelsOption;
-}) {
-  return `Здравствуйте!
-Хочу заказать кашпо Voloma:
-${shapeLabels[selection.shape]}, ${sizeLabels[selection.size]}, ${colorLabels[selection.color]}, ${
-    qualityLabels[selection.quality]
-  }, ${wheelsLabels[selection.wheels]}`;
-}
-
-async function copyToClipboard(text: string) {
-  if (typeof navigator === "undefined" || !navigator.clipboard?.writeText) {
-    return false;
-  }
-
-  try {
-    await navigator.clipboard.writeText(text);
-    return true;
-  } catch {
-    return false;
-  }
-}
 
 export function Configurator() {
-  const [selection, setSelection] = useState(() => getInitialSelection(productVariants));
-  const [wheels, setWheels] = useState<WheelsOption>("without");
-  const [activeStep, setActiveStep] = useState<ConfigStep>("shape");
+  const [shape, setShape] = useState<Shape>("rect");
+  const [size, setSize] = useState<Size>("m");
+  const [color, setColor] = useState<Color>("oak");
+  const [woodType, setWoodType] = useState<Quality>("standard");
+  const [wheels, setWheels] = useState(false);
   const [sheetOpen, setSheetOpen] = useState(false);
-  const [copyStatus, setCopyStatus] = useState<string | null>(null);
-  const hasMountedRef = useRef(false);
-  const controlsViewportRef = useRef<HTMLDivElement | null>(null);
-  const stepRefs = useRef<Record<ConfigStep, HTMLDivElement | null>>({
-    shape: null,
-    size: null,
-    color: null,
-    quality: null,
-    wheels: null,
-  });
+
+  const { vibrate } = useVibration();
+  const { pulse, elementRef: topPriceRef } = usePriceAnimation();
+  const {
+    status: copyStatus,
+    copy: copyMessage,
+  } = useCopyToClipboard();
+
+  const availableSizes = useMemo(() => {
+    if (!isSizeAvailable(shape, size)) {
+      return getInitialSize(shape);
+    }
+    return size;
+  }, [shape, size]);
+
+  const selection = useMemo(
+    () => ({
+      shape,
+      size: availableSizes,
+      color,
+      quality: woodType,
+    }),
+    [availableSizes, color, shape, woodType],
+  );
 
   const resolvedMatch = resolveVariantMatch(productVariants, selection);
-  const availableShapes = getAvailableShapes(productVariants);
-  const availableSizes = getAvailableSizes(productVariants, selection.shape);
-  const availableColors = getAvailableColors(productVariants, selection.shape, selection.size);
-  const availableQualities = getAvailableQualities(
-    productVariants,
-    selection.shape,
-    selection.size,
-    selection.color,
-  );
+  const total = calculateTotalPrice(shape, availableSizes, {
+    isPremiumWood: woodType === "premium",
+    hasWheels: wheels,
+  });
 
-  const selectionWithWheels = useMemo(
-    () => ({
-      ...selection,
-      wheels,
-    }),
-    [selection, wheels],
-  );
+  const summaryLine = `${shapeLabels[shape]} · ${sizeLabels[availableSizes]} · ${colorLabels[color]}`;
+  const leadTime = "7–10 дней";
+  const wheelsLabel = wheels ? "+ колёсики" : null;
+  const summaryMeta = [wheelsLabel, leadTime].filter(Boolean).join(" · ");
+  const placeholderSubtitle = `${shapeLabels[shape]} · ${sizeLabels[availableSizes]} · ${colorLabels[color]}`;
 
-  const orderMessage = buildMessage(selectionWithWheels);
-  const selectionLine = `${shapeLabels[selection.shape]} · ${sizeLabels[selection.size]} · ${
-    colorLabels[selection.color]
-  } · ${qualityLabels[selection.quality]}`;
-  const livePrice = resolvedMatch.matchedVariant?.price ?? 6900;
-  const selectionKey = `${selection.shape}-${selection.size}-${selection.color}-${selection.quality}-${wheels}`;
+  const orderMessage = `Здравствуйте!
+Хочу заказать кашпо Voloma:
+Форма: ${shapeLabels[shape]}
+Размер: ${sizeLabels[availableSizes]}
+Цвет: ${colorLabels[color]}
+Тип дерева: ${woodTypeLabels[woodType]}
+Колёсики: ${wheels ? "Да" : "Нет"}
+Ориентир по стоимости: ${total.toLocaleString("ru-RU")} ₽`;
 
-  useEffect(() => {
-    window.scrollTo({
-      top: 0,
-      left: 0,
-      behavior: "instant" as ScrollBehavior,
-    });
-  }, []);
+  function handleShapeChange(nextShape: Shape) {
+    vibrate();
+    setShape(nextShape);
+    pulse();
 
-  useEffect(() => {
-    if (!hasMountedRef.current) {
-      hasMountedRef.current = true;
+    if (!isSizeAvailable(nextShape, availableSizes)) {
+      setSize(getInitialSize(nextShape));
+    }
+  }
+
+  function handleSizeChange(nextSize: Size) {
+    if (!isSizeAvailable(shape, nextSize)) {
       return;
     }
 
-    if (window.matchMedia("(min-width: 1024px)").matches) {
-      return;
-    }
-
-    const element = stepRefs.current[activeStep];
-
-    if (!element) {
-      return;
-    }
-
-    window.setTimeout(() => {
-      const container = controlsViewportRef.current;
-
-      if (container) {
-        const containerTop = container.getBoundingClientRect().top;
-        const elementTop = element.getBoundingClientRect().top;
-        const offset = elementTop - containerTop + container.scrollTop - 10;
-
-        container.scrollTo({
-          top: Math.max(offset, 0),
-          behavior: "smooth",
-        });
-        return;
-      }
-
-      element.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      });
-    }, 80);
-  }, [activeStep]);
-
-  function advanceToStep(step: ConfigStep) {
-    setActiveStep(step);
+    vibrate();
+    setSize(nextSize);
+    pulse();
   }
 
-  function advanceToNextStep(currentStep: ConfigStep) {
-    const currentIndex = orderedSteps.indexOf(currentStep);
-    const nextStep = orderedSteps[currentIndex + 1];
-    setActiveStep(nextStep ?? "shape");
+  function handleColorChange(nextColor: Color) {
+    vibrate();
+    setColor(nextColor);
   }
 
-  function getStepValue(step: ConfigStep) {
-    if (step === "shape") {
-      return shapeLabels[selection.shape];
-    }
-
-    if (step === "size") {
-      return sizeLabels[selection.size];
-    }
-
-    if (step === "color") {
-      return colorLabels[selection.color];
-    }
-
-    if (step === "quality") {
-      return qualityLabels[selection.quality];
-    }
-
-    return wheelsLabels[wheels];
+  function handleWoodTypeChange(nextWoodType: Quality) {
+    vibrate();
+    setWoodType(nextWoodType);
+    pulse();
   }
 
-  function updateSelection<K extends "shape" | "size" | "color" | "quality">(
-    key: K,
-    value: K extends "shape"
-      ? Shape
-      : K extends "size"
-        ? Size
-        : K extends "color"
-          ? Color
-          : Quality,
-  ) {
-    setSelection((current) =>
-      reconcileSelection(productVariants, {
-        ...current,
-        [key]: value,
-      }),
+  function handleWheelsToggle() {
+    vibrate();
+    setWheels((current) => !current);
+    pulse();
+  }
+
+  async function handleCopyMessage() {
+    await copyMessage(
+      orderMessage,
+      "Сообщение скопировано. Вставьте его в чат.",
+      "Не удалось скопировать. Текст можно выделить вручную.",
+    );
+  }
+
+  async function handleMessengerClick(target: MessengerKey) {
+    await copyMessage(
+      orderMessage,
+      "Сообщение скопировано. Вставьте его в чат.",
+      "Сообщение не скопировалось. Возьмите текст из превью ниже.",
     );
 
-    advanceToNextStep(key);
-  }
-
-  function completeWheels(value: WheelsOption) {
-    setWheels(value);
-    setActiveStep("shape");
-  }
-
-  async function openMessenger(target: MessengerKey) {
-    const copied = await copyToClipboard(orderMessage);
-    const textParam = encodeURIComponent(orderMessage);
-    const targetUrl =
-      target === "telegram"
-        ? `${messengerTargets.telegram}&text=${textParam}`
-        : target === "vk"
-          ? `${messengerTargets.vk}&comment=${textParam}`
-          : messengerTargets.max;
-
+    const targetUrl = buildMessengerUrl(target, orderMessage);
     window.open(targetUrl, "_blank", "noopener,noreferrer");
-    setCopyStatus(copied ? "Сообщение скопировано. Вставьте его в чат." : "Скопируйте текст вручную.");
   }
 
   return (
-    <>
-      <div className={styles.layout}>
-        <div className={styles.mediaColumn}>
-          <div className={styles.mediaSticky}>
-            <ImageGallery
-              key={resolvedMatch.matchedVariant?.slug ?? resolvedMatch.placeholder.slug}
-              images={resolvedMatch.images}
-              placeholderTitle={resolvedMatch.placeholder.title}
-              state={resolvedMatch.galleryState}
-              note={resolvedMatch.galleryState === "fallback" ? "Показан близкий вариант" : null}
-            />
+    <div className={styles.layout}>
+      {/* Media */}
+      <section className={styles.mediaColumn} aria-label="Фото кашпо">
+        <div className={styles.mediaFrame}>
+          <ImageGallery
+            key={resolvedMatch.matchedVariant?.slug ?? `${shape}-${availableSizes}-${color}-${woodType}`}
+            images={resolvedMatch.images}
+            note={resolvedMatch.galleryState === "fallback" ? "Показан близкий вариант из каталога" : null}
+            placeholderTitle="Ваше кашпо"
+            placeholderSubtitle={placeholderSubtitle}
+            state={resolvedMatch.galleryState}
+          />
+        </div>
+      </section>
+
+      {/* Controls */}
+      <section className={styles.controlsColumn} aria-label="Параметры кашпо">
+        <div className={styles.controls}>
+          {/* Top summary bar */}
+          <div className={styles.topBar}>
+            <p className={styles.topBarTitle}>Кашпо Voloma</p>
+            <p className={styles.topBarPriceSecondary}>
+              <span ref={topPriceRef}>{total.toLocaleString("ru-RU")} ₽</span>
+            </p>
+          </div>
+
+          <ConfiguratorControls
+            color={color}
+            onColorChange={handleColorChange}
+            onShapeChange={handleShapeChange}
+            onSizeChange={handleSizeChange}
+            onWoodTypeChange={handleWoodTypeChange}
+            onWheelsToggle={handleWheelsToggle}
+            shape={shape}
+            size={availableSizes}
+            wheels={wheels}
+            woodType={woodType}
+          />
+
+          {/* Desktop sticky CTA */}
+          <div className={styles.desktopCta}>
+            <div className={styles.desktopCtaInfo}>
+              <p className={styles.desktopCtaPrice}>
+                {total.toLocaleString("ru-RU")} ₽
+              </p>
+              <p className={styles.desktopCtaSummary}>{summaryLine}</p>
+              <p className={styles.desktopCtaMeta}>Изготовим за {leadTime}</p>
+            </div>
+            <button
+              className={styles.desktopCtaPrimary}
+              type="button"
+              onClick={() => setSheetOpen(true)}
+            >
+              <span className={styles.desktopCtaButtonIcon} aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path
+                    d="M21.2 4.8 18 19.9c-.2.9-.7 1.1-1.5.7L11.6 17l-2.4 2.3c-.3.3-.5.5-1 .5l.4-5.1 9.2-8.3c.4-.4-.1-.6-.6-.2L5.8 13.4.9 11.9c-1-.3-1-.9.2-1.4L20 3.2c.9-.3 1.6.2 1.2 1.6Z"
+                    fill="currentColor"
+                  />
+                </svg>
+              </span>
+              Написать менеджеру
+            </button>
           </div>
         </div>
-        <div className={styles.controlsColumn}>
-          <div className={styles.controlsViewport} ref={controlsViewportRef}>
-            <section className={styles.headerBlock} aria-label="Информация о товаре">
-              <div className={styles.summaryRow}>
-                <div className={styles.titleBlock}>
-                  <p className={styles.kicker}>Voloma</p>
-                  <h1 className={styles.productName}>Кашпо Voloma</h1>
-                </div>
-                <p className={styles.price}>{livePrice.toLocaleString("ru-RU")} ₽</p>
-              </div>
-              <ProductSummary key={selectionKey} selectionLine={selectionLine} />
-            </section>
+      </section>
 
-            <section className={styles.selectors} aria-label="Выбор параметров кашпо">
-              <div
-                className={[styles.group, activeStep === "shape" ? styles.groupOpen : ""].filter(Boolean).join(" ")}
-                ref={(element) => {
-                  stepRefs.current.shape = element;
-                }}
-              >
-                <button
-                  aria-controls="config-step-shape"
-                  aria-expanded={activeStep === "shape"}
-                  className={styles.groupToggle}
-                  type="button"
-                  onClick={() => advanceToStep("shape")}
-                >
-                  <span className={styles.groupHeading}>
-                    <span className={styles.groupTitle}>1. Форма</span>
-                    <span className={styles.groupValue}>
-                      {activeStep === "shape" ? getStepValue("shape") : `✓ ${getStepValue("shape")}`}
-                    </span>
-                  </span>
-                </button>
-                <div className={styles.groupPanel} id="config-step-shape">
-                  <div className={styles.shapeGrid}>
-                    {SHAPES.map((shape) => (
-                      <button
-                        key={shape}
-                        aria-pressed={selection.shape === shape}
-                        disabled={!availableShapes.includes(shape)}
-                        className={[
-                          styles.shapeButton,
-                          styles[`shapeButton${shape}`],
-                          selection.shape === shape ? styles.shapeButtonActive : "",
-                          !availableShapes.includes(shape) ? styles.optionDisabled : "",
-                        ]
-                          .filter(Boolean)
-                          .join(" ")}
-                        type="button"
-                        onClick={() => updateSelection("shape", shape)}
-                      >
-                        <span className={styles.shapeIcon} aria-hidden="true" />
-                        <span className={styles.shapeLabel}>{shapeLabels[shape]}</span>
-                        <span className={styles.shapeMeta}>Форма</span>
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-              <div
-                className={[styles.group, activeStep === "size" ? styles.groupOpen : ""].filter(Boolean).join(" ")}
-                ref={(element) => {
-                  stepRefs.current.size = element;
-                }}
-              >
-                <button
-                  aria-controls="config-step-size"
-                  aria-expanded={activeStep === "size"}
-                  className={styles.groupToggle}
-                  type="button"
-                  onClick={() => advanceToStep("size")}
-                >
-                  <span className={styles.groupHeading}>
-                    <span className={styles.groupTitle}>2. Размер</span>
-                    <span className={styles.groupValue}>
-                      {activeStep === "size" ? getStepValue("size") : `✓ ${getStepValue("size")}`}
-                    </span>
-                  </span>
-                </button>
-                <div className={styles.groupPanel} id="config-step-size">
-                  <div className={styles.sizeGrid}>
-                    {SIZES.map((size) => {
-                      const isAvailable = availableSizes.includes(size);
-
-                      return (
-                        <button
-                          key={size}
-                          aria-pressed={selection.size === size}
-                          className={[
-                            styles.sizeChip,
-                            selection.size === size ? styles.sizeChipActive : "",
-                            !isAvailable ? styles.optionDisabled : "",
-                          ]
-                            .filter(Boolean)
-                            .join(" ")}
-                          disabled={!isAvailable}
-                          type="button"
-                          onClick={() => updateSelection("size", size)}
-                        >
-                          <span className={styles.sizeLabel}>{sizeLabels[size]}</span>
-                          <span className={styles.sizeMeta}>
-                            {isAvailable
-                              ? getSizeDimensions(productVariants, selection.shape, size)
-                              : "Нет в этой форме"}
-                          </span>
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
-              </div>
-
-              <div
-                className={[styles.group, activeStep === "color" ? styles.groupOpen : ""].filter(Boolean).join(" ")}
-                ref={(element) => {
-                  stepRefs.current.color = element;
-                }}
-              >
-                <button
-                  aria-controls="config-step-color"
-                  aria-expanded={activeStep === "color"}
-                  className={styles.groupToggle}
-                  type="button"
-                  onClick={() => advanceToStep("color")}
-                >
-                  <span className={styles.groupHeading}>
-                    <span className={styles.groupTitle}>3. Цвет</span>
-                    <span className={styles.groupValue}>
-                      {activeStep === "color" ? getStepValue("color") : `✓ ${getStepValue("color")}`}
-                    </span>
-                  </span>
-                </button>
-                <div className={styles.groupPanel} id="config-step-color">
-                  <div className={styles.colorGrid}>
-                    {COLORS.map((color) => (
-                      <button
-                        key={color}
-                        aria-label={`Цвет: ${colorLabels[color]}`}
-                        aria-pressed={selection.color === color}
-                        className={[
-                          styles.colorButton,
-                          selection.color === color ? styles.colorButtonActive : "",
-                          !availableColors.includes(color) ? styles.optionDisabled : "",
-                        ]
-                          .filter(Boolean)
-                          .join(" ")}
-                        disabled={!availableColors.includes(color)}
-                        type="button"
-                        onClick={() => updateSelection("color", color)}
-                      >
-                        <span
-                          className={styles.swatch}
-                          style={{ background: colorSwatchStyles[color] }}
-                          aria-hidden="true"
-                        />
-                        <span className={styles.colorName}>{colorLabels[color]}</span>
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-              <div
-                className={[styles.group, activeStep === "quality" ? styles.groupOpen : ""].filter(Boolean).join(" ")}
-                ref={(element) => {
-                  stepRefs.current.quality = element;
-                }}
-              >
-                <button
-                  aria-controls="config-step-quality"
-                  aria-expanded={activeStep === "quality"}
-                  className={styles.groupToggle}
-                  type="button"
-                  onClick={() => advanceToStep("quality")}
-                >
-                  <span className={styles.groupHeading}>
-                    <span className={styles.groupTitle}>4. Качество</span>
-                    <span className={styles.groupValue}>
-                      {activeStep === "quality" ? getStepValue("quality") : `✓ ${getStepValue("quality")}`}
-                    </span>
-                  </span>
-                </button>
-                <div className={styles.groupPanel} id="config-step-quality">
-                  <div className={styles.qualityGrid}>
-                    {QUALITIES.map((quality) => (
-                      <button
-                        key={quality}
-                        aria-pressed={selection.quality === quality}
-                        className={[
-                          styles.qualityCard,
-                          selection.quality === quality ? styles.qualityCardActive : "",
-                          !availableQualities.includes(quality) ? styles.optionDisabled : "",
-                        ]
-                          .filter(Boolean)
-                          .join(" ")}
-                        disabled={!availableQualities.includes(quality)}
-                        type="button"
-                        onClick={() => updateSelection("quality", quality)}
-                      >
-                        <span className={styles.qualityTitle}>{qualityLabels[quality]}</span>
-                        <span className={styles.qualityMeta}>
-                          {quality === "premium" ? "Отбор по фактуре и тону" : "Аккуратный базовый отбор"}
-                        </span>
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-              <div
-                className={[styles.group, activeStep === "wheels" ? styles.groupOpen : ""].filter(Boolean).join(" ")}
-                ref={(element) => {
-                  stepRefs.current.wheels = element;
-                }}
-              >
-                <button
-                  aria-controls="config-step-wheels"
-                  aria-expanded={activeStep === "wheels"}
-                  className={styles.groupToggle}
-                  type="button"
-                  onClick={() => advanceToStep("wheels")}
-                >
-                  <span className={styles.groupHeading}>
-                    <span className={styles.groupTitle}>5. Колёсики</span>
-                    <span className={styles.groupValue}>
-                      {activeStep === "wheels" ? getStepValue("wheels") : `✓ ${getStepValue("wheels")}`}
-                    </span>
-                  </span>
-                </button>
-                <div className={styles.groupPanel} id="config-step-wheels">
-                  <div className={styles.radioGrid} role="radiogroup" aria-label="Колёсики">
-                    {(["without", "with"] as const).map((value) => (
-                      <button
-                        key={value}
-                        aria-checked={wheels === value}
-                        className={[styles.radioButton, wheels === value ? styles.radioButtonActive : ""]
-                          .filter(Boolean)
-                          .join(" ")}
-                        role="radio"
-                        type="button"
-                        onClick={() => completeWheels(value)}
-                      >
-                        <span>{wheelsLabels[value]}</span>
-                        <span className={styles.qualityMeta}>
-                          {value === "with" ? "Для лёгкого перемещения" : "Чистый минималистичный вид"}
-                        </span>
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </section>
-
-            <div className={styles.mobileBottomSpacer} aria-hidden="true" />
-
-            <section className={styles.desktopCta} aria-label="Оформление заказа">
-              <div className={styles.desktopCtaMeta}>
-                <p className={styles.desktopCtaPrice}>{livePrice.toLocaleString("ru-RU")} ₽</p>
-                <p className={styles.desktopCtaCaption}>Подготовим сообщение и откроем удобный мессенджер.</p>
-              </div>
-              <div className={styles.desktopCtaActions}>
-                {copyStatus ? (
-                  <p className={styles.desktopCopyStatus} aria-live="polite">
-                    {copyStatus}
-                  </p>
-                ) : null}
-                <button className={styles.desktopCtaButton} type="button" onClick={() => setSheetOpen(true)}>
-                  Обсудить заказ
-                </button>
-              </div>
-            </section>
-          </div>
-        </div>
-      </div>
-
+      {/* Sticky bottom CTA (mobile) */}
       <StickyMobileCTA
+        copied={Boolean(copyStatus)}
         copyStatus={copyStatus}
         isOpen={sheetOpen}
+        leadTime={leadTime}
         message={orderMessage}
-        price={livePrice}
+        price={total}
+        pricePulseKey={0}
         productName="Кашпо Voloma"
-        selectionLine={selectionLine}
+        selectionLine={summaryLine}
+        summaryMeta={summaryMeta}
         onClose={() => setSheetOpen(false)}
-        onMessengerClick={openMessenger}
+        onCopyMessage={handleCopyMessage}
+        onMessengerClick={handleMessengerClick}
         onOpen={() => setSheetOpen(true)}
       />
-    </>
+    </div>
   );
 }

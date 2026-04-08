@@ -31,7 +31,10 @@
 }
 
 .disabled {
-  opacity: 0.45;
+  opacity: 0.35;
   cursor: not-allowed;
+  background: rgba(0, 0, 0, 0.02);
+  text-decoration: line-through;
+  color: var(--color-text-muted);
 }
 
