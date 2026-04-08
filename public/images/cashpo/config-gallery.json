@@ -1,0 +1,19 @@
+{
+  "configsRoot": "./configs",
+  "autoScan": true,
+  "rules": {
+    "eachConfigFolder": {
+      "structure": {
+        "originals": ".NEF/.CR2/.ARW originals (not deployed)",
+        "thumbnails": "400-600px WebP",
+        "medium": "1200-1600px WebP",
+        "large": "2500-3000px WebP"
+      },
+      "naming": "folder name = config slug (e.g. 'квадратное-без-окрашивания')"
+    }
+  },
+  "metadata": {
+    "created": "2026-04-08",
+    "description": "Auto-scanned config folders for кашпо gallery. Each config folder in /configs/ contains its own originals/, thumbnails/, medium/, large/ subfolders."
+  }
+}

@@ -140,23 +140,17 @@ export function ConfiguratorControls({
         </section>
       )}
 
-      {/* Dimensions info block */}
-      <section className={styles.dimensionsBlock} aria-label="Габариты">
-        <div className={styles.dimensionsGrid}>
-          <div className={styles.dimensionCard}>
-            <p className={styles.dimensionCardTitle}>Внешние габариты</p>
-            <p className={styles.dimensionCardValue}>
-              {getDimensions(shape, size).external.l} × {getDimensions(shape, size).external.w} × {getDimensions(shape, size).external.h} мм
-            </p>
-          </div>
-          <div className={styles.dimensionCard}>
-            <span className={styles.dimensionCardHint}>для подбора горшка</span>
-            <p className={styles.dimensionCardTitle}>Внутренние размеры</p>
-            <p className={styles.dimensionCardValue}>
-              {getDimensions(shape, size).internal.l} × {getDimensions(shape, size).internal.w} × {getDimensions(shape, size).internal.h} мм
-            </p>
-          </div>
-        </div>
+      {/* Dimensions info — compact inline row */}
+      <section className={styles.dimensionsRow} aria-label="Размеры (габариты)">
+        <span className={styles.dimItem}>
+          <span className={styles.dimLabel}>Внешние</span>
+          <span className={styles.dimValue}>{getDimensions(shape, size).external.l} × {getDimensions(shape, size).external.w} × {getDimensions(shape, size).external.h} мм</span>
+        </span>
+        <span className={styles.dimSep}>·</span>
+        <span className={styles.dimItem}>
+          <span className={styles.dimLabel}>Внутри</span>
+          <span className={styles.dimValue}>{getDimensions(shape, size).internal.l} × {getDimensions(shape, size).internal.w} × {getDimensions(shape, size).internal.h} мм</span>
+        </span>
       </section>
 
       {/* Finish (stain/color treatment) — SINGLE option with 3 choices */}

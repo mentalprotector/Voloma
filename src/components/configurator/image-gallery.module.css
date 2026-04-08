@@ -1,21 +1,146 @@
 .gallery {
   display: grid;
-  grid-template-rows: minmax(0, 1fr) auto auto;
+  grid-template-rows: minmax(0, 1fr) auto auto auto;
   gap: 0.6rem;
   width: 100%;
 }
 
-.stage {
+/* ===== Hero (main large image) ===== */
+.heroSection {
+  width: 100%;
+}
+
+.heroStage {
   position: relative;
   min-height: 0;
   width: 100%;
   height: 100%;
   overflow: hidden;
-  border-radius: 0;
   background: #ede9e0;
-  border: 0;
 }
 
+.heroButton {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 200px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.heroImage {
+  object-fit: cover;
+  animation: galleryFade 260ms ease;
+}
+
+.heroOverlay {
+  position: absolute;
+  top: 0.6rem;
+  right: 0.6rem;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 50%;
+  background: rgba(250, 248, 245, 0.85);
+  color: var(--color-text);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.heroButton:hover .heroOverlay {
+  opacity: 1;
+}
+
+.counter {
+  position: absolute;
+  right: 0.6rem;
+  bottom: 0.6rem;
+  z-index: 2;
+  padding: 0.22rem 0.45rem;
+  border-radius: 999px;
+  background: rgba(250, 248, 245, 0.88);
+  color: var(--color-text);
+  font-size: 0.66rem;
+  font-weight: 600;
+  border: 1px solid rgba(221, 211, 197, 0.8);
+}
+
+/* ===== Photo grid ===== */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.4rem;
+  width: 100%;
+}
+
+.gridCard {
+  position: relative;
+  padding: 0;
+  border: 0;
+  border-radius: 0.6rem;
+  background: transparent;
+  cursor: pointer;
+  overflow: hidden;
+  -webkit-tap-highlight-color: transparent;
+  aspect-ratio: 1 / 1;
+}
+
+.gridCardInner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 0.6rem;
+  background: #ede9e0;
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.gridCard:hover .gridCardInner {
+  transform: scale(1.03);
+  box-shadow: 0 0.5rem 1.25rem rgba(26, 19, 16, 0.12);
+}
+
+.gridCardActive .gridCardInner {
+  box-shadow: 0 0 0 2px rgba(74, 55, 40, 0.6);
+}
+
+.gridImage {
+  object-fit: cover;
+}
+
+.gridLabel {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  padding: 1.5rem 0.4rem 0.3rem;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.35) 0%, transparent 100%);
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 0.58rem;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  text-align: center;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.gridCard:hover .gridLabel {
+  opacity: 1;
+}
+
+/* ===== Skeleton ===== */
 .skeleton {
   position: absolute;
   inset: 0;
@@ -25,11 +150,7 @@
   animation: pulse 1.4s ease-in-out infinite;
 }
 
-.image {
-  object-fit: cover;
-  animation: galleryFade 260ms ease;
-}
-
+/* ===== Placeholder ===== */
 .placeholder {
   position: relative;
   z-index: 1;
@@ -77,13 +198,7 @@
   line-height: 1.35;
 }
 
-.placeholderMeta {
-  margin: 0;
-  color: var(--color-text-muted);
-  font-size: 0.7rem;
-  line-height: 1.35;
-}
-
+/* ===== Note ===== */
 .note {
   margin: 0;
   padding-inline: 0.75rem;
@@ -92,12 +207,13 @@
   line-height: 1.3;
 }
 
+/* ===== Thumbnail strip (mobile-only, horizontal scroll) ===== */
 .thumbs {
   display: flex;
-  gap: 0.45rem;
+  gap: 0.4rem;
   overflow-x: auto;
   padding-inline: 0.65rem;
-  padding-top: 0.35rem;
+  padding-top: 0.3rem;
   padding-bottom: 0;
   scrollbar-width: none;
 }
@@ -108,11 +224,9 @@
 
 .thumb {
   flex: 0 0 auto;
-  display: grid;
-  gap: 0.25rem;
-  padding: 0.25rem;
+  padding: 0.15rem;
   border: 1px solid rgba(221, 211, 197, 0.85);
-  border-radius: 0.7rem;
+  border-radius: 0.55rem;
   background: rgba(255, 255, 255, 0.28);
 }
 
@@ -126,30 +240,8 @@
 
 .thumbImage {
   display: block;
-  border-radius: 0.55rem;
+  border-radius: 0.45rem;
   object-fit: cover;
-}
-
-.thumbLabel {
-  color: var(--color-text-muted);
-  font-size: 0.62rem;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-}
-
-.counter {
-  position: absolute;
-  right: 0.6rem;
-  bottom: 0.6rem;
-  z-index: 2;
-  padding: 0.22rem 0.45rem;
-  border-radius: 999px;
-  background: rgba(250, 248, 245, 0.88);
-  color: var(--color-text);
-  font-size: 0.66rem;
-  font-weight: 600;
-  border: 1px solid rgba(221, 211, 197, 0.8);
 }
 
 @keyframes pulse {
@@ -174,21 +266,46 @@
   }
 }
 
-@media (min-width: 768px) and (max-width: 1023px) {
-  .stage {
-    height: 100%;
+/* ===== Mobile ===== */
+@media (max-width: 767px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.35rem;
+  }
+
+  .gridLabel {
+    opacity: 1;
+  }
+
+  .heroButton {
+    min-height: 180px;
   }
 }
 
+/* ===== Tablet ===== */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .heroStage {
+    height: 100%;
+  }
+
+  .grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* ===== Desktop ===== */
 @media (min-width: 1024px) {
   .gallery {
     align-content: center;
     gap: 0.75rem;
   }
 
-  .stage {
+  .heroStage {
     border-radius: 0;
-    border: 0;
+  }
+
+  .heroButton {
+    min-height: 28rem;
   }
 
   .placeholder {
@@ -200,11 +317,16 @@
     height: 3rem;
   }
 
-  .thumb {
-    border-radius: 0.85rem;
-  }
-
   .note {
     padding-inline: 0;
+  }
+
+  .grid {
+    gap: 0.5rem;
+  }
+
+  /* Hide thumb strip on desktop, grid replaces it */
+  .thumbs {
+    display: none;
   }
 }

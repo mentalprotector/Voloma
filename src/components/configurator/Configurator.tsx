@@ -64,18 +64,16 @@ export function Configurator() {
   const showSizeSelector = hasSizeOptions(shape);
   const wheelsAvailable = WHEELS_AVAILABLE(shape, availableSizes);
 
-  // Build summary line
-  const parts = [`${shapeLabels[shape]}`];
-  if (showSizeSelector) {
-    parts.push(sizeLabels[availableSizes]);
-  }
-  parts.push(qualityLabels[quality]);
-  parts.push(finishLabels[finish]);
-  if (wheelsAvailable && wheels) {
-    parts.push("Колёсики");
-  }
+  // Build summary line — only join non-empty values
+  const summaryParts = [
+    shapeLabels[shape],
+    showSizeSelector ? sizeLabels[availableSizes] : "",
+    qualityLabels[quality],
+    finishLabels[finish],
+    wheelsAvailable && wheels ? "Колёсики" : "",
+  ].filter(Boolean);
 
-  const summaryLine = parts.join(" • ");
+  const summaryLine = summaryParts.join(" • ");
   const leadTime = "7–10 дней";
 
   const finishLabel = finish === "natural" ? "Без отделки (натуральная сосна)" : finishLabels[finish];
@@ -151,6 +149,7 @@ export function Configurator() {
         <div className={styles.mediaFrame}>
           <ImageGallery
             key={resolvedMatch.matchedVariant?.slug ?? `${shape}-${availableSizes}-${finish}-${quality}`}
+            caption={summaryLine}
             images={resolvedMatch.images}
             note={resolvedMatch.galleryState === "fallback" ? "Показан близкий вариант из каталога" : null}
             placeholderTitle="Ваше кашпо"
@@ -185,29 +184,31 @@ export function Configurator() {
           />
 
           {/* Desktop sticky CTA */}
-          <div className={styles.desktopCta}>
-            <div className={styles.desktopCtaInfo}>
-              <p className={styles.desktopCtaPrice}>
+          <div className={styles.summaryBar}>
+            <div className={styles.summaryBarLeft}>
+              <p className={styles.summaryBarPrice}>
                 {total.toLocaleString("ru-RU")} ₽
               </p>
-              <p className={styles.desktopCtaSummary}>{summaryLine}</p>
-              <p className={styles.desktopCtaMeta}>Изготовим за {leadTime}</p>
+              <p className={styles.summaryBarConfig}>{summaryLine}</p>
+              <p className={styles.summaryBarDelivery}>Изготовим за {leadTime}</p>
             </div>
-            <button
-              className={styles.desktopCtaPrimary}
-              type="button"
-              onClick={() => setSheetOpen(true)}
-            >
-              <span className={styles.desktopCtaButtonIcon} aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path
-                    d="M21.2 4.8 18 19.9c-.2.9-.7 1.1-1.5.7L11.6 17l-2.4 2.3c-.3.3-.5.5-1 .5l.4-5.1 9.2-8.3c.4-.4-.1-.6-.6-.2L5.8 13.4.9 11.9c-1-.3-1-.9.2-1.4L20 3.2c.9-.3 1.6.2 1.2 1.6Z"
-                    fill="currentColor"
-                  />
-                </svg>
-              </span>
-              Написать менеджеру
-            </button>
+            <div className={styles.summaryBarRight}>
+              <button
+                className={styles.summaryBarButton}
+                type="button"
+                onClick={() => setSheetOpen(true)}
+              >
+                <span className={styles.desktopCtaButtonIcon} aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                      d="M21.2 4.8 18 19.9c-.2.9-.7 1.1-1.5.7L11.6 17l-2.4 2.3c-.3.3-.5.5-1 .5l.4-5.1 9.2-8.3c.4-.4-.1-.6-.6-.2L5.8 13.4.9 11.9c-1-.3-1-.9.2-1.4L20 3.2c.9-.3 1.6.2 1.2 1.6Z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                </span>
+                Написать менеджеру
+              </button>
+            </div>
           </div>
         </div>
       </section>

@@ -1,0 +1,313 @@
+/* ===== Overlay ===== */
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(10, 8, 6, 0);
+  opacity: 0;
+  transition:
+    background 0.28s ease,
+    opacity 0.28s ease;
+}
+
+.overlayOpen {
+  background: rgba(10, 8, 6, 0.94);
+  opacity: 1;
+}
+
+.overlayClosing {
+  background: rgba(10, 8, 6, 0);
+  opacity: 0;
+}
+
+/* ===== Close button ===== */
+.closeButton {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  z-index: 10;
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.85);
+  cursor: pointer;
+  transition:
+    background 0.15s ease,
+    color 0.15s ease,
+    transform 0.15s ease;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.closeButton:hover {
+  background: rgba(255, 255, 255, 0.14);
+  color: #fff;
+}
+
+.closeButton:active {
+  transform: scale(0.92);
+}
+
+.closeButton:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.5);
+  outline-offset: 2px;
+}
+
+/* ===== Navigation arrows ===== */
+.navButton {
+  position: absolute;
+  top: 50%;
+  z-index: 5;
+  display: grid;
+  place-items: center;
+  width: 3rem;
+  height: 3rem;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.7);
+  cursor: pointer;
+  transform: translateY(-50%);
+  opacity: 0;
+  transition:
+    opacity 0.2s ease,
+    background 0.15s ease,
+    color 0.15s ease,
+    transform 0.15s ease;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+.overlay:hover .navButton {
+  opacity: 1;
+}
+
+.navButton:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+}
+
+.navButton:active {
+  transform: translateY(-50%) scale(0.92);
+}
+
+.navButton:focus-visible {
+  opacity: 1;
+  outline: 2px solid rgba(255, 255, 255, 0.5);
+  outline-offset: 2px;
+}
+
+.navButtonPrev {
+  left: 0.75rem;
+}
+
+.navButtonNext {
+  right: 0.75rem;
+}
+
+/* ===== Image container ===== */
+.imageContainer {
+  position: relative;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 0;
+  overflow: hidden;
+  cursor: grab;
+  -webkit-user-select: none;
+  user-select: none;
+  padding-bottom: 3.5rem;
+}
+
+.imageContainer:active {
+  cursor: grabbing;
+}
+
+.imageWrapper {
+  position: relative;
+  width: min(92vw, 80rem);
+  height: min(80vh, 56rem);
+  max-width: 92vw;
+  max-height: 80vh;
+}
+
+.image {
+  object-fit: contain;
+  border-radius: 4px;
+}
+
+/* ===== Counter pill ===== */
+.counter {
+  position: absolute;
+  bottom: 5.5rem;
+  left: 50%;
+  z-index: 5;
+  transform: translateX(-50%);
+  padding: 0.35rem 0.75rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* ===== Caption ===== */
+.caption {
+  position: absolute;
+  bottom: 3.5rem;
+  left: 50%;
+  z-index: 5;
+  transform: translateX(-50%);
+  color: rgba(255, 255, 255, 0.45);
+  font-size: 0.72rem;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  text-align: center;
+}
+
+/* ===== Thumbnail strip ===== */
+.thumbStrip {
+  position: absolute;
+  bottom: 0.75rem;
+  left: 50%;
+  z-index: 5;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 0.4rem;
+  padding: 0.35rem 0.5rem;
+  border-radius: 0.75rem;
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  overflow-x: auto;
+  scrollbar-width: none;
+  max-width: calc(92vw - 1.5rem);
+}
+
+.thumbStrip::-webkit-scrollbar {
+  display: none;
+}
+
+.thumbBtn {
+  flex: 0 0 auto;
+  width: 3.5rem;
+  height: 3.5rem;
+  padding: 0;
+  border: 2px solid transparent;
+  border-radius: 0.5rem;
+  background: transparent;
+  cursor: pointer;
+  overflow: hidden;
+  opacity: 0.5;
+  transition:
+    opacity 0.15s ease,
+    border-color 0.15s ease,
+    transform 0.15s ease;
+}
+
+.thumbBtn:hover {
+  opacity: 0.8;
+}
+
+.thumbBtn:active {
+  transform: scale(0.95);
+}
+
+.thumbBtn:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.5);
+  outline-offset: 1px;
+}
+
+.thumbActive {
+  opacity: 1;
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+.thumbBtn img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 0.3rem;
+}
+
+/* ===== Mobile ===== */
+@media (max-width: 767px) {
+  .closeButton {
+    top: 0.5rem;
+    right: 0.5rem;
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+
+  .navButton {
+    width: 2.5rem;
+    height: 2.5rem;
+    opacity: 0.6;
+  }
+
+  .overlay:hover .navButton {
+    opacity: 0.6;
+  }
+
+  .navButtonPrev {
+    left: 0.5rem;
+  }
+
+  .navButtonNext {
+    right: 0.5rem;
+  }
+
+  .imageWrapper {
+    width: 96vw;
+    height: 70vh;
+    max-width: 96vw;
+    max-height: 70vh;
+  }
+
+  .counter {
+    bottom: 5rem;
+    font-size: 0.7rem;
+  }
+
+  .caption {
+    bottom: 3rem;
+    font-size: 0.65rem;
+    white-space: normal;
+    padding: 0 2rem;
+  }
+
+  .thumbStrip {
+    bottom: 0.5rem;
+    gap: 0.3rem;
+    padding: 0.3rem 0.4rem;
+  }
+
+  .thumbBtn {
+    width: 2.75rem;
+    height: 2.75rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .imageWrapper {
+    width: min(88vw, 85rem);
+    height: min(85vh, 60rem);
+  }
+}

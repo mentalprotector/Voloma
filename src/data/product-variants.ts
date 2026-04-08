@@ -1,12 +1,24 @@
 import type { ProductVariant } from "@/types/product";
+import { getGalleryImages } from "@/lib/gallery-images";
 
 /**
  * Product variants for the new configurator model.
- * Updated to use the new shape/finish model.
- * Images are intentionally left empty — they will be added later.
+ *
+ * Images are only populated for variants that actually have files on disk.
+ * The matching logic falls back to a variant with images when the exact
+ * selection has none yet.
  */
+
+/** The single variant that currently has real photos */
+const squareNaturalStandardImages = getGalleryImages(
+  "square",
+  "m",
+  "natural",
+  "standard",
+);
+
 export const productVariants: ProductVariant[] = [
-  // Narrow (Узкое) — S, M, L
+  // Narrow (Узкое) — S, M, L  (no images yet)
   {
     id: "narrow-s-natural-standard",
     slug: "narrow-s-natural-standard",
@@ -15,7 +27,7 @@ export const productVariants: ProductVariant[] = [
     size: "s",
     finish: "natural",
     quality: "standard",
-    images: [],
+    images: [], // photos not yet available
     availability: "made_to_order",
     isCustomizable: true,
     dimensions: { length: 46, width: 23.5, height: 22 },
@@ -46,7 +58,7 @@ export const productVariants: ProductVariant[] = [
     isCustomizable: true,
     dimensions: { length: 86, width: 23.5, height: 22 },
   },
-  // Square (Квадратное) — single size
+  // Square (Квадратное) — single size, HAS REAL IMAGES
   {
     id: "square-m-natural-standard",
     slug: "square-m-natural-standard",
@@ -55,12 +67,12 @@ export const productVariants: ProductVariant[] = [
     size: "m",
     finish: "natural",
     quality: "standard",
-    images: [],
+    images: squareNaturalStandardImages,
     availability: "made_to_order",
     isCustomizable: true,
     dimensions: { length: 40, width: 40, height: 22 },
   },
-  // Rectangular (Прямоугольное) — single size
+  // Rectangular (Прямоугольное) — single size  (no images yet)
   {
     id: "rect-m-natural-standard",
     slug: "rect-m-natural-standard",

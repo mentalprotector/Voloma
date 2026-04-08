@@ -7,3 +7,14 @@ coverage
 *.tsbuildinfo
 .env*
 photo/
+
+# Raw originals (NEF/CR2/ARW) — not deployed
+**/originals/
+*.nef
+*.NEF
+*.cr2
+*.CR2
+*.arw
+*.ARW
+*.dng
+*.DNG

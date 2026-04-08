@@ -114,7 +114,8 @@ export function resolveVariantMatch(
   for (const strategy of strategies) {
     const matchedVariant = matchBy(variants, strategy.predicate);
 
-    if (matchedVariant) {
+    // Only return this match if it actually has images; otherwise keep falling back
+    if (matchedVariant && hasImages(matchedVariant)) {
       const galleryState = getGalleryState(strategy.type, matchedVariant);
 
       return {
@@ -133,6 +134,19 @@ export function resolveVariantMatch(
         placeholder,
       };
     }
+  }
+
+  // Final fallback: use any variant that has images
+  const anyWithImages = variants.find(hasImages) ?? null;
+  if (anyWithImages) {
+    return {
+      matchType: "none",
+      galleryState: "fallback",
+      matchedVariant: anyWithImages,
+      label: "Показан близкий вариант",
+      images: anyWithImages.images,
+      placeholder,
+    };
   }
 
   return {
