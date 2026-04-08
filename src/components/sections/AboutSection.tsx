@@ -20,7 +20,7 @@ export function AboutSection() {
             </div>
             <div className={styles.factCard}>
               <span className={styles.factValue}>3</span>
-              <span className={styles.factLabel}>базовых оттенка</span>
+              <span className={styles.factLabel}>варианта пропитки</span>
             </div>
             <div className={styles.factCard}>
               <span className={styles.factValue}>1</span>

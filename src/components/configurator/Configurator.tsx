@@ -22,19 +22,12 @@ const qualityLabels: Record<Quality, string> = {
   premium: "Премиум",
 };
 
-const finishLabelsShort: Record<Finish, string> = {
-  natural: "Без цветной обработки",
-  oak_stain: "Под дуб",
-  rosewood_stain: "Под палисандр",
-};
-
 export function Configurator() {
   const [shape, setShape] = useState<Shape>("narrow");
   const [size, setSize] = useState<Size>("m");
   const [finish, setFinish] = useState<Finish>("natural");
   const [quality, setQuality] = useState<Quality>("standard");
   const [wheels, setWheels] = useState(false);
-  const [hasFinishTreatment, setHasFinishTreatment] = useState(true);
   const [sheetOpen, setSheetOpen] = useState(false);
 
   const { vibrate } = useVibration();
@@ -55,7 +48,7 @@ export function Configurator() {
     () => ({
       shape,
       size: availableSizes,
-      color: "oak" as const, // legacy field kept for matching
+      color: "natural" as const,
       quality,
     }),
     [availableSizes, quality, shape],
@@ -64,7 +57,7 @@ export function Configurator() {
   const resolvedMatch = resolveVariantMatch(productVariants, selection);
   const total = calculateTotalPrice(shape, availableSizes, {
     quality,
-    hasFinish: hasFinishTreatment,
+    finish,
     hasWheels: wheels,
   });
 
@@ -77,8 +70,7 @@ export function Configurator() {
     parts.push(sizeLabels[availableSizes]);
   }
   parts.push(qualityLabels[quality]);
-  parts.push(finishLabelsShort[finish]);
-  parts.push(hasFinishTreatment ? "С отделкой" : "Без отделки");
+  parts.push(finishLabels[finish]);
   if (wheelsAvailable && wheels) {
     parts.push("Колёсики");
   }
@@ -86,12 +78,13 @@ export function Configurator() {
   const summaryLine = parts.join(" • ");
   const leadTime = "7–10 дней";
 
+  const finishLabel = finish === "natural" ? "Без отделки (натуральная сосна)" : finishLabels[finish];
+
   const orderMessage = `Здравствуйте!
 Хочу заказать кашпо Voloma:
 Модель: ${shapeLabels[shape]}${showSizeSelector ? " " + sizeLabels[availableSizes] : ""}
 Тип дерева: ${qualityLabels[quality]}
-Пропитка: ${finishLabels[finish]}
-Отделка: ${hasFinishTreatment ? "С отделкой" : "Без отделки (натуральная сосна)"}${wheelsAvailable && wheels ? "\nКолёсики: Да" : ""}
+Пропитка: ${finishLabel}${wheelsAvailable && wheels ? "\nКолёсики: Да" : ""}
 Ориентир по стоимости: ${total.toLocaleString("ru-RU")} ₽`;
 
   function handleShapeChange(nextShape: Shape) {
@@ -117,6 +110,7 @@ export function Configurator() {
   function handleFinishChange(nextFinish: Finish) {
     vibrate();
     setFinish(nextFinish);
+    pulse();
   }
 
   function handleQualityChange(nextQuality: Quality) {
@@ -128,12 +122,6 @@ export function Configurator() {
   function handleWheelsToggle() {
     vibrate();
     setWheels((current) => !current);
-    pulse();
-  }
-
-  function handleHasFinishToggle() {
-    vibrate();
-    setHasFinishTreatment((current) => !current);
     pulse();
   }
 
@@ -185,10 +173,8 @@ export function Configurator() {
 
           <ConfiguratorControls
             finish={finish}
-            hasFinishOption={hasFinishTreatment}
             onWheelsToggle={handleWheelsToggle}
             onFinishChange={handleFinishChange}
-            onHasFinishToggle={handleHasFinishToggle}
             onQualityChange={handleQualityChange}
             onShapeChange={handleShapeChange}
             onSizeChange={handleSizeChange}

@@ -466,33 +466,33 @@
 
   /* Desktop sticky CTA: primary accent */
   .desktopCta {
-    display: flex;
-    position: sticky;
-    bottom: 0;
-    z-index: 10;
-    flex-shrink: 0;
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
     align-items: center;
     justify-content: space-between;
-    gap: 1.25rem;
+    gap: 1rem;
     margin-top: auto;
-    padding: 1rem 1.35rem;
-    border-radius: 1rem 1rem 0 0;
+    padding: 0.85rem 1.25rem;
+    width: 100%;
+    box-sizing: border-box;
+    border-radius: 0.9rem;
     background: rgba(255, 255, 255, 0.96);
     backdrop-filter: blur(14px);
     -webkit-backdrop-filter: blur(14px);
-    border-top: 0.5px solid rgba(0, 0, 0, 0.06);
-    box-shadow: 0 -0.5rem 2rem rgba(0, 0, 0, 0.06);
+    border: 0.5px solid rgba(0, 0, 0, 0.06);
+    box-shadow: 0 -0.35rem 1.5rem rgba(0, 0, 0, 0.05);
   }
 
   .desktopCtaInfo {
     display: grid;
-    gap: 0.15rem;
+    gap: 0.12rem;
     min-width: 0;
   }
 
   .desktopCtaPrice {
     margin: 0;
-    font-size: 1.4rem;
+    font-size: 1.3rem;
     font-weight: 700;
     line-height: 1;
     letter-spacing: -0.02em;
@@ -500,7 +500,7 @@
 
   .desktopCtaSummary {
     margin: 0;
-    font-size: 0.75rem;
+    font-size: 0.72rem;
     color: var(--color-text-secondary);
     line-height: 1.3;
     white-space: nowrap;
@@ -510,7 +510,7 @@
 
   .desktopCtaMeta {
     margin: 0;
-    font-size: 0.72rem;
+    font-size: 0.68rem;
     color: var(--color-text-muted);
     line-height: 1.25;
   }
@@ -521,13 +521,13 @@
     justify-content: center;
     gap: 0.5rem;
     flex-shrink: 0;
-    padding: 0.9rem 1.6rem;
+    padding: 0.75rem 1.4rem;
     border: none;
-    border-radius: 0.9rem;
+    border-radius: 0.8rem;
     background: #1e1e1c;
     color: #fff;
     font: inherit;
-    font-size: 0.95rem;
+    font-size: 0.88rem;
     font-weight: 500;
     letter-spacing: -0.01em;
     transition:

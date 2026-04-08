@@ -27,8 +27,8 @@
 
 .trigger:hover,
 .trigger:focus-visible {
-  color: var(--color-text-secondary);
-  background: rgba(0, 0, 0, 0.04);
+  color: var(--color-text);
+  background: rgba(0, 0, 0, 0.06);
 }
 
 .icon {
@@ -36,45 +36,36 @@
   height: 100%;
 }
 
+/* ===== Desktop: fixed positioning to avoid clipping ===== */
 .popover {
-  position: absolute;
-  left: 50%;
-  bottom: calc(100% + 0.45rem);
-  transform: translateX(-50%);
-  z-index: 40;
-  max-width: 14rem;
-  padding: 0.5rem 0.65rem;
-  border-radius: 0.55rem;
-  background: #1e1e1c;
-  color: #fff;
-  font-size: 0.72rem;
-  line-height: 1.35;
+  position: fixed;
+  z-index: 200;
+  max-width: 16rem;
+  padding: 0.55rem 0.75rem;
+  border-radius: 0.65rem;
+  background: #f5f1ec;
+  color: var(--color-text);
+  font-size: 0.74rem;
+  line-height: 1.45;
   text-align: center;
   white-space: normal;
   word-break: break-word;
-  box-shadow: 0 0.35rem 1rem rgba(0, 0, 0, 0.18);
+  box-shadow:
+    0 0.5rem 1.2rem rgba(26, 19, 16, 0.12),
+    0 0.1rem 0.4rem rgba(26, 19, 16, 0.06);
+  border: 1px solid rgba(26, 19, 16, 0.06);
   animation: infoTooltipFade 120ms ease;
-  pointer-events: none;
-}
-
-.popover::after {
-  content: "";
-  position: absolute;
-  top: 100%;
-  left: 50%;
-  transform: translateX(-50%);
-  border: 0.35rem solid transparent;
-  border-top-color: #1e1e1c;
+  pointer-events: auto;
 }
 
 @keyframes infoTooltipFade {
   from {
     opacity: 0;
-    transform: translateX(-50%) translateY(4px);
+    transform: translateY(3px);
   }
   to {
     opacity: 1;
-    transform: translateX(-50%) translateY(0);
+    transform: translateY(0);
   }
 }
 
@@ -85,27 +76,24 @@
     left: 0.75rem;
     right: 0.75rem;
     bottom: calc(env(safe-area-inset-bottom) + 5.5rem);
-    transform: none;
     max-width: none;
-    border-radius: 0.75rem;
-    padding: 0.7rem 0.85rem;
-    font-size: 0.78rem;
-    line-height: 1.4;
+    border-radius: 0.85rem;
+    padding: 0.8rem 1rem;
+    font-size: 0.8rem;
+    line-height: 1.45;
+    background: #f5f1ec;
     box-shadow:
-      0 -0.35rem 1.5rem rgba(0, 0, 0, 0.12),
-      0 0.35rem 1rem rgba(0, 0, 0, 0.08);
+      0 -0.5rem 2rem rgba(26, 19, 16, 0.1),
+      0 0.15rem 0.5rem rgba(26, 19, 16, 0.06);
+    border: 1px solid rgba(26, 19, 16, 0.06);
     animation: infoTooltipSlideUp 150ms ease;
-  }
-
-  .popover::after {
-    display: none;
   }
 }
 
 @keyframes infoTooltipSlideUp {
   from {
     opacity: 0;
-    transform: translateY(8px);
+    transform: translateY(10px);
   }
   to {
     opacity: 1;

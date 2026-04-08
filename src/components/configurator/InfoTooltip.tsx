@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import styles from "./info-tooltip.module.css";
 
@@ -14,6 +14,25 @@ export function InfoTooltip({ text, children }: InfoTooltipProps) {
   const triggerRef = useRef<HTMLButtonElement>(null);
   const popoverRef = useRef<HTMLDivElement>(null);
   const isMobile = useRef(false);
+  const [popoverStyle, setPopoverStyle] = useState<React.CSSProperties>({});
+
+  const updatePosition = useCallback(() => {
+    const trigger = triggerRef.current;
+    const popover = popoverRef.current;
+    if (!trigger || !popover) return;
+
+    const rect = trigger.getBoundingClientRect();
+    const popoverRect = popover.getBoundingClientRect();
+
+    // Position above trigger on desktop, centered horizontally
+    const left = rect.left + rect.width / 2 - popoverRect.width / 2;
+    const top = rect.top - popoverRect.height - 8;
+
+    setPopoverStyle({
+      left: `${left}px`,
+      top: `${Math.max(8, top)}px`, // keep on screen
+    });
+  }, []);
 
   useEffect(() => {
     isMobile.current =
@@ -24,6 +43,9 @@ export function InfoTooltip({ text, children }: InfoTooltipProps) {
 
   useEffect(() => {
     if (!open) return;
+
+    // Position after popover is rendered
+    requestAnimationFrame(updatePosition);
 
     const handleOutside = (e: MouseEvent | TouchEvent) => {
       if (
@@ -43,13 +65,17 @@ export function InfoTooltip({ text, children }: InfoTooltipProps) {
     document.addEventListener("mousedown", handleOutside);
     document.addEventListener("touchstart", handleOutside);
     document.addEventListener("keydown", handleEsc);
+    window.addEventListener("scroll", updatePosition, { passive: true });
+    window.addEventListener("resize", updatePosition, { passive: true });
 
     return () => {
       document.removeEventListener("mousedown", handleOutside);
       document.removeEventListener("touchstart", handleOutside);
       document.removeEventListener("keydown", handleEsc);
+      window.removeEventListener("scroll", updatePosition);
+      window.removeEventListener("resize", updatePosition);
     };
-  }, [open]);
+  }, [open, updatePosition]);
 
   return (
     <span className={styles.wrapper}>
@@ -59,9 +85,15 @@ export function InfoTooltip({ text, children }: InfoTooltipProps) {
         type="button"
         className={styles.trigger}
         aria-label="Подробнее"
+        aria-expanded={open}
         onClick={() => setOpen((v) => !v)}
         onMouseEnter={() => {
-          if (!isMobile.current) setOpen(true);
+          if (!isMobile.current) {
+            requestAnimationFrame(() => {
+              updatePosition();
+              setOpen(true);
+            });
+          }
         }}
         onMouseLeave={() => {
           if (!isMobile.current) setOpen(false);
@@ -88,6 +120,7 @@ export function InfoTooltip({ text, children }: InfoTooltipProps) {
         <div
           ref={popoverRef}
           className={styles.popover}
+          style={isMobile.current ? undefined : popoverStyle}
           role="tooltip"
         >
           {text}

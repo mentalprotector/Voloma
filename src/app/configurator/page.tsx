@@ -7,7 +7,7 @@ import styles from "./page.module.css";
 export const metadata: Metadata = {
   title: "Конфигуратор кашпо",
   description:
-    "Простой конфигуратор Voloma: выбрать форму, размер, цвет, качество и отправить запрос в мессенджер.",
+    "Простой конфигуратор Voloma: выбрать форму, размер, пропитку, качество и отправить запрос в мессенджер.",
   openGraph: {
     title: "Конфигуратор Voloma",
     description:

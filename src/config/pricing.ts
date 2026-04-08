@@ -5,30 +5,10 @@
 import type { Finish, Quality, Shape, Size } from "@/types/product";
 
 /**
- * Price matrix: prices WITH finish (stain treatment)
- * Structure: [shape][quality][size] = price
- * For shapes with only one size, use "m" as the key.
- */
-export const PRICES_WITH_FINISH: Record<Shape, Record<Quality, Record<Size, number>>> = {
-  narrow: {
-    standard: { s: 2600, m: 2800, l: 3400 },
-    premium: { s: 3100, m: 3400, l: 4300 },
-  },
-  square: {
-    standard: { s: 3600, m: 3600, l: 3600 },
-    premium: { s: 4400, m: 4400, l: 4400 },
-  },
-  rect: {
-    standard: { s: 4900, m: 4900, l: 4900 },
-    premium: { s: 6200, m: 6200, l: 6200 },
-  },
-} as const;
-
-/**
- * Price matrix: prices WITHOUT finish (natural pine)
+ * Base prices by model (natural pine, no stain)
  * Structure: [shape][quality][size] = price
  */
-export const PRICES_WITHOUT_FINISH: Record<Shape, Record<Quality, Record<Size, number>>> = {
+export const BASE_PRICES: Record<Shape, Record<Quality, Record<Size, number>>> = {
   narrow: {
     standard: { s: 1900, m: 2000, l: 2500 },
     premium: { s: 2300, m: 2600, l: 3300 },
@@ -43,9 +23,10 @@ export const PRICES_WITHOUT_FINISH: Record<Shape, Record<Quality, Record<Size, n
   },
 } as const;
 
-/**
- * Wheels availability: narrow S does not support wheels
- */
+/** Surcharge for stain treatment (oak or rosewood) */
+export const STAIN_SURCHARGE = 800;
+
+/** Wheels availability: narrow S does not support wheels */
 export const WHEELS_AVAILABLE = (shape: Shape, size: Size): boolean =>
   !(shape === "narrow" && size === "s");
 
@@ -56,25 +37,33 @@ export function getBasePrice(
   shape: Shape,
   size: Size,
   quality: Quality,
-  hasFinish: boolean,
 ): number {
-  const matrix = hasFinish ? PRICES_WITH_FINISH : PRICES_WITHOUT_FINISH;
-  return matrix[shape][quality][size];
+  return BASE_PRICES[shape][quality][size];
+}
+
+/**
+ * Check if a finish option has a stain surcharge
+ */
+export function getFinishSurcharge(finish: Finish): number {
+  return finish === "natural" ? 0 : STAIN_SURCHARGE;
 }
 
 /**
  * Calculate total price with all options
- * Wheels add 0 ₽ (included in base price when selected)
+ * - Base price depends on shape + size + quality
+ * - Stain finish (oak/rosewood) adds +800 ₽
+ * - Wheels are free (included)
  */
 export function calculateTotalPrice(
   shape: Shape,
   size: Size,
   options: {
     quality: Quality;
-    hasFinish: boolean;
+    finish: Finish;
     hasWheels: boolean;
   },
 ): number {
-  // Wheels don't add extra cost — they're included
-  return getBasePrice(shape, size, options.quality, options.hasFinish);
+  const base = getBasePrice(shape, size, options.quality);
+  const surcharge = getFinishSurcharge(options.finish);
+  return base + surcharge;
 }

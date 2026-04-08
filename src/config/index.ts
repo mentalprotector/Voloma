@@ -4,14 +4,18 @@
 export {
   calculateTotalPrice,
   getBasePrice,
-  PRICES_WITH_FINISH,
-  PRICES_WITHOUT_FINISH,
+  getFinishSurcharge,
+  BASE_PRICES,
+  STAIN_SURCHARGE,
   WHEELS_AVAILABLE,
 } from "./pricing";
 export {
   SHAPE_AVAILABILITY,
+  EXTERNAL_DIMENSIONS,
+  INTERNAL_DIMENSIONS,
   getInitialSize,
   isSizeAvailable,
   getAvailableSizesForShape,
   hasSizeOptions,
+  getDimensions,
 } from "./availability";

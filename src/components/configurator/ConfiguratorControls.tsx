@@ -14,13 +14,11 @@ interface ConfiguratorControlsProps {
   finish: Finish;
   quality: Quality;
   wheels: boolean;
-  hasFinishOption: boolean;
   onShapeChange: (shape: Shape) => void;
   onSizeChange: (size: Size) => void;
   onFinishChange: (finish: Finish) => void;
   onQualityChange: (quality: Quality) => void;
   onWheelsToggle: () => void;
-  onHasFinishToggle: () => void;
 }
 
 const shapeIcons: Record<Shape, string> = {
@@ -35,6 +33,19 @@ const finishSwatchStyles: Record<Finish, string> = {
   rosewood_stain: "#6b3a2a",
 };
 
+/** Finish labels with optional price surcharge */
+const finishDisplayLabels: Record<Finish, string> = {
+  natural: "Без отделки",
+  oak_stain: "Под дуб +800 ₽",
+  rosewood_stain: "Под палисандр +800 ₽",
+};
+
+const finishHints: Record<Finish, string> = {
+  natural: "Натуральная сосна без дополнительной обработки",
+  oak_stain: "Декоративная пропитка под дуб. Доплата 800 ₽.",
+  rosewood_stain: "Декоративная пропитка под палисандр. Доплата 800 ₽.",
+};
+
 const wheelsHint = "Скрытые колёсики для удобного перемещения";
 
 export function ConfiguratorControls({
@@ -43,13 +54,11 @@ export function ConfiguratorControls({
   finish,
   quality,
   wheels,
-  hasFinishOption,
   onShapeChange,
   onSizeChange,
   onFinishChange,
   onQualityChange,
   onWheelsToggle,
-  onHasFinishToggle,
 }: ConfiguratorControlsProps) {
   const shapeOptions: Shape[] = ["narrow", "square", "rect"];
   const showSizeSelector = hasSizeOptions(shape);
@@ -136,16 +145,19 @@ export function ConfiguratorControls({
         </div>
       </section>
 
-      {/* Finish (stain color) */}
+      {/* Finish (stain/color treatment) — SINGLE option with 3 choices */}
       <section className={styles.optionGroup} aria-labelledby="config-finish-label">
-        <p className={styles.optionLabel} id="config-finish-label">
-          Пропитка (цвет)
-        </p>
+        <span className={styles.optionLabelWithHint}>
+          <p className={styles.optionLabel} id="config-finish-label">
+            Пропитка
+          </p>
+          <InfoTooltip text={finishHints[finish]} />
+        </span>
         <div className={[styles.optionControls, styles.swatchControls].join(" ")}>
           {FINISHES.map((item) => (
             <button
               key={item}
-              aria-label={finishLabels[item]}
+              aria-label={finishDisplayLabels[item]}
               aria-pressed={finish === item}
               className={styles.swatchButton}
               type="button"
@@ -155,38 +167,9 @@ export function ConfiguratorControls({
                 className={[styles.swatch, finish === item ? styles.swatchActive : ""].filter(Boolean).join(" ")}
                 style={{ background: finishSwatchStyles[item] }}
               />
-              <span className={styles.swatchLabel}>{finishLabels[item]}</span>
+              <span className={styles.swatchLabel}>{finishDisplayLabels[item]}</span>
             </button>
           ))}
-        </div>
-      </section>
-
-      {/* With / Without finish treatment */}
-      <section className={styles.optionGroup} aria-labelledby="config-has-finish-label">
-        <p className={styles.optionLabel} id="config-has-finish-label">
-          Отделка
-        </p>
-        <div className={[styles.optionControls, styles.chipControls].join(" ")}>
-          <button
-            aria-pressed={!hasFinishOption}
-            className={[styles.chip, !hasFinishOption ? styles.chipActive : ""].filter(Boolean).join(" ")}
-            type="button"
-            onClick={() => {
-              if (hasFinishOption) onHasFinishToggle();
-            }}
-          >
-            Без отделки (натуральная сосна)
-          </button>
-          <button
-            aria-pressed={hasFinishOption}
-            className={[styles.chip, hasFinishOption ? styles.chipActive : ""].filter(Boolean).join(" ")}
-            type="button"
-            onClick={() => {
-              if (!hasFinishOption) onHasFinishToggle();
-            }}
-          >
-            С отделкой (пропитка)
-          </button>
         </div>
       </section>
 
