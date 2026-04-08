@@ -1,66 +1,44 @@
-# Voloma Site - Deployment Guide
+# Voloma Deploy Cheatsheet
 
-## Server Info
-- **Host**: `192.168.28.90` (SSH: `matveyrl-1@192.168.28.90`)
-- **Public IP**: `94.140.224.220`
-- **URL**: https://voloma.94.140.224.220.sslip.io
+## Quick deploy (just say to Qwen)
+> "задеплой" / "deploy" / "обнови сайт"
 
-## Architecture
-```
-Internet
-  ↓
-Caddy (global-proxy container)
-  ↓ reverse proxy
-voloma-landing:3000 (Docker container on web_proxy network)
-```
-
-## Quick Deploy (PowerShell)
+## Manual steps
 ```powershell
-.\deploy.ps1
+# 1. Commit & push
+git add -A && git commit -m "message" && git push
+
+# 2. Build archive (no node_modules, .next, .git)
+tar czf voloma-deploy.tar.gz --exclude=node_modules --exclude=.next --exclude=.git --exclude=voloma-deploy.tar.gz .
+
+# 3. Upload to server
+scp voloma-deploy.tar.gz matveyrl-1@192.168.28.90:~/voloma-deploy.tar.gz
+
+# 4. Replace files + build Docker on server
+ssh matveyrl-1@192.168.28.90 "cd ~/voloma-current && rm -rf src components config content data lib types public deploy-remote.sh Dockerfile .dockerignore next.config.ts next-env.d.ts tsconfig.json package.json package-lock.json eslint.config.mjs README.md && cd ~ && tar xzf voloma-deploy.tar.gz -C ~/voloma-current/ && cd ~/voloma-current && docker build -t voloma-site ."
+
+# 5. Restart container
+ssh matveyrl-1@192.168.28.90 "cd ~/voloma-current && bash deploy-remote.sh"
 ```
 
-This will:
-1. Build Docker image locally
-2. Save and transfer to server
-3. Replace old container
-4. Reload Caddy
-
-## Manual Deploy
-```powershell
-# 1. Build
-docker build -t voloma-site .
-
-# 2. Transfer
-docker save voloma-site | ssh matveyrl-1@192.168.28.90 docker load
-
-# 3. SSH to server
-ssh matveyrl-1@192.168.28.90
-
-# 4. Deploy
-docker stop voloma-landing && docker rm voloma-landing
-docker run -d --name voloma-landing --network web_proxy --restart unless-stopped voloma-site:latest
-docker exec global-proxy caddy reload --config /etc/caddy/Caddyfile
-```
-
-## Caddy Config
-Located on server: `~/fitnessapp/docker/conf.d/voloma.caddy`
-```
-voloma.94.140.224.220.sslip.io {
-    reverse_proxy voloma-landing:3000
-}
-```
-
-## Useful Commands
+## Useful commands
 ```bash
-# Check logs
+# Check container status
+ssh matveyrl-1@192.168.28.90 "docker ps --filter name=voloma"
+
+# View logs
 ssh matveyrl-1@192.168.28.90 "docker logs -f voloma-landing"
 
-# Check status
-ssh matveyrl-1@192.168.28.90 "docker ps | grep voloma"
-
-# Restart
+# Restart only (no rebuild)
 ssh matveyrl-1@192.168.28.90 "docker restart voloma-landing"
 
 # Shell into container
 ssh matveyrl-1@192.168.28.90 "docker exec -it voloma-landing sh"
 ```
+
+## Server info
+- **SSH**: matveyrl-1@192.168.28.90
+- **URL**: https://voloma.94.140.224.220.sslip.io
+- **Sources**: ~/voloma-current/
+- **Container**: voloma-landing (Next.js, port 3000)
+- **Proxy**: Caddy (global-proxy container)
