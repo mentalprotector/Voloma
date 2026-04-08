@@ -2,7 +2,7 @@
 
 import { FINISHES, QUALITIES, SIZES, type Finish, type Quality, type Shape, type Size } from "@/types/product";
 import { finishLabels, qualityLabels, shapeLabels, sizeLabels, woodTypeHints } from "@/content/site-content";
-import { hasSizeOptions, isSizeAvailable } from "@/config/availability";
+import { getDimensions, hasSizeOptions, isSizeAvailable } from "@/config/availability";
 import { WHEELS_AVAILABLE } from "@/config/pricing";
 
 import { InfoTooltip } from "./InfoTooltip";
@@ -116,6 +116,25 @@ export function ConfiguratorControls({
           </div>
         </section>
       )}
+
+      {/* Dimensions info block */}
+      <section className={styles.dimensionsBlock} aria-label="Габариты">
+        <div className={styles.dimensionsGrid}>
+          <div className={styles.dimensionCard}>
+            <p className={styles.dimensionCardTitle}>Внешние габариты</p>
+            <p className={styles.dimensionCardValue}>
+              {getDimensions(shape, size).external.l} × {getDimensions(shape, size).external.w} × {getDimensions(shape, size).external.h} мм
+            </p>
+          </div>
+          <div className={styles.dimensionCard}>
+            <span className={styles.dimensionCardHint}>для подбора горшка</span>
+            <p className={styles.dimensionCardTitle}>Внутренние размеры</p>
+            <p className={styles.dimensionCardValue}>
+              {getDimensions(shape, size).internal.l} × {getDimensions(shape, size).internal.w} × {getDimensions(shape, size).internal.h} мм
+            </p>
+          </div>
+        </div>
+      </section>
 
       {/* Finish (stain color) */}
       <section className={styles.optionGroup} aria-labelledby="config-finish-label">
