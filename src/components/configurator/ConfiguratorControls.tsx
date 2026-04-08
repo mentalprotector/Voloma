@@ -1,8 +1,9 @@
 "use client";
 
-import { COLORS, QUALITIES, SIZES, type Color, type Quality, type Shape, type Size } from "@/types/product";
-import { colorLabels, shapeLabels, sizeLabels, woodTypeHints } from "@/content/site-content";
-import { isSizeAvailable } from "@/config/availability";
+import { FINISHES, QUALITIES, SIZES, type Finish, type Quality, type Shape, type Size } from "@/types/product";
+import { finishLabels, qualityLabels, shapeLabels, sizeLabels, woodTypeHints } from "@/content/site-content";
+import { hasSizeOptions, isSizeAvailable } from "@/config/availability";
+import { WHEELS_AVAILABLE } from "@/config/pricing";
 
 import { InfoTooltip } from "./InfoTooltip";
 import styles from "./configurator.module.css";
@@ -10,49 +11,49 @@ import styles from "./configurator.module.css";
 interface ConfiguratorControlsProps {
   shape: Shape;
   size: Size;
-  color: Color;
-  woodType: Quality;
+  finish: Finish;
+  quality: Quality;
   wheels: boolean;
+  hasFinishOption: boolean;
   onShapeChange: (shape: Shape) => void;
   onSizeChange: (size: Size) => void;
-  onColorChange: (color: Color) => void;
-  onWoodTypeChange: (woodType: Quality) => void;
+  onFinishChange: (finish: Finish) => void;
+  onQualityChange: (quality: Quality) => void;
   onWheelsToggle: () => void;
+  onHasFinishToggle: () => void;
 }
 
 const shapeIcons: Record<Shape, string> = {
+  narrow: styles.shapeIconLong,
   square: styles.shapeIconSquare,
   rect: styles.shapeIconRect,
-  long: styles.shapeIconLong,
 };
 
-const colorSwatchStyles: Record<Color, string> = {
-  oak: "#d4a96a",
-  walnut: "#7a4f2e",
-  charcoal: "#3a3a3a",
-};
-
-const woodTypeLabels: Record<Quality, string> = {
-  standard: "Стандарт",
-  premium: "Без сучков +800 ₽",
+const finishSwatchStyles: Record<Finish, string> = {
+  natural: "#e8d5b7",
+  oak_stain: "#c4a265",
+  rosewood_stain: "#6b3a2a",
 };
 
 const wheelsHint = "Скрытые колёсики для удобного перемещения";
-const sizeHint = "Подбирается автоматически в зависимости от формы";
 
 export function ConfiguratorControls({
   shape,
   size,
-  color,
-  woodType,
+  finish,
+  quality,
   wheels,
+  hasFinishOption,
   onShapeChange,
   onSizeChange,
-  onColorChange,
-  onWoodTypeChange,
+  onFinishChange,
+  onQualityChange,
   onWheelsToggle,
+  onHasFinishToggle,
 }: ConfiguratorControlsProps) {
-  const shapeOptions: Shape[] = ["square", "rect", "long"];
+  const shapeOptions: Shape[] = ["narrow", "square", "rect"];
+  const showSizeSelector = hasSizeOptions(shape);
+  const wheelsAvailable = WHEELS_AVAILABLE(shape, size);
 
   return (
     <div className={styles.selectors}>
@@ -82,120 +83,150 @@ export function ConfiguratorControls({
         </div>
       </section>
 
-      {/* Size */}
-      <section className={styles.optionGroup} aria-labelledby="config-size-label">
-        <span className={styles.optionLabelWithHint}>
+      {/* Size — only shown for shapes that have multiple sizes (narrow: S/M/L) */}
+      {showSizeSelector && (
+        <section className={styles.optionGroup} aria-labelledby="config-size-label">
           <p className={styles.optionLabel} id="config-size-label">
             Размер
           </p>
-          <InfoTooltip text={sizeHint} />
-        </span>
-        <div className={[styles.optionControls, styles.segmentedControls].join(" ")}>
-          {SIZES.map((item) => {
-            const isAvailable = isSizeAvailable(shape, item);
+          <div className={[styles.optionControls, styles.segmentedControls].join(" ")}>
+            {SIZES.map((item) => {
+              const isAvailable = isSizeAvailable(shape, item);
 
-            return (
-              <button
-                key={item}
-                aria-disabled={!isAvailable}
-                aria-pressed={size === item}
-                className={[
-                  styles.pill,
-                  size === item ? styles.pillActive : "",
-                  !isAvailable ? styles.pillDisabled : "",
-                ]
-                  .filter(Boolean)
-                  .join(" ")}
-                disabled={!isAvailable}
-                type="button"
-                onClick={() => onSizeChange(item)}
-              >
-                {sizeLabels[item]}
-              </button>
-            );
-          })}
-        </div>
-      </section>
+              return (
+                <button
+                  key={item}
+                  aria-disabled={!isAvailable}
+                  aria-pressed={size === item}
+                  className={[
+                    styles.pill,
+                    size === item ? styles.pillActive : "",
+                    !isAvailable ? styles.pillDisabled : "",
+                  ]
+                    .filter(Boolean)
+                    .join(" ")}
+                  disabled={!isAvailable}
+                  type="button"
+                  onClick={() => onSizeChange(item)}
+                >
+                  {sizeLabels[item]}
+                </button>
+              );
+            })}
+          </div>
+        </section>
+      )}
 
-      {/* Color */}
-      <section className={styles.optionGroup} aria-labelledby="config-color-label">
-        <p className={styles.optionLabel} id="config-color-label">
-          Цвет
+      {/* Finish (stain color) */}
+      <section className={styles.optionGroup} aria-labelledby="config-finish-label">
+        <p className={styles.optionLabel} id="config-finish-label">
+          Пропитка (цвет)
         </p>
         <div className={[styles.optionControls, styles.swatchControls].join(" ")}>
-          {COLORS.map((item) => (
+          {FINISHES.map((item) => (
             <button
               key={item}
-              aria-label={colorLabels[item]}
-              aria-pressed={color === item}
+              aria-label={finishLabels[item]}
+              aria-pressed={finish === item}
               className={styles.swatchButton}
               type="button"
-              onClick={() => onColorChange(item)}
+              onClick={() => onFinishChange(item)}
             >
               <span
-                className={[styles.swatch, color === item ? styles.swatchActive : ""].filter(Boolean).join(" ")}
-                style={{ background: colorSwatchStyles[item] }}
+                className={[styles.swatch, finish === item ? styles.swatchActive : ""].filter(Boolean).join(" ")}
+                style={{ background: finishSwatchStyles[item] }}
               />
-              <span className={styles.swatchLabel}>{colorLabels[item]}</span>
+              <span className={styles.swatchLabel}>{finishLabels[item]}</span>
             </button>
           ))}
         </div>
       </section>
 
-      {/* Quality — compact chips */}
+      {/* With / Without finish treatment */}
+      <section className={styles.optionGroup} aria-labelledby="config-has-finish-label">
+        <p className={styles.optionLabel} id="config-has-finish-label">
+          Отделка
+        </p>
+        <div className={[styles.optionControls, styles.chipControls].join(" ")}>
+          <button
+            aria-pressed={!hasFinishOption}
+            className={[styles.chip, !hasFinishOption ? styles.chipActive : ""].filter(Boolean).join(" ")}
+            type="button"
+            onClick={() => {
+              if (hasFinishOption) onHasFinishToggle();
+            }}
+          >
+            Без отделки (натуральная сосна)
+          </button>
+          <button
+            aria-pressed={hasFinishOption}
+            className={[styles.chip, hasFinishOption ? styles.chipActive : ""].filter(Boolean).join(" ")}
+            type="button"
+            onClick={() => {
+              if (!hasFinishOption) onHasFinishToggle();
+            }}
+          >
+            С отделкой (пропитка)
+          </button>
+        </div>
+      </section>
+
+      {/* Quality — Standard / Premium */}
       <section className={styles.optionGroup} aria-labelledby="config-quality-label">
         <span className={styles.optionLabelWithHint}>
           <p className={styles.optionLabel} id="config-quality-label">
             Тип дерева
           </p>
-          <InfoTooltip text={woodTypeHints[woodType]} />
+          <InfoTooltip text={woodTypeHints[quality]} />
         </span>
         <div className={[styles.optionControls, styles.chipControls].join(" ")}>
           {QUALITIES.map((item) => (
             <button
               key={item}
-              aria-pressed={woodType === item}
-              className={[styles.chip, woodType === item ? styles.chipActive : ""].filter(Boolean).join(" ")}
+              aria-pressed={quality === item}
+              className={[styles.chip, quality === item ? styles.chipActive : ""].filter(Boolean).join(" ")}
               type="button"
-              onClick={() => onWoodTypeChange(item)}
+              onClick={() => onQualityChange(item)}
             >
-              {woodTypeLabels[item]}
+              {qualityLabels[item]}
             </button>
           ))}
         </div>
       </section>
 
-      {/* Wheels — compact chip */}
-      <section className={styles.optionGroup} aria-labelledby="config-wheels-label">
-        <span className={styles.optionLabelWithHint}>
-          <p className={styles.optionLabel} id="config-wheels-label">
-            Колёсики
-          </p>
-          <InfoTooltip text={wheelsHint} />
-        </span>
-        <div className={[styles.optionControls, styles.chipControls].join(" ")}>
-          <button
-            aria-pressed={!wheels}
-            className={[styles.chip, !wheels ? styles.chipActive : ""].filter(Boolean).join(" ")}
-            type="button"
-            onClick={() => {
-              if (wheels) onWheelsToggle();
-            }}
-          >
-            Нет
-          </button>
-          <button
-            aria-pressed={wheels}
-            className={[styles.chip, wheels ? styles.chipActive : ""].filter(Boolean).join(" ")}
-            type="button"
-            onClick={() => {
-              if (!wheels) onWheelsToggle();
-            }}
-          >
-            Есть +500 ₽
-          </button>
-        </div>
-      </section>
+      {/* Wheels — hidden for narrow S */}
+      {wheelsAvailable && (
+        <section className={styles.optionGroup} aria-labelledby="config-wheels-label">
+          <span className={styles.optionLabelWithHint}>
+            <p className={styles.optionLabel} id="config-wheels-label">
+              Колёсики
+            </p>
+            <InfoTooltip text={wheelsHint} />
+          </span>
+          <div className={[styles.optionControls, styles.chipControls].join(" ")}>
+            <button
+              aria-pressed={!wheels}
+              className={[styles.chip, !wheels ? styles.chipActive : ""].filter(Boolean).join(" ")}
+              type="button"
+              onClick={() => {
+                if (wheels) onWheelsToggle();
+              }}
+            >
+              Нет
+            </button>
+            <button
+              aria-pressed={wheels}
+              className={[styles.chip, wheels ? styles.chipActive : ""].filter(Boolean).join(" ")}
+              type="button"
+              onClick={() => {
+                if (!wheels) onWheelsToggle();
+              }}
+            >
+              Есть
+            </button>
+          </div>
+        </section>
+      )}
     </div>
   );
 }

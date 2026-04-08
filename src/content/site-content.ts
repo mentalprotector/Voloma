@@ -1,4 +1,4 @@
-import type { Color, Quality, Shape, Size } from "@/types/product";
+import type { Finish, Quality, Shape, Size } from "@/types/product";
 
 export type FeatureImageTone = "sand" | "linen" | "clay" | "mist" | "forest";
 
@@ -112,9 +112,9 @@ export const siteContent = {
 };
 
 export const shapeLabels: Record<Shape, string> = {
+  narrow: "Узкое",
   square: "Квадратное",
   rect: "Прямоугольное",
-  long: "Длинное",
 };
 
 export const sizeLabels: Record<Size, string> = {
@@ -123,20 +123,21 @@ export const sizeLabels: Record<Size, string> = {
   l: "L",
 };
 
-export const colorLabels: Record<Color, string> = {
-  oak: "Дуб",
-  walnut: "Орех",
-  charcoal: "Графит",
+/** Labels for the stain finish options */
+export const finishLabels: Record<Finish, string> = {
+  natural: "Без цветной обработки",
+  oak_stain: "Под дуб",
+  rosewood_stain: "Под палисандр",
 };
 
 export const qualityLabels: Record<Quality, string> = {
-  standard: "Standard",
-  premium: "Premium",
+  standard: "Стандарт",
+  premium: "Премиум",
 };
 
 export const woodTypeHints: Record<Quality, string> = {
-  standard: "Натуральная фактура дерева, допускаются сучки",
-  premium: "Более ровная и однородная поверхность",
+  standard: "Естественный рисунок дерева, допустимы сучки",
+  premium: "Более однородная поверхность, минимум сучков",
 };
 
 export const availabilityLabels = {

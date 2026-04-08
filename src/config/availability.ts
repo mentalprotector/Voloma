@@ -6,9 +6,9 @@ import type { Shape, Size } from "@/types/product";
 
 /** Available sizes for each shape */
 export const SHAPE_AVAILABILITY: Record<Shape, Size[]> = {
+  narrow: ["s", "m", "l"],
   square: ["m"],
   rect: ["m"],
-  long: ["s", "m", "l"],
 } as const;
 
 /**
@@ -30,4 +30,11 @@ export function isSizeAvailable(shape: Shape, size: Size): boolean {
  */
 export function getAvailableSizesForShape(shape: Shape): Size[] {
   return SHAPE_AVAILABILITY[shape];
+}
+
+/**
+ * Check if the shape has multiple size options (used to decide whether to show size selector)
+ */
+export function hasSizeOptions(shape: Shape): boolean {
+  return SHAPE_AVAILABILITY[shape].length > 1;
 }

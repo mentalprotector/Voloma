@@ -2,32 +2,39 @@
 
 import { useMemo, useState } from "react";
 
-import { getInitialSize, isSizeAvailable } from "@/config/availability";
-import { calculateTotalPrice } from "@/config/pricing";
-import { colorLabels, shapeLabels, sizeLabels } from "@/content/site-content";
+import { getInitialSize, hasSizeOptions, isSizeAvailable } from "@/config/availability";
+import { calculateTotalPrice, WHEELS_AVAILABLE } from "@/config/pricing";
+import { finishLabels, shapeLabels, sizeLabels } from "@/content/site-content";
 import { productVariants } from "@/data/product-variants";
 import { useCopyToClipboard, usePriceAnimation, useVibration } from "@/hooks";
 import { buildMessengerUrl } from "@/lib/messenger-links";
 import { resolveVariantMatch } from "@/lib/product-matching";
 import type { MessengerKey } from "@/types/messenger";
-import type { Color, Quality, Shape, Size } from "@/types/product";
+import type { Finish, Quality, Shape, Size } from "@/types/product";
 
 import { ConfiguratorControls } from "./ConfiguratorControls";
 import { ImageGallery } from "./ImageGallery";
 import { StickyMobileCTA } from "./StickyMobileCTA";
 import styles from "./configurator.module.css";
 
-const woodTypeLabels: Record<Quality, string> = {
+const qualityLabels: Record<Quality, string> = {
   standard: "Стандарт",
-  premium: "Без сучков +800 ₽",
+  premium: "Премиум",
+};
+
+const finishLabelsShort: Record<Finish, string> = {
+  natural: "Без цветной обработки",
+  oak_stain: "Под дуб",
+  rosewood_stain: "Под палисандр",
 };
 
 export function Configurator() {
-  const [shape, setShape] = useState<Shape>("rect");
+  const [shape, setShape] = useState<Shape>("narrow");
   const [size, setSize] = useState<Size>("m");
-  const [color, setColor] = useState<Color>("oak");
-  const [woodType, setWoodType] = useState<Quality>("standard");
+  const [finish, setFinish] = useState<Finish>("natural");
+  const [quality, setQuality] = useState<Quality>("standard");
   const [wheels, setWheels] = useState(false);
+  const [hasFinishTreatment, setHasFinishTreatment] = useState(true);
   const [sheetOpen, setSheetOpen] = useState(false);
 
   const { vibrate } = useVibration();
@@ -48,31 +55,43 @@ export function Configurator() {
     () => ({
       shape,
       size: availableSizes,
-      color,
-      quality: woodType,
+      color: "oak" as const, // legacy field kept for matching
+      quality,
     }),
-    [availableSizes, color, shape, woodType],
+    [availableSizes, quality, shape],
   );
 
   const resolvedMatch = resolveVariantMatch(productVariants, selection);
   const total = calculateTotalPrice(shape, availableSizes, {
-    isPremiumWood: woodType === "premium",
+    quality,
+    hasFinish: hasFinishTreatment,
     hasWheels: wheels,
   });
 
-  const summaryLine = `${shapeLabels[shape]} · ${sizeLabels[availableSizes]} · ${colorLabels[color]}`;
+  const showSizeSelector = hasSizeOptions(shape);
+  const wheelsAvailable = WHEELS_AVAILABLE(shape, availableSizes);
+
+  // Build summary line
+  const parts = [`${shapeLabels[shape]}`];
+  if (showSizeSelector) {
+    parts.push(sizeLabels[availableSizes]);
+  }
+  parts.push(qualityLabels[quality]);
+  parts.push(finishLabelsShort[finish]);
+  parts.push(hasFinishTreatment ? "С отделкой" : "Без отделки");
+  if (wheelsAvailable && wheels) {
+    parts.push("Колёсики");
+  }
+
+  const summaryLine = parts.join(" • ");
   const leadTime = "7–10 дней";
-  const wheelsLabel = wheels ? "+ колёсики" : null;
-  const summaryMeta = [wheelsLabel, leadTime].filter(Boolean).join(" · ");
-  const placeholderSubtitle = `${shapeLabels[shape]} · ${sizeLabels[availableSizes]} · ${colorLabels[color]}`;
 
   const orderMessage = `Здравствуйте!
 Хочу заказать кашпо Voloma:
-Форма: ${shapeLabels[shape]}
-Размер: ${sizeLabels[availableSizes]}
-Цвет: ${colorLabels[color]}
-Тип дерева: ${woodTypeLabels[woodType]}
-Колёсики: ${wheels ? "Да" : "Нет"}
+Модель: ${shapeLabels[shape]}${showSizeSelector ? " " + sizeLabels[availableSizes] : ""}
+Тип дерева: ${qualityLabels[quality]}
+Пропитка: ${finishLabels[finish]}
+Отделка: ${hasFinishTreatment ? "С отделкой" : "Без отделки (натуральная сосна)"}${wheelsAvailable && wheels ? "\nКолёсики: Да" : ""}
 Ориентир по стоимости: ${total.toLocaleString("ru-RU")} ₽`;
 
   function handleShapeChange(nextShape: Shape) {
@@ -95,20 +114,26 @@ export function Configurator() {
     pulse();
   }
 
-  function handleColorChange(nextColor: Color) {
+  function handleFinishChange(nextFinish: Finish) {
     vibrate();
-    setColor(nextColor);
+    setFinish(nextFinish);
   }
 
-  function handleWoodTypeChange(nextWoodType: Quality) {
+  function handleQualityChange(nextQuality: Quality) {
     vibrate();
-    setWoodType(nextWoodType);
+    setQuality(nextQuality);
     pulse();
   }
 
   function handleWheelsToggle() {
     vibrate();
     setWheels((current) => !current);
+    pulse();
+  }
+
+  function handleHasFinishToggle() {
+    vibrate();
+    setHasFinishTreatment((current) => !current);
     pulse();
   }
 
@@ -137,11 +162,11 @@ export function Configurator() {
       <section className={styles.mediaColumn} aria-label="Фото кашпо">
         <div className={styles.mediaFrame}>
           <ImageGallery
-            key={resolvedMatch.matchedVariant?.slug ?? `${shape}-${availableSizes}-${color}-${woodType}`}
+            key={resolvedMatch.matchedVariant?.slug ?? `${shape}-${availableSizes}-${finish}-${quality}`}
             images={resolvedMatch.images}
             note={resolvedMatch.galleryState === "fallback" ? "Показан близкий вариант из каталога" : null}
             placeholderTitle="Ваше кашпо"
-            placeholderSubtitle={placeholderSubtitle}
+            placeholderSubtitle={`${shapeLabels[shape]}${showSizeSelector ? " " + sizeLabels[availableSizes] : ""}`}
             state={resolvedMatch.galleryState}
           />
         </div>
@@ -159,16 +184,18 @@ export function Configurator() {
           </div>
 
           <ConfiguratorControls
-            color={color}
-            onColorChange={handleColorChange}
+            finish={finish}
+            hasFinishOption={hasFinishTreatment}
+            onWheelsToggle={handleWheelsToggle}
+            onFinishChange={handleFinishChange}
+            onHasFinishToggle={handleHasFinishToggle}
+            onQualityChange={handleQualityChange}
             onShapeChange={handleShapeChange}
             onSizeChange={handleSizeChange}
-            onWoodTypeChange={handleWoodTypeChange}
-            onWheelsToggle={handleWheelsToggle}
+            quality={quality}
             shape={shape}
             size={availableSizes}
             wheels={wheels}
-            woodType={woodType}
           />
 
           {/* Desktop sticky CTA */}
@@ -210,7 +237,7 @@ export function Configurator() {
         pricePulseKey={0}
         productName="Кашпо Voloma"
         selectionLine={summaryLine}
-        summaryMeta={summaryMeta}
+        summaryMeta={leadTime}
         onClose={() => setSheetOpen(false)}
         onCopyMessage={handleCopyMessage}
         onMessengerClick={handleMessengerClick}

@@ -1,5 +1,6 @@
-import { colorLabels, qualityLabels, shapeLabels, sizeLabels } from "@/content/site-content";
+import { finishLabels, qualityLabels, shapeLabels, sizeLabels } from "@/content/site-content";
 import type {
+  Finish,
   GalleryState,
   MatchType,
   PlaceholderGalleryData,
@@ -9,9 +10,10 @@ import type {
 } from "@/types/product";
 
 function buildVariantTitle(selection: VariantSelection) {
-  return `${shapeLabels[selection.shape]} кашпо ${sizeLabels[selection.size]}, ${colorLabels[
-    selection.color
-  ].toLowerCase()}, ${qualityLabels[selection.quality].toLowerCase()}`;
+  const finishValue = selection.color as Finish;
+  return `${shapeLabels[selection.shape]} кашпо ${sizeLabels[selection.size]}, ${finishLabels[
+    finishValue
+  ]?.toLowerCase() ?? selection.color}, ${qualityLabels[selection.quality].toLowerCase()}`;
 }
 
 export function selectionToSlug(selection: VariantSelection) {
@@ -85,7 +87,7 @@ export function resolveVariantMatch(
       predicate: (variant) =>
         variant.shape === selection.shape &&
         variant.size === selection.size &&
-        variant.color === selection.color &&
+        variant.finish === selection.color &&
         variant.quality === selection.quality,
     },
     {
@@ -94,13 +96,13 @@ export function resolveVariantMatch(
       predicate: (variant) =>
         variant.shape === selection.shape &&
         variant.size === selection.size &&
-        variant.color === selection.color,
+        variant.finish === selection.color,
     },
     {
       type: "shape_color",
       label: "Показаны фото близкого варианта, размер или оттенок может отличаться.",
       predicate: (variant) =>
-        variant.shape === selection.shape && variant.color === selection.color,
+        variant.shape === selection.shape && variant.finish === selection.color,
     },
     {
       type: "shape_only",

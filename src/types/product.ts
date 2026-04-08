@@ -1,12 +1,13 @@
-export const SHAPES = ["square", "rect", "long"] as const;
+export const SHAPES = ["narrow", "square", "rect"] as const;
 export const SIZES = ["s", "m", "l"] as const;
-export const COLORS = ["oak", "walnut", "charcoal"] as const;
+/** Finish option: stain color for the wood treatment */
+export const FINISHES = ["natural", "oak_stain", "rosewood_stain"] as const;
 export const QUALITIES = ["standard", "premium"] as const;
 export const AVAILABILITY = ["in_stock", "made_to_order", "preorder"] as const;
 
 export type Shape = (typeof SHAPES)[number];
 export type Size = (typeof SIZES)[number];
-export type Color = (typeof COLORS)[number];
+export type Finish = (typeof FINISHES)[number];
 export type Quality = (typeof QUALITIES)[number];
 export type Availability = (typeof AVAILABILITY)[number];
 
@@ -27,7 +28,7 @@ export interface ProductVariant {
   title: string;
   shape: Shape;
   size: Size;
-  color: Color;
+  finish: Finish;
   quality: Quality;
   images: ProductImage[];
   price?: number;
@@ -39,7 +40,8 @@ export interface ProductVariant {
 export interface VariantSelection {
   shape: Shape;
   size: Size;
-  color: Color;
+  /** Legacy field name — now holds a Finish value as string */
+  color: string;
   quality: Quality;
 }
 

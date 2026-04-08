@@ -4,7 +4,7 @@
  * These functions analyze the product variants and determine which options
  * (shapes, sizes, colors, qualities) are available given the current selection.
  */
-import type { Color, ProductVariant, Quality, Shape, Size, VariantSelection } from "@/types/product";
+import type { Finish, ProductVariant, Quality, Shape, Size, VariantSelection } from "@/types/product";
 
 /**
  * Create a VariantSelection from a ProductVariant
@@ -13,7 +13,7 @@ export function createSelectionFromVariant(variant: ProductVariant): VariantSele
   return {
     shape: variant.shape,
     size: variant.size,
-    color: variant.color,
+    color: variant.finish,
     quality: variant.quality,
   };
 }
@@ -42,37 +42,37 @@ export function getAvailableSizes(variants: ProductVariant[], shape: Shape): Siz
 }
 
 /**
- * Get colors available for a specific shape and size combination
+ * Get finishes available for a specific shape and size combination
  */
-export function getAvailableColors(
+export function getAvailableFinishes(
   variants: ProductVariant[],
   shape: Shape,
   size: Size,
-): Color[] {
+): Finish[] {
   return Array.from(
     new Set(
       variants
         .filter((variant) => variant.shape === shape && variant.size === size)
-        .map((variant) => variant.color),
+        .map((variant) => variant.finish),
     ),
-  ) as Color[];
+  ) as Finish[];
 }
 
 /**
- * Get qualities (standard/premium) available for a specific shape, size, and color
+ * Get qualities (standard/premium) available for a specific shape, size, and finish
  */
 export function getAvailableQualities(
   variants: ProductVariant[],
   shape: Shape,
   size: Size,
-  color: Color,
+  finish: Finish,
 ): Quality[] {
   return Array.from(
     new Set(
       variants
         .filter(
           (variant) =>
-            variant.shape === shape && variant.size === size && variant.color === color,
+            variant.shape === shape && variant.size === size && variant.finish === finish,
         )
         .map((variant) => variant.quality),
     ),
@@ -94,10 +94,12 @@ export function reconcileSelection(
   const availableSizes = getAvailableSizes(variants, shape);
   const size = availableSizes.includes(selection.size) ? selection.size : availableSizes[0];
 
-  const availableColors = getAvailableColors(variants, shape, size);
-  const color = availableColors.includes(selection.color) ? selection.color : availableColors[0];
+  const availableFinishes = getAvailableFinishes(variants, shape, size);
+  const color = availableFinishes.includes(selection.color as Finish)
+    ? selection.color
+    : String(availableFinishes[0]);
 
-  const availableQualities = getAvailableQualities(variants, shape, size, color);
+  const availableQualities = getAvailableQualities(variants, shape, size, selection.color as Finish);
   const quality = availableQualities.includes(selection.quality)
     ? selection.quality
     : availableQualities[0];
