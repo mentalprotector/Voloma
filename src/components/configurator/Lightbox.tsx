@@ -36,6 +36,30 @@ export function Lightbox({ images, initialIndex, caption, onClose }: LightboxPro
     requestAnimationFrame(() => setIsOpen(true));
   }, []);
 
+  // Lock body scroll on iOS Safari and other browsers
+  useEffect(() => {
+    const html = document.documentElement;
+    const body = document.body;
+    const scrollY = window.scrollY;
+
+    // Store current scroll position
+    html.style.scrollBehavior = "auto";
+    body.style.position = "fixed";
+    body.style.top = `-${scrollY}px`;
+    body.style.width = "100%";
+    body.style.overflowY = "scroll";
+
+    return () => {
+      body.style.position = "";
+      body.style.top = "";
+      body.style.width = "";
+      body.style.overflowY = "";
+      html.style.scrollBehavior = "";
+      // Restore scroll position
+      window.scrollTo(0, scrollY);
+    };
+  }, []);
+
   // Keyboard navigation
   const handleClose = useCallback(() => {
     setIsClosing(true);
@@ -59,10 +83,8 @@ export function Lightbox({ images, initialIndex, caption, onClose }: LightboxPro
     }
 
     window.addEventListener("keydown", handleKey);
-    document.body.style.overflow = "hidden";
     return () => {
       window.removeEventListener("keydown", handleKey);
-      document.body.style.overflow = "";
     };
   }, [handleClose]);
 
@@ -171,7 +193,7 @@ export function Lightbox({ images, initialIndex, caption, onClose }: LightboxPro
       aria-modal="true"
       aria-label={`Просмотр фото ${currentIndex + 1} из ${images.length}`}
       onClick={(e) => {
-        if (e.target === containerRef.current) handleClose();
+        if (e.target === e.currentTarget) handleClose();
       }}
     >
       {/* Close button */}
@@ -179,7 +201,10 @@ export function Lightbox({ images, initialIndex, caption, onClose }: LightboxPro
         className={styles.closeButton}
         type="button"
         aria-label="Закрыть"
-        onClick={handleClose}
+        onClick={(e) => {
+          e.stopPropagation();
+          handleClose();
+        }}
       >
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path

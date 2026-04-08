@@ -269,16 +269,48 @@
 /* ===== Mobile ===== */
 @media (max-width: 767px) {
   .grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 0.35rem;
+    display: none;
   }
 
   .gridLabel {
-    opacity: 1;
+    opacity: 0;
+  }
+
+  .heroSection {
+    width: 100%;
+  }
+
+  .heroStage {
+    height: auto;
+    aspect-ratio: 4 / 3;
   }
 
   .heroButton {
-    min-height: 180px;
+    min-height: unset;
+    width: 100%;
+    height: 100%;
+  }
+
+  .heroImage {
+    object-fit: cover;
+  }
+
+  .counter {
+    right: 0.5rem;
+    bottom: 0.5rem;
+    font-size: 0.6rem;
+  }
+
+  .heroOverlay {
+    opacity: 0.8;
+    top: 0.5rem;
+    right: 0.5rem;
+    width: 2rem;
+    height: 2rem;
+  }
+
+  .thumbs {
+    display: none;
   }
 }
 

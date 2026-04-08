@@ -122,9 +122,12 @@ export function InfoTooltip({ text, children }: InfoTooltipProps) {
           className={styles.popover}
           style={isMobile.current ? undefined : popoverStyle}
           role="tooltip"
-        >
-          {text}
-        </div>
+          dangerouslySetInnerHTML={{
+            __html: text
+              .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
+              .replace(/\n/g, "<br/>"),
+          }}
+        />
       )}
     </span>
   );
