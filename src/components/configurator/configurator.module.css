@@ -45,7 +45,7 @@
   .mediaFrame {
     height: auto;
     max-height: none;
-    min-height: unset;
+    min-height: 35vh;
   }
 }
 
@@ -60,13 +60,20 @@
 }
 
 /* ===== Top summary bar (simplified, lightweight) ===== */
+/* Hidden on mobile — price/summary only in sticky bottom CTA */
 .topBar {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 0.5rem;
-  padding: 0.4rem 0 0.25rem;
-  margin-bottom: 0;
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .topBar {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.5rem;
+    padding: 0.4rem 0 0.25rem;
+    margin-bottom: 0;
+  }
 }
 
 .topBarTitle {
@@ -356,6 +363,16 @@
 .dimSep {
   color: #ddd;
   font-size: 13px;
+}
+
+/* ===== Micro-note: no wheels for narrow S ===== */
+.noWheelsNote {
+  margin: 0;
+  padding: 0.25rem 0 0.5rem;
+  font-size: 0.68rem;
+  color: var(--color-text-muted);
+  line-height: 1.3;
+  font-style: italic;
 }
 
 /* ===== Desktop CTA ===== */

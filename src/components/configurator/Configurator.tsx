@@ -3,7 +3,7 @@
 import { useMemo, useState } from "react";
 
 import { getInitialSize, hasSizeOptions, isSizeAvailable } from "@/config/availability";
-import { calculateTotalPrice, WHEELS_AVAILABLE } from "@/config/pricing";
+import { calculateTotalPrice } from "@/config/pricing";
 import { finishLabels, shapeLabels, sizeLabels } from "@/content/site-content";
 import { productVariants } from "@/data/product-variants";
 import { useCopyToClipboard, usePriceAnimation, useVibration } from "@/hooks";
@@ -27,7 +27,6 @@ export function Configurator() {
   const [size, setSize] = useState<Size>("m");
   const [finish, setFinish] = useState<Finish>("natural");
   const [quality, setQuality] = useState<Quality>("standard");
-  const [wheels, setWheels] = useState(false);
   const [sheetOpen, setSheetOpen] = useState(false);
 
   const { vibrate } = useVibration();
@@ -58,11 +57,10 @@ export function Configurator() {
   const total = calculateTotalPrice(shape, availableSizes, {
     quality,
     finish,
-    hasWheels: wheels,
+    hasWheels: false,
   });
 
   const showSizeSelector = hasSizeOptions(shape);
-  const wheelsAvailable = WHEELS_AVAILABLE(shape, availableSizes);
 
   // Build summary line — only join non-empty values
   const summaryParts = [
@@ -70,7 +68,6 @@ export function Configurator() {
     showSizeSelector ? sizeLabels[availableSizes] : "",
     qualityLabels[quality],
     finishLabels[finish],
-    wheelsAvailable && wheels ? "Колёсики" : "",
   ].filter(Boolean);
 
   const summaryLine = summaryParts.join(" • ");
@@ -82,7 +79,7 @@ export function Configurator() {
 Хочу заказать кашпо Voloma:
 Модель: ${shapeLabels[shape]}${showSizeSelector ? " " + sizeLabels[availableSizes] : ""}
 Тип дерева: ${qualityLabels[quality]}
-Пропитка: ${finishLabel}${wheelsAvailable && wheels ? "\nКолёсики: Да" : ""}
+Пропитка: ${finishLabel}
 Ориентир по стоимости: ${total.toLocaleString("ru-RU")} ₽`;
 
   function handleShapeChange(nextShape: Shape) {
@@ -114,12 +111,6 @@ export function Configurator() {
   function handleQualityChange(nextQuality: Quality) {
     vibrate();
     setQuality(nextQuality);
-    pulse();
-  }
-
-  function handleWheelsToggle() {
-    vibrate();
-    setWheels((current) => !current);
     pulse();
   }
 
@@ -162,7 +153,7 @@ export function Configurator() {
       {/* Controls */}
       <section className={styles.controlsColumn} aria-label="Параметры кашпо">
         <div className={styles.controls}>
-          {/* Top summary bar */}
+          {/* Desktop top summary bar — hidden on mobile */}
           <div className={styles.topBar}>
             <p className={styles.topBarTitle}>Кашпо Voloma</p>
             <p className={styles.topBarPriceSecondary}>
@@ -172,7 +163,6 @@ export function Configurator() {
 
           <ConfiguratorControls
             finish={finish}
-            onWheelsToggle={handleWheelsToggle}
             onFinishChange={handleFinishChange}
             onQualityChange={handleQualityChange}
             onShapeChange={handleShapeChange}
@@ -180,7 +170,6 @@ export function Configurator() {
             quality={quality}
             shape={shape}
             size={availableSizes}
-            wheels={wheels}
           />
 
           {/* Desktop sticky CTA */}

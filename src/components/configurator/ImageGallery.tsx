@@ -265,7 +265,7 @@ export function ImageGallery({
       {/* Lightbox */}
       {lightboxIndex !== null && showGallery && (
         <Lightbox
-          caption={caption ?? ""}
+          caption={note ?? caption ?? ""}
           images={images}
           initialIndex={lightboxIndex}
           onClose={() => setLightboxIndex(null)}

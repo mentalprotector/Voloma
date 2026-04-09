@@ -158,20 +158,18 @@
 /* ===== Counter pill ===== */
 .counter {
   position: absolute;
-  bottom: 5.5rem;
-  left: 50%;
+  top: 0.75rem;
+  right: 4rem;
   z-index: 5;
-  transform: translateX(-50%);
-  padding: 0.35rem 0.75rem;
+  padding: 0.25rem 0.6rem;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.1);
-  color: rgba(255, 255, 255, 0.75);
-  font-size: 0.75rem;
+  background: rgba(0, 0, 0, 0.45);
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.72rem;
   font-weight: 500;
   letter-spacing: 0.02em;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 
 /* ===== Caption ===== */
@@ -304,8 +302,12 @@
   }
 
   .counter {
-    bottom: 5rem;
-    font-size: 0.7rem;
+    top: 0.5rem;
+    right: 3.25rem;
+    bottom: auto;
+    left: auto;
+    transform: none;
+    font-size: 0.68rem;
   }
 
   .caption {

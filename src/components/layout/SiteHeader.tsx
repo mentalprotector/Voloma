@@ -54,7 +54,7 @@ export function SiteHeader() {
               <span className={styles.configuratorBackIcon} aria-hidden="true">
                 ←
               </span>
-              Назад
+              Кашпо Волома
             </Link>
 
             <Link className={styles.brand} href="/">

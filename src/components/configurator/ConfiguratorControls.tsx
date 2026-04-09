@@ -3,7 +3,6 @@
 import { FINISHES, QUALITIES, SIZES, type Finish, type Quality, type Shape, type Size } from "@/types/product";
 import { finishHint, qualityLabels, shapeLabels, sizeLabels, woodTypeHints } from "@/content/site-content";
 import { getDimensions, hasSizeOptions, isSizeAvailable } from "@/config/availability";
-import { WHEELS_AVAILABLE } from "@/config/pricing";
 
 import { InfoTooltip } from "./InfoTooltip";
 import styles from "./configurator.module.css";
@@ -13,12 +12,10 @@ interface ConfiguratorControlsProps {
   size: Size;
   finish: Finish;
   quality: Quality;
-  wheels: boolean;
   onShapeChange: (shape: Shape) => void;
   onSizeChange: (size: Size) => void;
   onFinishChange: (finish: Finish) => void;
   onQualityChange: (quality: Quality) => void;
-  onWheelsToggle: () => void;
 }
 
 const shapeIcons: Record<Shape, string> = {
@@ -54,23 +51,20 @@ const finishPrices: Record<Finish, string> = {
   rosewood_stain: "+800 ₽",
 };
 
-const wheelsHint = "Скрытые колёсики для удобного перемещения";
-
 export function ConfiguratorControls({
   shape,
   size,
   finish,
   quality,
-  wheels,
   onShapeChange,
   onSizeChange,
   onFinishChange,
   onQualityChange,
-  onWheelsToggle,
 }: ConfiguratorControlsProps) {
   const shapeOptions: Shape[] = ["narrow", "square", "rect"];
   const showSizeSelector = hasSizeOptions(shape);
-  const wheelsAvailable = WHEELS_AVAILABLE(shape, size);
+
+  const noWheelsNote = shape === "narrow" && size === "s";
 
   return (
     <div className={styles.selectors}>
@@ -199,38 +193,9 @@ export function ConfiguratorControls({
         </div>
       </section>
 
-      {/* Wheels — hidden for narrow S */}
-      {wheelsAvailable && (
-        <section className={styles.optionGroup} aria-labelledby="config-wheels-label">
-          <span className={styles.optionLabelWithHint}>
-            <p className={styles.optionLabel} id="config-wheels-label">
-              Колёсики
-            </p>
-            <InfoTooltip text={wheelsHint} />
-          </span>
-          <div className={[styles.optionControls, styles.chipControls].join(" ")}>
-            <button
-              aria-pressed={!wheels}
-              className={[styles.chip, !wheels ? styles.chipActive : ""].filter(Boolean).join(" ")}
-              type="button"
-              onClick={() => {
-                if (wheels) onWheelsToggle();
-              }}
-            >
-              Нет
-            </button>
-            <button
-              aria-pressed={wheels}
-              className={[styles.chip, wheels ? styles.chipActive : ""].filter(Boolean).join(" ")}
-              type="button"
-              onClick={() => {
-                if (!wheels) onWheelsToggle();
-              }}
-            >
-              Есть
-            </button>
-          </div>
-        </section>
+      {/* Micro-note for narrow S: no wheels */}
+      {noWheelsNote && (
+        <p className={styles.noWheelsNote}>Узкое S поставляется без колёсиков</p>
       )}
     </div>
   );
