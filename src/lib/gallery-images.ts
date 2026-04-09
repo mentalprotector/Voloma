@@ -45,8 +45,8 @@ export function getGalleryImages(
 
   const basePath = `/images/cashpo/configs/${shapeFolder}${sizeSuffix}/${finishFolder}`;
 
-  // Put photo #6 first (the one with flowers in the planter), then the rest in order
-  const order = [6, 1, 2, 3, 4, 5, 7, 8];
+  // Put photo #7 first (the one with flowers in the planter), then the rest in order
+  const order = [7, 1, 2, 3, 4, 5, 6, 8];
 
   const images: ProductImage[] = [];
 

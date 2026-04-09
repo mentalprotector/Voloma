@@ -6,7 +6,7 @@ import { getInitialSize, hasSizeOptions, isSizeAvailable } from "@/config/availa
 import { calculateTotalPrice } from "@/config/pricing";
 import { finishLabels, shapeLabels, sizeLabels } from "@/content/site-content";
 import { productVariants } from "@/data/product-variants";
-import { useCopyToClipboard, usePriceAnimation, useVibration } from "@/hooks";
+import { useCopyToClipboard, useDynamicScroll, usePriceAnimation, useVibration } from "@/hooks";
 import { buildMessengerUrl } from "@/lib/messenger-links";
 import { resolveVariantMatch } from "@/lib/product-matching";
 import type { MessengerKey } from "@/types/messenger";
@@ -28,6 +28,8 @@ export function Configurator() {
   const [finish, setFinish] = useState<Finish>("natural");
   const [quality, setQuality] = useState<Quality>("standard");
   const [sheetOpen, setSheetOpen] = useState(false);
+
+  useDynamicScroll();
 
   const { vibrate } = useVibration();
   const { pulse, elementRef: topPriceRef } = usePriceAnimation();
