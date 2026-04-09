@@ -405,8 +405,8 @@
     background: transparent;
     cursor: pointer;
     -webkit-tap-highlight-color: transparent;
-    aspect-ratio: 3 / 4;
-    max-height: 60vh;
+    aspect-ratio: 4 / 5;
+    max-height: 55vh;
     overflow: hidden;
     border-radius: 12px;
   }

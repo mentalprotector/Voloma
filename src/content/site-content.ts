@@ -14,10 +14,10 @@ export interface SiteFeature {
 }
 
 export const siteContent = {
-  brandName: "Voloma",
-  siteTitle: "Voloma",
+  brandName: "Волома",
+  siteTitle: "Волома",
   description:
-    "Voloma — деревянные кашпо для интерьера: спокойная подача бренда, конфигуратор форм, размеров, вариантов пропитки и уровня качества.",
+    "Волома — деревянные кашпо для интерьера: спокойная подача бренда, конфигуратор форм, размеров, вариантов пропитки и уровня качества.",
   hero: {
     title: "Деревянные кашпо для интерьера",
     subtitle: "Форма, размер и пропитка под ваше пространство.",
@@ -30,7 +30,7 @@ export const siteContent = {
         "Спокойная фактура и плотная древесина, отобранная для аккуратного внешнего вида.",
       image: {
         src: "/images/features/custom/feature-01.jpg",
-        alt: "Деревянное кашпо Voloma из фотоархива бренда",
+        alt: "Деревянное кашпо Волома из фотоархива бренда",
         position: "center 48%",
         tone: "sand",
       },
@@ -40,7 +40,7 @@ export const siteContent = {
       description: "Каждое изделие сохраняет естественный рисунок дерева.",
       image: {
         src: "/images/features/custom/feature-02.jpg",
-        alt: "Фактура дерева и поверхность кашпо Voloma крупным планом",
+        alt: "Фактура дерева и поверхность кашпо Волома крупным планом",
         position: "center 54%",
         tone: "linen",
       },
@@ -50,7 +50,7 @@ export const siteContent = {
       description: "Точные соединения и ровная геометрия.",
       image: {
         src: "/images/features/custom/feature-03.jpg",
-        alt: "Аккуратная сборка деревянного кашпо Voloma",
+        alt: "Аккуратная сборка деревянного кашпо Волома",
         position: "center 54%",
         tone: "clay",
       },
@@ -70,7 +70,7 @@ export const siteContent = {
       description: "Выбирайте форму, размер и вариант пропитки под своё пространство.",
       image: {
         src: "/images/features/custom/feature-05.jpg",
-        alt: "Разные варианты деревянных кашпо Voloma на фото",
+        alt: "Разные варианты деревянных кашпо Волома на фото",
         position: "center 52%",
         tone: "forest",
       },
@@ -82,7 +82,7 @@ export const siteContent = {
     "Посмотрите вариант и отправьте заявку",
   ],
   about: {
-    title: "О Voloma",
+    title: "О Волома",
     description:
       "Мы делаем деревянные кашпо спокойно и точно: с вниманием к материалу, пропорциям и тому, как изделие выглядит в реальном интерьере.",
     points: [
@@ -98,7 +98,7 @@ export const siteContent = {
     cta: "Перейти в конфигуратор",
   },
   configurator: {
-    eyebrow: "Конфигуратор Voloma",
+    eyebrow: "Конфигуратор Волома",
     title: "Подбор изделия без лишней сложности",
     description:
       "Сначала форма, затем размер, вариант пропитки и уровень качества. Если фото варианта ещё не подготовлены, интерфейс честно покажет, куда их добавить.",

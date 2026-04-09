@@ -104,14 +104,13 @@
 /* ===== Selectors area ===== */
 .selectors {
   display: block;
-  min-height: 420px;
 }
 
 /* ===== Option group ===== */
 .optionGroup {
   display: grid;
-  gap: 0.35rem;
-  padding: 0.45rem 0;
+  gap: 0.3rem;
+  padding: 0.3rem 0;
 }
 
 .optionGroupHidden {
@@ -156,8 +155,8 @@
   align-items: center;
   justify-content: center;
   gap: 0.4rem;
-  min-height: 2rem;
-  padding: 0.4rem 0.7rem;
+  min-height: 1.75rem;
+  padding: 0.35rem 0.65rem;
   border: 1px solid rgba(26, 19, 16, 0.1);
   border-radius: 999px;
   background: transparent;
@@ -275,8 +274,8 @@
 }
 
 .swatch {
-  width: 2.25rem;
-  height: 2.25rem;
+  width: 2rem;
+  height: 2rem;
   border: 2px solid transparent;
   border-radius: 50%;
   transition:
@@ -311,8 +310,8 @@
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
-  min-height: 2rem;
-  padding: 0.4rem 0.65rem;
+  min-height: 1.75rem;
+  padding: 0.35rem 0.6rem;
   border: 1px solid rgba(26, 19, 16, 0.08);
   border-radius: 999px;
   background: transparent;
@@ -359,7 +358,7 @@
   align-items: center;
   flex-wrap: wrap;
   gap: 8px 16px;
-  padding: 10px 0;
+  padding: 8px 0;
   border-bottom: 0.5px solid rgba(0,0,0,0.06);
 }
 
@@ -604,9 +603,9 @@
     display: none;
   }
 
-  /* Hide shape icons on desktop — pills have text labels */
+  /* Shape icons visible on desktop */
   .shapeIcon {
-    display: none;
+    display: inline-flex;
   }
 
   /* ===== Option groups: desktop layout ===== */

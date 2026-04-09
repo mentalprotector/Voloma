@@ -22,15 +22,15 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: {
-    default: "Voloma | Деревянные кашпо для интерьера",
-    template: "%s | Voloma",
+    default: "Волома | Деревянные кашпо для интерьера",
+    template: "%s | Волома",
   },
   description: siteContent.description,
   openGraph: {
-    title: "Voloma | Деревянные кашпо для интерьера",
+    title: "Волома | Деревянные кашпо для интерьера",
     description: siteContent.description,
     locale: "ru_RU",
-    siteName: "Voloma",
+    siteName: "Волома",
     type: "website",
   },
 };

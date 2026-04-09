@@ -15,7 +15,7 @@ export function HeroSection() {
               />
               <source srcSet="/images/hero/voloma-hero-mobile.webp" type="image/webp" />
               <img
-                alt="Деревянные кашпо Voloma разных размеров и оттенков крупным планом"
+                alt="Деревянные кашпо Волома разных размеров и оттенков крупным планом"
                 className={styles.image}
                 fetchPriority="high"
                 src="/images/hero/voloma-hero-mobile.webp"

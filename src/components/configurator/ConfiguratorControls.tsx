@@ -62,8 +62,6 @@ export function ConfiguratorControls({
   onQualityChange,
 }: ConfiguratorControlsProps) {
   const shapeOptions: Shape[] = ["narrow", "square", "rect"];
-  const showSizeSelector = hasSizeOptions(shape);
-
   const noWheelsNote = shape === "narrow" && size === "s";
 
   return (
@@ -94,8 +92,8 @@ export function ConfiguratorControls({
         </div>
       </section>
 
-      {/* Size — always in DOM, hidden via CSS when not available */}
-      <section className={[styles.optionGroup, !showSizeSelector ? styles.optionGroupHidden : ""].join(" ")} aria-labelledby="config-size-label">
+      {/* Size — always visible, unavailable sizes are disabled */}
+      <section className={styles.optionGroup} aria-labelledby="config-size-label">
         <p className={styles.optionLabel} id="config-size-label">
           Размер
         </p>

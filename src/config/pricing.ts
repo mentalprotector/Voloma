@@ -1,5 +1,5 @@
 /**
- * Pricing configuration for Voloma planters
+ * Pricing configuration for Волома planters
  * All prices are in rubles (₽)
  */
 import type { Finish, Quality, Shape, Size } from "@/types/product";

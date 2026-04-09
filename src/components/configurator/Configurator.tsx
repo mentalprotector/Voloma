@@ -80,7 +80,7 @@ export function Configurator() {
   const finishLabel = finish === "natural" ? "Без отделки (натуральная сосна)" : finishLabels[finish];
 
   const orderMessage = `Здравствуйте!
-Хочу заказать кашпо Voloma:
+Хочу заказать кашпо Волома:
 Модель: ${shapeLabels[shape]}${showSizeSelector ? " " + sizeLabels[availableSizes] : ""}
 Тип дерева: ${qualityLabels[quality]}
 Пропитка: ${finishLabel}
@@ -189,7 +189,7 @@ export function Configurator() {
         <div className={styles.controls}>
           {/* Desktop top summary bar — hidden on mobile */}
           <div className={styles.topBar}>
-            <p className={styles.topBarTitle}>Кашпо Voloma</p>
+            <p className={styles.topBarTitle}>Кашпо Волома</p>
             <p className={styles.topBarPriceSecondary}>
               <span ref={topPriceRef}>{total.toLocaleString("ru-RU")} ₽</span>
             </p>

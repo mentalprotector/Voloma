@@ -13,7 +13,7 @@ export function AboutSection() {
           <p className={styles.eyebrow}>О нас</p>
           <h2 className={styles.title}>{siteContent.about.title}</h2>
           <p className={styles.description}>{siteContent.about.description}</p>
-          <div className={styles.facts} aria-label="Факты о Voloma">
+          <div className={styles.facts} aria-label="Факты о Волома">
             <div className={styles.factCard}>
               <span className={styles.factValue}>2</span>
               <span className={styles.factLabel}>уровня отбора</span>
@@ -38,7 +38,7 @@ export function AboutSection() {
         <div className={styles.visuals}>
           <div className={styles.imageCard}>
             <Image
-              alt="Деревянное кашпо Voloma с живыми растениями"
+              alt="Деревянное кашпо Волома с живыми растениями"
               className={styles.image}
               height={4928}
               sizes="(max-width: 767px) 100vw, 30rem"
