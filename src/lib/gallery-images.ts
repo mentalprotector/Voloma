@@ -45,12 +45,17 @@ export function getGalleryImages(
 
   const basePath = `/images/cashpo/configs/${shapeFolder}${sizeSuffix}/${finishFolder}`;
 
+  // Put photo #6 first (the one with flowers in the planter), then the rest in order
+  const order = [6, 1, 2, 3, 4, 5, 7, 8];
+
   const images: ProductImage[] = [];
 
-  for (let i = 1; i <= maxImages; i++) {
+  for (let i = 0; i < maxImages; i++) {
+    const num = order[i];
+    if (!num) break;
     images.push({
-      url: `${basePath}/${tier}/${i}.webp`,
-      alt: `${shapeLabelMap[shape]} кашпо${sizeSuffix ? " " + sizeSuffix : ""}, ${finish.replace("_", " ")}, фото ${i}`,
+      url: `${basePath}/${tier}/${num}.webp`,
+      alt: `${shapeLabelMap[shape]} кашпо${sizeSuffix ? " " + sizeSuffix : ""}, ${finish.replace("_", " ")}, фото ${i + 1}`,
     });
   }
 
