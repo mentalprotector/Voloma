@@ -469,6 +469,11 @@
     display: none;
   }
 
+  /* Hide desktop-only meta row on mobile */
+  .heroMeta {
+    display: none;
+  }
+
   .navArrow {
     opacity: 1;
     width: 2rem;
@@ -559,6 +564,11 @@
   }
 
   .thumbs {
+    display: none;
+  }
+
+  /* Hide desktop-only meta row on tablet */
+  .heroMeta {
     display: none;
   }
 }
