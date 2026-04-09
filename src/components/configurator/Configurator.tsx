@@ -148,7 +148,7 @@ export function Configurator() {
       <section className={styles.mediaColumn} aria-label="Фото кашпо">
         <div className={styles.mediaFrame}>
           <ImageGallery
-            key={resolvedMatch.matchedVariant?.slug ?? `${shape}-${availableSizes}-${finish}-${quality}`}
+            key={resolvedMatch.matchedVariant?.slug ?? `${shape}-${availableSizes}`}
             caption={summaryLine}
             images={resolvedMatch.images}
             note={resolvedMatch.galleryState === "fallback" ? "Показан близкий вариант из каталога" : null}
@@ -218,13 +218,10 @@ export function Configurator() {
         copied={Boolean(copyStatus)}
         copyStatus={copyStatus}
         isOpen={sheetOpen}
-        leadTime={leadTime}
         message={orderMessage}
         price={total}
         pricePulseKey={0}
-        productName="Кашпо Voloma"
         selectionLine={summaryLine}
-        summaryMeta={leadTime}
         onClose={() => setSheetOpen(false)}
         onCopyMessage={handleCopyMessage}
         onMessengerClick={handleMessengerClick}

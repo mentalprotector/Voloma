@@ -13,7 +13,9 @@ export function InfoTooltip({ text, children }: InfoTooltipProps) {
   const [open, setOpen] = useState(false);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const popoverRef = useRef<HTMLDivElement>(null);
-  const isMobile = useRef(false);
+  const isMobile = typeof window !== "undefined" &&
+    (window.matchMedia("(max-width: 767px)").matches ||
+      "ontouchstart" in window);
   const [popoverStyle, setPopoverStyle] = useState<React.CSSProperties>({});
 
   const updatePosition = useCallback(() => {
@@ -28,17 +30,21 @@ export function InfoTooltip({ text, children }: InfoTooltipProps) {
     const left = rect.left + rect.width / 2 - popoverRect.width / 2;
     const top = rect.top - popoverRect.height - 8;
 
-    setPopoverStyle({
-      left: `${left}px`,
-      top: `${Math.max(8, top)}px`, // keep on screen
-    });
-  }, []);
+    // Ensure popover stays within viewport
+    const viewportWidth = window.innerWidth;
+    const viewportHeight = window.innerHeight;
+    const padding = 16;
 
-  useEffect(() => {
-    isMobile.current =
-      typeof window !== "undefined" &&
-      (window.matchMedia("(max-width: 767px)").matches ||
-        "ontouchstart" in window);
+    // Clamp horizontal position
+    const clampedLeft = Math.max(padding, Math.min(left, viewportWidth - popoverRect.width - padding));
+
+    // Clamp vertical position - don't let it go off screen
+    const clampedTop = Math.max(padding, Math.min(top, viewportHeight - popoverRect.height - padding));
+
+    setPopoverStyle({
+      left: `${clampedLeft}px`,
+      top: `${clampedTop}px`,
+    });
   }, []);
 
   useEffect(() => {
@@ -88,7 +94,7 @@ export function InfoTooltip({ text, children }: InfoTooltipProps) {
         aria-expanded={open}
         onClick={() => setOpen((v) => !v)}
         onMouseEnter={() => {
-          if (!isMobile.current) {
+          if (!isMobile) {
             requestAnimationFrame(() => {
               updatePosition();
               setOpen(true);
@@ -96,7 +102,7 @@ export function InfoTooltip({ text, children }: InfoTooltipProps) {
           }
         }}
         onMouseLeave={() => {
-          if (!isMobile.current) setOpen(false);
+          if (!isMobile) setOpen(false);
         }}
       >
         <svg
@@ -120,7 +126,7 @@ export function InfoTooltip({ text, children }: InfoTooltipProps) {
         <div
           ref={popoverRef}
           className={styles.popover}
-          style={isMobile.current ? undefined : popoverStyle}
+          style={isMobile ? undefined : popoverStyle}
           role="tooltip"
           dangerouslySetInnerHTML={{
             __html: text

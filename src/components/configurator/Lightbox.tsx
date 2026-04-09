@@ -66,6 +66,15 @@ export function Lightbox({ images, initialIndex, caption, onClose }: LightboxPro
     setTimeout(() => onClose(), 280);
   }, [onClose]);
 
+  const navigate = useCallback((dir: -1 | 1) => {
+    setCurrentIndex((prev) => {
+      const next = prev + dir;
+      if (next < 0) return images.length - 1;
+      if (next >= images.length) return 0;
+      return next;
+    });
+  }, [images.length]);
+
   useEffect(() => {
     function handleKey(e: KeyboardEvent) {
       if (e.key === "Escape") {
@@ -86,22 +95,15 @@ export function Lightbox({ images, initialIndex, caption, onClose }: LightboxPro
     return () => {
       window.removeEventListener("keydown", handleKey);
     };
-  }, [handleClose]);
+  }, [handleClose, navigate]);
 
   // Reset zoom/pan when changing slides
+  /* eslint-disable react-hooks/set-state-in-effect */
   useEffect(() => {
     setZoom(1);
     setPan({ x: 0, y: 0 });
   }, [currentIndex]);
-
-  function navigate(dir: -1 | 1) {
-    setCurrentIndex((prev) => {
-      const next = prev + dir;
-      if (next < 0) return images.length - 1;
-      if (next >= images.length) return 0;
-      return next;
-    });
-  }
+  /* eslint-enable react-hooks/set-state-in-effect */
 
   // --- Mouse drag for panning when zoomed ---
   function handleMouseDown(e: React.MouseEvent) {

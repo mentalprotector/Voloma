@@ -40,14 +40,14 @@
 .popover {
   position: fixed;
   z-index: 200;
-  max-width: 18rem;
-  padding: 0.65rem 0.85rem;
-  border-radius: 0.65rem;
+  max-width: 20rem;
+  padding: 0.75rem 1rem;
+  border-radius: 0.75rem;
   background: #f5f1ec;
   color: var(--color-text);
   font-size: 0.74rem;
   line-height: 1.5;
-  text-align: center;
+  text-align: left;
   white-space: normal;
   word-break: break-word;
   box-shadow:
@@ -89,6 +89,8 @@
       0 0.15rem 0.5rem rgba(26, 19, 16, 0.06);
     border: 1px solid rgba(26, 19, 16, 0.06);
     animation: infoTooltipSlideUp 150ms ease;
+    bottom: auto !important;
+    top: auto !important;
   }
 
   .popover :global(strong) {

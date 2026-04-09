@@ -32,28 +32,29 @@
 /* ===== Close button ===== */
 .closeButton {
   position: absolute;
-  top: 0.75rem;
-  right: 0.75rem;
-  z-index: 10;
+  top: 1rem;
+  right: 1.25rem;
+  z-index: 1000;
   display: grid;
   place-items: center;
   width: 2.75rem;
   height: 2.75rem;
   border: none;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.08);
-  color: rgba(255, 255, 255, 0.85);
+  background: none;
+  color: rgba(255, 255, 255, 0.7);
   cursor: pointer;
-  transition:
-    background 0.15s ease,
-    color 0.15s ease,
-    transform 0.15s ease;
+  transition: opacity 0.15s ease;
+  line-height: 1;
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
+  pointer-events: auto;
+  -webkit-tap-highlight-color: rgba(255, 255, 255, 0.2);
+  font-size: 1.75rem;
 }
 
 .closeButton:hover {
-  background: rgba(255, 255, 255, 0.14);
+  opacity: 1;
   color: #fff;
 }
 
@@ -127,14 +128,12 @@
   justify-content: center;
   width: 100%;
   min-height: 0;
-  overflow: hidden;
   cursor: grab;
   -webkit-user-select: none;
   user-select: none;
   padding-bottom: 3.5rem;
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
-  touch-action: pan-x pan-y;
 }
 
 .imageContainer:active {
@@ -257,6 +256,13 @@
   border-radius: 0.3rem;
 }
 
+/* ===== Mobile: hide thumbnail strip ===== */
+@media (max-width: 767px) {
+  .thumbStrip {
+    display: none;
+  }
+}
+
 /* ===== Mobile ===== */
 @media (max-width: 767px) {
   .closeButton {
@@ -264,6 +270,7 @@
     right: 0.5rem;
     width: 2.5rem;
     height: 2.5rem;
+    z-index: 1001;
   }
 
   .navButton {
@@ -286,10 +293,8 @@
 
   .imageWrapper {
     width: 96vw;
-    height: auto;
     max-width: 96vw;
-    max-height: 75vh;
-    aspect-ratio: auto;
+    max-height: 70vh;
   }
 
   .image {
@@ -309,16 +314,33 @@
     white-space: normal;
     padding: 0 2rem;
   }
+}
 
-  .thumbStrip {
-    bottom: 0.5rem;
-    gap: 0.3rem;
-    padding: 0.3rem 0.4rem;
+/* ===== iOS Safari optimizations ===== */
+@supports (-webkit-touch-callout: none) {
+  .overlay {
+    -webkit-overflow-scrolling: touch;
+    -webkit-transform: translateZ(0);
   }
 
-  .thumbBtn {
-    width: 2.75rem;
-    height: 2.75rem;
+  .imageContainer {
+    -webkit-transform-style: preserve-3d;
+    transform-style: preserve-3d;
+  }
+
+  .imageWrapper {
+    -webkit-transform: translateZ(0);
+  }
+
+  .image {
+    -webkit-font-smoothing: antialiased;
+    -webkit-transform: translateZ(0);
+  }
+}
+
+@supports (padding: max(0px)) {
+  .closeButton {
+    top: max(0.5rem, env(safe-area-inset-top));
   }
 }
 

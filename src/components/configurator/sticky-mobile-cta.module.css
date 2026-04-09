@@ -12,6 +12,16 @@
   padding: 0.65rem clamp(16px, 4vw, 24px);
   padding-bottom: calc(0.65rem + env(safe-area-inset-bottom));
   box-shadow: 0 -0.25rem 1rem rgba(0, 0, 0, 0.04);
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+}
+
+/* ===== iOS Safari optimizations ===== */
+@supports (-webkit-touch-callout: none) {
+  .bar {
+    -webkit-backdrop-filter: blur(14px) saturate(180%);
+    backdrop-filter: blur(14px) saturate(180%);
+  }
 }
 
 .barInner {
@@ -40,38 +50,17 @@
   margin: 0;
 }
 
-.name {
-  font-size: 0.85rem;
-  font-weight: 600;
-  line-height: 1.15;
-  letter-spacing: -0.01em;
-}
-
 .price {
-  font-size: 0.92rem;
-  font-weight: 600;
+  font-size: 1.125rem;
+  font-weight: 500;
   line-height: 1.15;
   transition: transform 0.15s ease;
 }
 
-.leadTime {
-  font-size: 0.7rem;
-  color: var(--color-text-muted);
-  line-height: 1.2;
-  margin-top: 0.08rem;
-}
-
 .selection {
-  font-size: 0.72rem;
+  font-size: 0.75rem;
   color: var(--color-text-muted);
   line-height: 1.25;
-}
-
-.meta {
-  font-size: 0.68rem;
-  color: var(--color-text-muted);
-  line-height: 1.2;
-  margin-top: 0.05rem;
 }
 
 .priceColumn {

@@ -46,6 +46,38 @@ export function ImageGallery({
       {showGallery && activeImage ? (
         <div className={styles.heroSection}>
           <div className={styles.heroStage}>
+            {/* Navigation arrows (desktop) */}
+            {images.length > 1 && (
+              <>
+                <button
+                  className={styles.navArrowPrev}
+                  type="button"
+                  aria-label="Предыдущее фото"
+                  onClick={() => {
+                    setActiveIndex((current) => (current - 1 + images.length) % images.length);
+                    setIsLoaded(false);
+                  }}
+                >
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <polyline points="15 18 9 12 15 6" />
+                  </svg>
+                </button>
+                <button
+                  className={styles.navArrowNext}
+                  type="button"
+                  aria-label="Следующее фото"
+                  onClick={() => {
+                    setActiveIndex((current) => (current + 1) % images.length);
+                    setIsLoaded(false);
+                  }}
+                >
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <polyline points="9 18 15 12 9 6" />
+                  </svg>
+                </button>
+              </>
+            )}
+
             <button
               className={styles.heroButton}
               type="button"
@@ -93,6 +125,19 @@ export function ImageGallery({
                 {resolvedIndex + 1}/{images.length}
               </div>
             </button>
+            {note ? <p className={styles.noteInside}>{note}</p> : null}
+
+            {/* Dot indicators (mobile) */}
+            {images.length > 1 && (
+              <div className={styles.dots} aria-hidden="true">
+                {images.map((_, index) => (
+                  <span
+                    key={index}
+                    className={index === resolvedIndex ? styles.dotActive : styles.dot}
+                  />
+                ))}
+              </div>
+            )}
           </div>
         </div>
       ) : hasDynamicImage ? (
@@ -119,8 +164,6 @@ export function ImageGallery({
           )}
         </div>
       )}
-
-      {note ? <p className={styles.note}>{note}</p> : null}
 
       {/* Grid of medium photos — click to open lightbox */}
       {showGallery && gridImages.length > 1 && (
@@ -151,10 +194,10 @@ export function ImageGallery({
         </div>
       )}
 
-      {/* Legacy thumbnail strip — kept for compatibility but hidden on desktop */}
+      {/* Legacy thumbnail strip — kept for compatibility but hidden on mobile */}
       {showGallery && images.length > 1 ? (
         <div className={styles.thumbs}>
-          {images.map((image, index) => (
+          {images.slice(0, 6).map((image, index) => (
             <button
               key={image.url}
               aria-label={`Показать изображение ${index + 1}`}
@@ -181,6 +224,9 @@ export function ImageGallery({
           ))}
         </div>
       ) : null}
+
+      {/* Caption below hero */}
+      {note && <p className={styles.caption}>{note}</p>}
 
       {/* Lightbox */}
       {lightboxIndex !== null && showGallery && (

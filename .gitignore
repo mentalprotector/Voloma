@@ -8,6 +8,14 @@ coverage
 .env*
 photo/
 
+# Deployment archives
+voloma-deploy.tar.gz
+*.tar.gz
+
+# Development files
+conf.jpg
+cuted.jpg
+
 # Raw originals (NEF/CR2/ARW) — not deployed
 **/originals/
 *.nef

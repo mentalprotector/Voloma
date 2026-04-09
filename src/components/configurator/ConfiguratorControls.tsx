@@ -1,7 +1,7 @@
 "use client";
 
 import { FINISHES, QUALITIES, SIZES, type Finish, type Quality, type Shape, type Size } from "@/types/product";
-import { finishLabels, qualityLabels, shapeLabels, sizeLabels, woodTypeHints } from "@/content/site-content";
+import { finishHint, qualityLabels, shapeLabels, sizeLabels, woodTypeHints } from "@/content/site-content";
 import { getDimensions, hasSizeOptions, isSizeAvailable } from "@/config/availability";
 import { WHEELS_AVAILABLE } from "@/config/pricing";
 
@@ -54,12 +54,6 @@ const finishPrices: Record<Finish, string> = {
   rosewood_stain: "+800 ₽",
 };
 
-const finishHints: Record<Finish, string> = {
-  natural: "Натуральная сосна без дополнительной обработки",
-  oak_stain: "Декоративная пропитка под дуб. Доплата 800 ₽.",
-  rosewood_stain: "Декоративная пропитка под палисандр. Доплата 800 ₽.",
-};
-
 const wheelsHint = "Скрытые колёсики для удобного перемещения";
 
 export function ConfiguratorControls({
@@ -106,39 +100,37 @@ export function ConfiguratorControls({
         </div>
       </section>
 
-      {/* Size — only shown for shapes that have multiple sizes (narrow: S/M/L) */}
-      {showSizeSelector && (
-        <section className={styles.optionGroup} aria-labelledby="config-size-label">
-          <p className={styles.optionLabel} id="config-size-label">
-            Размер
-          </p>
-          <div className={[styles.optionControls, styles.segmentedControls].join(" ")}>
-            {SIZES.map((item) => {
-              const isAvailable = isSizeAvailable(shape, item);
+      {/* Size — always in DOM, hidden via CSS when not available */}
+      <section className={[styles.optionGroup, !showSizeSelector ? styles.optionGroupHidden : ""].join(" ")} aria-labelledby="config-size-label">
+        <p className={styles.optionLabel} id="config-size-label">
+          Размер
+        </p>
+        <div className={[styles.optionControls, styles.segmentedControls].join(" ")}>
+          {SIZES.map((item) => {
+            const isAvailable = isSizeAvailable(shape, item);
 
-              return (
-                <button
-                  key={item}
-                  aria-disabled={!isAvailable}
-                  aria-pressed={size === item}
-                  className={[
-                    styles.pill,
-                    size === item ? styles.pillActive : "",
-                    !isAvailable ? styles.pillDisabled : "",
-                  ]
-                    .filter(Boolean)
-                    .join(" ")}
-                  disabled={!isAvailable}
-                  type="button"
-                  onClick={() => onSizeChange(item)}
-                >
-                  {sizeLabels[item]}
-                </button>
-              );
-            })}
-          </div>
-        </section>
-      )}
+            return (
+              <button
+                key={item}
+                aria-disabled={!isAvailable}
+                aria-pressed={size === item}
+                className={[
+                  styles.pill,
+                  size === item ? styles.pillActive : "",
+                  !isAvailable ? styles.pillDisabled : "",
+                ]
+                  .filter(Boolean)
+                  .join(" ")}
+                disabled={!isAvailable}
+                type="button"
+                onClick={() => onSizeChange(item)}
+              >
+                {sizeLabels[item]}
+              </button>
+            );
+          })}
+        </div>
+      </section>
 
       {/* Dimensions info — compact inline row */}
       <section className={styles.dimensionsRow} aria-label="Размеры (габариты)">
@@ -159,7 +151,7 @@ export function ConfiguratorControls({
           <p className={styles.optionLabel} id="config-finish-label">
             Пропитка
           </p>
-          <InfoTooltip text={finishHints[finish]} />
+          <InfoTooltip text={finishHint} />
         </span>
         <div className={[styles.optionControls, styles.swatchControls].join(" ")}>
           {FINISHES.map((item) => (

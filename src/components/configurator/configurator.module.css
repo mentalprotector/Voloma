@@ -1,6 +1,15 @@
 /* ===== Layout ===== */
 .layout {
   display: grid;
+  min-height: calc(100svh - var(--site-header-height));
+}
+
+/* ===== Nuclear option: hide all checkbox/radio inputs in configurator ===== */
+.forma-row input[type="checkbox"],
+.forma-row input[type="radio"],
+.layout input[type="checkbox"],
+.layout input[type="radio"] {
+  display: none !important;
 }
 
 .mediaColumn,
@@ -22,15 +31,23 @@
   min-height: 180px;
 }
 
+/* ===== Mobile: fixed media height ===== */
+@media (max-width: 767px) {
+  .mediaFrame {
+    height: 200px;
+    max-height: 200px;
+    min-height: 200px;
+  }
+}
+
 /* ===== Controls column ===== */
 .controlsColumn {
   padding: 0 clamp(16px, 4vw, 24px);
-  padding-bottom: calc(8rem + env(safe-area-inset-bottom));
+  padding-bottom: calc(5rem + env(safe-area-inset-bottom));
 }
 
 .controls {
-  display: grid;
-  align-content: start;
+  display: block;
 }
 
 /* ===== Top summary bar (simplified, lightweight) ===== */
@@ -70,7 +87,7 @@
 
 /* ===== Selectors area ===== */
 .selectors {
-  display: grid;
+  display: block;
 }
 
 /* ===== Option group ===== */
@@ -78,6 +95,13 @@
   display: grid;
   gap: 0.35rem;
   padding: 0.45rem 0;
+}
+
+.optionGroupHidden {
+  visibility: hidden;
+  position: absolute;
+  left: -9999px;
+  top: -9999px;
 }
 
 .optionLabel {
@@ -142,7 +166,6 @@
   border-color: #1e1e1c;
   color: #fff;
   box-shadow: 0 0.5rem 1.2rem rgba(26, 19, 16, 0.14);
-  transform: scale(1.02);
 }
 
 .pillDisabled {
@@ -226,7 +249,6 @@
 
 .swatchActive {
   border-color: #1e1e1c;
-  transform: scale(1.08);
   box-shadow: 0 0.25rem 0.6rem rgba(0, 0, 0, 0.15);
 }
 
@@ -275,7 +297,6 @@
   background: #1e1e1c;
   border-color: #1e1e1c;
   color: #fff;
-  transform: scale(1.02);
   box-shadow: 0 0.35rem 0.8rem rgba(26, 19, 16, 0.12);
 }
 
@@ -295,9 +316,16 @@
 .dimensionsRow {
   display: flex;
   align-items: center;
-  gap: 12px;
+  flex-wrap: wrap;
+  gap: 8px 16px;
   padding: 10px 0;
   border-bottom: 0.5px solid rgba(0,0,0,0.06);
+}
+
+.dimItem {
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
 }
 
 .dimLabel {
@@ -409,7 +437,6 @@
 
   .controls {
     gap: 0;
-    min-height: calc(100svh - var(--site-header-height));
     display: flex;
     flex-direction: column;
   }
@@ -449,6 +476,10 @@
     padding: 14px 0;
     border-bottom: 0.5px solid rgba(0, 0, 0, 0.06);
     margin-bottom: 0;
+  }
+
+  .optionGroupHidden {
+    display: none !important;
   }
 
   .optionLabel {

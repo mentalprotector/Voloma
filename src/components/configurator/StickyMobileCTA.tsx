@@ -10,13 +10,10 @@ interface StickyMobileCTAProps {
   copied: boolean;
   copyStatus: string | null;
   isOpen: boolean;
-  leadTime: string;
   message: string;
   price: number;
   pricePulseKey: number;
-  productName: string;
   selectionLine: string;
-  summaryMeta: string;
   onClose: () => void;
   onCopyMessage: () => void;
   onMessengerClick: (target: MessengerKey) => void;
@@ -27,12 +24,9 @@ export function StickyMobileCTA({
   copied,
   copyStatus,
   isOpen,
-  leadTime,
   message,
   price,
-  productName,
   selectionLine,
-  summaryMeta,
   onClose,
   onCopyMessage,
   onMessengerClick,
@@ -46,15 +40,12 @@ export function StickyMobileCTA({
         <div className={styles.barInner}>
           <div className={styles.infoRow}>
             <div className={styles.infoLeft}>
-              <p className={styles.name}>{productName}</p>
               <p className={styles.selection}>{selectionLine}</p>
-              <p className={styles.meta}>{summaryMeta}</p>
             </div>
             <div className={styles.priceColumn}>
               <p className={styles.price}>
                 <span ref={priceRef}>{price.toLocaleString("ru-RU")} ₽</span>
               </p>
-              <p className={styles.leadTime}>Изготовим за {leadTime}</p>
             </div>
           </div>
           <button
