@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useMemo, useState } from "react";
 
 import { getInitialSize, hasSizeOptions, isSizeAvailable } from "@/config/availability";
@@ -28,6 +29,7 @@ export function Configurator() {
   const [finish, setFinish] = useState<Finish>("natural");
   const [quality, setQuality] = useState<Quality>("standard");
   const [sheetOpen, setSheetOpen] = useState(false);
+  const [activeImageIndex, setActiveImageIndex] = useState(0);
 
   useDynamicScroll();
 
@@ -135,16 +137,46 @@ export function Configurator() {
     window.open(targetUrl, "_blank", "noopener,noreferrer");
   }
 
+  const showGallery = resolvedMatch.images.length > 0 && (resolvedMatch.galleryState === "exact" || resolvedMatch.galleryState === "fallback");
+
   return (
-    <div className={styles.layout}>
-      {/* Media */}
+    <div className={`${styles.layout} ${!(showGallery && resolvedMatch.images.length > 1) ? styles.layoutNoThumbs : ""}`}>
+      {/* Left column: thumbnail strip (desktop only, hidden on mobile via CSS) */}
+      <div className={styles.thumbnailStripCol} aria-label="Миниатюры">
+        <div className={styles.thumbnailStripInner}>
+          {showGallery && resolvedMatch.images.length > 1 && resolvedMatch.images.slice(0, 6).map((image, index) => (
+            <button
+              key={image.url}
+              aria-label={`Показать изображение ${index + 1}`}
+              aria-pressed={index === activeImageIndex}
+              className={`${styles.stripThumb} ${index === activeImageIndex ? styles.stripThumbActive : ""}`}
+              type="button"
+              onClick={() => setActiveImageIndex(index)}
+            >
+              <Image
+                alt={image.alt}
+                className={styles.stripThumbImage}
+                height={80}
+                width={80}
+                loading="lazy"
+                sizes="80px"
+                src={image.url}
+              />
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Center column: main photo */}
       <section className={styles.mediaColumn} aria-label="Фото кашпо">
         <div className={styles.mediaFrame}>
           <ImageGallery
             key={resolvedMatch.matchedVariant?.slug ?? `${shape}-${availableSizes}`}
+            activeIndex={activeImageIndex}
             caption={summaryLine}
             images={resolvedMatch.images}
             note={resolvedMatch.galleryState === "fallback" ? "Показан близкий вариант из каталога" : null}
+            onActiveIndexChange={setActiveImageIndex}
             placeholderTitle="Ваше кашпо"
             placeholderSubtitle={`${shapeLabels[shape]}${showSizeSelector ? " " + sizeLabels[availableSizes] : ""}`}
             state={resolvedMatch.galleryState}
@@ -152,7 +184,7 @@ export function Configurator() {
         </div>
       </section>
 
-      {/* Controls */}
+      {/* Right column: options + order card */}
       <section className={styles.controlsColumn} aria-label="Параметры кашпо">
         <div className={styles.controls}>
           {/* Desktop top summary bar — hidden on mobile */}
@@ -174,7 +206,7 @@ export function Configurator() {
             size={availableSizes}
           />
 
-          {/* Desktop sticky CTA */}
+          {/* Desktop order card */}
           <div className={styles.summaryBar}>
             <div className={styles.summaryBarLeft}>
               <p className={styles.summaryBarPrice}>

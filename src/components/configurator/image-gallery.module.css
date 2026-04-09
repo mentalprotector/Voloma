@@ -575,56 +575,84 @@
     gap: 0.75rem;
   }
 
-  /* Desktop: also use scroll-snap carousel with side margins */
+  /* Desktop: hide snap-scroll carousel, use heroStage instead */
   .heroSnapScroll {
-    display: flex;
-    gap: 16px;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-    padding: 0 5%;
-    width: 100%;
-  }
-
-  .heroSnapScroll::-webkit-scrollbar {
     display: none;
   }
 
   .heroSnapSlide {
-    flex: 0 0 75%;
-    scroll-snap-align: center;
-    position: relative;
-    border: 0;
-    padding: 0;
-    background: transparent;
-    cursor: pointer;
-    -webkit-tap-highlight-color: transparent;
-    aspect-ratio: 3 / 4;
-    max-height: 80vh;
-    overflow: hidden;
-    border-radius: 16px;
+    display: none;
   }
 
-  .heroSnapSlide .heroImage {
-    object-fit: cover;
-    object-position: center center;
-  }
-
-  /* Hide old heroStage on desktop too */
+  /* Show heroStage on desktop — square photo container */
   .heroStage {
+    display: block;
+    position: relative;
+    aspect-ratio: 1 / 1;
+    max-height: calc(100svh - var(--site-header-height) - 140px);
+    border-radius: 16px;
+    overflow: hidden;
+    background: #ede9e0;
+  }
+
+  /* Meta row below photo — counter + note */
+  .heroMeta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 10px 0 0;
+  }
+
+  .heroMetaCounter {
+    font-size: 11px;
+    color: #999;
+    letter-spacing: 0.02em;
+  }
+
+  .heroMetaNote {
+    font-size: 11px;
+    color: #bbb;
+  }
+
+  /* Hide old overlays that were inside the photo */
+  .noteInside {
     display: none;
   }
 
   .heroButton {
-    display: none;
+    display: block;
   }
 
   .heroOverlay {
-    display: none;
+    display: grid;
   }
 
-  /* Counter on slides */
+  /* Show navigation arrows on desktop — appear on hover only */
+  .navArrow {
+    display: flex;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.9);
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    border: none;
+    cursor: pointer;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  }
+
+  .navArrowPrev {
+    left: 14px;
+  }
+
+  .navArrowNext {
+    right: 14px;
+  }
+
+  /* Counter on hero */
   .counter {
     right: 0.75rem;
     bottom: 0.75rem;
@@ -638,7 +666,7 @@
     pointer-events: none;
   }
 
-  /* Hide dots on desktop — scroll implies navigation */
+  /* Hide dots on desktop */
   .dots {
     display: none;
   }
@@ -656,12 +684,17 @@
     padding-inline: 0;
   }
 
-  /* Hide duplicate galleries on desktop */
+  /* Hide grid and thumbs on desktop — thumbs moved to external strip */
   .grid {
     display: none;
   }
 
   .thumbs {
+    display: none;
+  }
+
+  /* Hide caption below hero — noteInside in heroStage already shows the note */
+  .caption {
     display: none;
   }
 }

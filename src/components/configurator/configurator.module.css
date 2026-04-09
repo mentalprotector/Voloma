@@ -485,27 +485,93 @@
   }
 }
 
+/* ===== Thumbnail strip column — hidden by default ===== */
+.thumbnailStripCol {
+  display: none;
+}
+
+.thumbnailStripInner {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.stripThumb {
+  width: 84px;
+  height: 84px;
+  padding: 0;
+  border: 2px solid transparent;
+  border-radius: 10px;
+  overflow: hidden;
+  cursor: pointer;
+  opacity: 0.5;
+  background: transparent;
+  transition: border-color 0.15s ease, opacity 0.15s ease;
+  flex-shrink: 0;
+}
+
+.stripThumb:hover {
+  opacity: 0.8;
+}
+
+.stripThumbActive {
+  opacity: 1;
+  border-color: #1e1e1c;
+}
+
+.stripThumbImage {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
 /* ===== Responsive: desktop ===== */
 @media (min-width: 1024px) {
   .layout {
-    grid-template-columns: 52fr 48fr;
+    grid-template-columns: 100px 1fr 460px;
     align-items: start;
-    gap: clamp(1.25rem, 2.5vw, 2rem);
+    gap: 0 28px;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 52px 32px 32px;
     min-height: calc(100svh - var(--site-header-height));
   }
 
-  .mediaFrame {
+  /* Left column — thumbnail strip */
+  .thumbnailStripCol {
+    display: block;
+  }
+
+  .thumbnailStripInner {
     position: sticky;
-    top: calc(var(--site-header-height) + 1rem);
+    top: calc(var(--site-header-height) + 32px);
+  }
+
+  /* Center column — remove mobile negative margins */
+  .mediaColumn {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .mediaFrame {
+    position: relative;
+    top: auto;
     height: auto;
-    min-height: 28rem;
+    min-height: 0;
     max-height: none;
+    border-radius: 0;
+    overflow: visible;
+    background: transparent;
     z-index: 1;
   }
 
+  /* Right column — options + order card */
   .controlsColumn {
-    min-width: 380px;
-    padding: 0 32px 40px 0;
+    min-width: 0;
+    padding: 0 0 40px 24px;
+    border-left: 1px solid rgba(0, 0, 0, 0.08);
   }
 
   .controls {
@@ -518,12 +584,12 @@
     gap: 0;
   }
 
-  /* Top bar: heading + price, aligned baseline */
+  /* Top bar: heading + muted price */
   .topBar {
     display: flex;
     justify-content: space-between;
     align-items: baseline;
-    margin-bottom: 24px;
+    margin-bottom: 20px;
     padding: 0;
     gap: 0.5rem;
   }
@@ -535,10 +601,12 @@
   }
 
   .topBarPriceSecondary {
-    font-size: 14px;
-    color: #bbb;
-    opacity: 1;
-    margin: 0;
+    display: none;
+  }
+
+  /* Hide shape icons on desktop — pills have text labels */
+  .shapeIcon {
+    display: none;
   }
 
   /* ===== Option groups: desktop layout ===== */
@@ -546,7 +614,7 @@
     display: flex;
     align-items: flex-start;
     gap: 16px;
-    padding: 14px 0;
+    padding: 8px 0;
     border-bottom: 0.5px solid rgba(0, 0, 0, 0.06);
     margin-bottom: 0;
   }
@@ -556,13 +624,13 @@
   }
 
   .optionLabel {
-    width: 120px;
+    width: 110px;
     flex-shrink: 0;
     font-size: 10px;
     font-weight: 500;
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: #999;
+    color: #aaa;
     padding-top: 8px;
     margin: 0;
   }
@@ -647,7 +715,7 @@
     margin-left: 3px;
   }
 
-  /* Chip controls on desktop (Форма, Колёсики) */
+  /* Chip controls on desktop */
   .chipControls {
     display: flex;
     flex-direction: row;
@@ -674,70 +742,66 @@
     transform: none;
   }
 
-  /* ===== Desktop summary bar (two-row layout) ===== */
+  /* ===== Desktop order card ===== */
   .summaryBar {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 24px;
-    padding: 16px 24px;
-    border-top: 0.5px solid rgba(0,0,0,0.1);
+    flex-direction: column;
+    gap: 16px;
+    padding: 20px;
+    border: 0.5px solid rgba(0, 0, 0, 0.1);
+    border-radius: 16px;
     background: white;
-    margin-top: auto;
+    margin-top: 24px;
   }
 
   .summaryBarLeft {
     display: flex;
     flex-direction: column;
-    gap: 2px;
+    gap: 4px;
     min-width: 0;
   }
 
   .summaryBarPrice {
     margin: 0;
-    font-size: 20px;
+    font-size: 24px;
     font-weight: 500;
     color: #1e1e1c;
     white-space: nowrap;
-    line-height: 1;
+    line-height: 1.1;
   }
 
   .summaryBarConfig {
     margin: 0;
     font-size: 12px;
     color: #999;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 400px;
-    line-height: 1.3;
+    white-space: normal;
+    line-height: 1.4;
   }
 
   .summaryBarDelivery {
     margin: 0;
-    font-size: 11px;
+    font-size: 12px;
     color: #bbb;
     line-height: 1.2;
   }
 
   .summaryBarRight {
-    flex-shrink: 0;
+    width: 100%;
   }
 
   .summaryBarButton {
-    display: inline-flex;
+    display: flex;
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
-    flex-shrink: 0;
-    width: auto;
-    padding: 14px 28px;
+    width: 100%;
+    padding: 15px;
     border: none;
-    border-radius: 0.8rem;
+    border-radius: 12px;
     background: #1e1e1c;
     color: #fff;
     font: inherit;
-    font-size: 0.88rem;
+    font-size: 15px;
     font-weight: 500;
     letter-spacing: -0.01em;
     transition:
@@ -746,11 +810,15 @@
       background-color 0.15s ease;
     -webkit-tap-highlight-color: transparent;
     white-space: nowrap;
+    cursor: pointer;
+  }
+
+  .summaryBarButton:hover {
+    opacity: 0.85;
   }
 
   .summaryBarButton:active {
-    opacity: 0.85;
-    transform: scale(0.98);
+    transform: scale(0.99);
   }
 
   .summaryBarButton .desktopCtaButtonIcon {
@@ -762,5 +830,14 @@
   .summaryBarButton .desktopCtaButtonIcon svg {
     width: 100%;
     height: 100%;
+  }
+
+  /* Hide thumbnail column when no thumbnails needed */
+  .layoutNoThumbs {
+    grid-template-columns: 1fr 460px;
+  }
+
+  .layoutNoThumbs .thumbnailStripCol {
+    display: none;
   }
 }

@@ -17,6 +17,10 @@ interface ImageGalleryProps {
   imageSrc?: string | null;
   /** Human-readable config caption for the lightbox, e.g. "Квадратное • Стандарт • Натуральная" */
   caption?: string;
+  /** External controlled index (desktop mode) */
+  activeIndex?: number;
+  /** Callback when active index changes (desktop mode) */
+  onActiveIndexChange?: (index: number) => void;
 }
 
 export function ImageGallery({
@@ -27,10 +31,25 @@ export function ImageGallery({
   note,
   imageSrc,
   caption,
+  activeIndex: externalActiveIndex,
+  onActiveIndexChange,
 }: ImageGalleryProps) {
-  const [activeIndex, setActiveIndex] = useState(0);
+  const [internalActiveIndex, setInternalActiveIndex] = useState(0);
   const [isLoaded, setIsLoaded] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+
+  const isControlled = typeof externalActiveIndex === "number";
+  const activeIndex = isControlled ? externalActiveIndex : internalActiveIndex;
+  const setActiveIndex = isControlled
+    ? (value: number | ((prev: number) => number)) => {
+        if (typeof value === "function") {
+          onActiveIndexChange?.(value(activeIndex));
+        } else {
+          onActiveIndexChange?.(value);
+        }
+      }
+    : setInternalActiveIndex;
+
   const resolvedIndex = images[activeIndex] ? activeIndex : 0;
   const activeImage = images[resolvedIndex];
   const showGallery = images.length > 0 && (state === "exact" || state === "fallback");
@@ -100,7 +119,7 @@ export function ImageGallery({
             {images.length > 1 && (
               <>
                 <button
-                  className={styles.navArrowPrev}
+                  className={`${styles.navArrow} ${styles.navArrowPrev}`}
                   type="button"
                   aria-label="Предыдущее фото"
                   onClick={() => {
@@ -113,7 +132,7 @@ export function ImageGallery({
                   </svg>
                 </button>
                 <button
-                  className={styles.navArrowNext}
+                  className={`${styles.navArrow} ${styles.navArrowNext}`}
                   type="button"
                   aria-label="Следующее фото"
                   onClick={() => {
@@ -155,11 +174,7 @@ export function ImageGallery({
                   />
                 </svg>
               </div>
-              <div className={styles.counter} aria-hidden="true">
-                {resolvedIndex + 1}/{images.length}
-              </div>
             </button>
-            {note ? <p className={styles.noteInside}>{note}</p> : null}
 
             {/* Dot indicators (mobile) */}
             {images.length > 1 && (
@@ -172,6 +187,12 @@ export function ImageGallery({
                 ))}
               </div>
             )}
+          </div>
+
+          {/* Counter + note — outside the photo on desktop */}
+          <div className={styles.heroMeta}>
+            <span className={styles.heroMetaCounter}>{resolvedIndex + 1}/{images.length}</span>
+            {note && <span className={styles.heroMetaNote}>{note}</span>}
           </div>
         </div>
       ) : hasDynamicImage ? (
@@ -228,8 +249,8 @@ export function ImageGallery({
         </div>
       )}
 
-      {/* Legacy thumbnail strip — kept for compatibility but hidden on mobile */}
-      {showGallery && images.length > 1 ? (
+      {/* Legacy thumbnail strip — hidden when controlled (desktop uses external strip) */}
+      {showGallery && images.length > 1 && !isControlled ? (
         <div className={styles.thumbs}>
           {images.slice(0, 6).map((image, index) => (
             <button
