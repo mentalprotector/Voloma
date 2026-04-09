@@ -30,7 +30,6 @@ export function ImageGallery({
 }: ImageGalleryProps) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [touchStartX, setTouchStartX] = useState<number | null>(null);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const resolvedIndex = images[activeIndex] ? activeIndex : 0;
   const activeImage = images[resolvedIndex];
@@ -45,6 +44,57 @@ export function ImageGallery({
       {/* Primary hero — clickable to open lightbox */}
       {showGallery && activeImage ? (
         <div className={styles.heroSection}>
+          {/* Mobile: scroll-snap carousel with peek */}
+          <div
+            className={styles.heroSnapScroll}
+            onScroll={(e) => {
+              const container = e.currentTarget;
+              const scrollLeft = container.scrollLeft;
+              const itemWidth = container.offsetWidth * 0.85;
+              const gap = 12;
+              const newIndex = Math.round(scrollLeft / (itemWidth + gap));
+              if (images[newIndex] && newIndex !== activeIndex) {
+                setActiveIndex(newIndex);
+                setIsLoaded(false);
+              }
+            }}
+          >
+            {images.map((image, index) => (
+              <button
+                key={image.url}
+                className={styles.heroSnapSlide}
+                type="button"
+                aria-label={`Открыть фото ${index + 1} на весь экран`}
+                onClick={() => setLightboxIndex(index)}
+              >
+                {!isLoaded && index === activeIndex ? (
+                  <div className={styles.skeleton} aria-hidden="true" />
+                ) : null}
+                <Image
+                  alt={image.alt}
+                  className={styles.heroImage}
+                  fill
+                  priority={index === 0}
+                  loading={index === 0 ? "eager" : "lazy"}
+                  sizes="(max-width: 1023px) 85vw, 52rem"
+                  src={image.url}
+                  onLoad={() => {
+                    if (index === 0) setIsLoaded(true);
+                  }}
+                />
+                {/* Counter on active slide */}
+                {index === activeIndex && (
+                  <div className={styles.counter} aria-hidden="true">
+                    {index + 1}/{images.length}
+                  </div>
+                )}
+              </button>
+            ))}
+            {/* Subtle note overlay on mobile carousel */}
+            {note && <p className={styles.noteOverlay}>{note}</p>}
+          </div>
+
+          {/* Desktop: original hero with arrows */}
           <div className={styles.heroStage}>
             {/* Navigation arrows (desktop) */}
             {images.length > 1 && (
@@ -83,22 +133,6 @@ export function ImageGallery({
               type="button"
               aria-label={`Открыть фото ${resolvedIndex + 1} на весь экран`}
               onClick={() => setLightboxIndex(resolvedIndex)}
-              onTouchEnd={(event) => {
-                if (touchStartX === null || images.length < 2) return;
-                const delta = touchStartX - event.changedTouches[0].clientX;
-                if (Math.abs(delta) < 40) {
-                  setTouchStartX(null);
-                  return;
-                }
-                if (delta > 0) {
-                  setActiveIndex((current) => (current + 1) % images.length);
-                } else {
-                  setActiveIndex((current) => (current - 1 + images.length) % images.length);
-                }
-                setIsLoaded(false);
-                setTouchStartX(null);
-              }}
-              onTouchStart={(event) => setTouchStartX(event.touches[0].clientX)}
             >
               {!isLoaded ? <div className={styles.skeleton} aria-hidden="true" /> : null}
               <Image
@@ -225,7 +259,7 @@ export function ImageGallery({
         </div>
       ) : null}
 
-      {/* Caption below hero */}
+      {/* Caption below hero — hidden on mobile, shown on desktop */}
       {note && <p className={styles.caption}>{note}</p>}
 
       {/* Lightbox */}
