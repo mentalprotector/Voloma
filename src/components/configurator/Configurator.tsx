@@ -77,7 +77,7 @@ export function Configurator() {
   const summaryLine = summaryParts.join(" • ");
   const leadTime = "7–10 дней";
 
-  const finishLabel = finish === "natural" ? "Без отделки (натуральная сосна)" : finishLabels[finish];
+  const finishLabel = finish === "natural" ? "Натуральная" : finishLabels[finish];
 
   const orderMessage = `Здравствуйте!
 Хочу заказать кашпо Волома:

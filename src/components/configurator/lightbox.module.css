@@ -136,7 +136,7 @@
   padding-bottom: 3.5rem;
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
-  isolation: isolate;
+  z-index: 1;
 }
 
 .imageContainer:active {

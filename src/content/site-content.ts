@@ -125,7 +125,7 @@ export const sizeLabels: Record<Size, string> = {
 
 /** Labels for the stain finish options */
 export const finishLabels: Record<Finish, string> = {
-  natural: "Без цветной обработки",
+  natural: "Натуральная",
   oak_stain: "Под дуб",
   rosewood_stain: "Под палисандр",
 };

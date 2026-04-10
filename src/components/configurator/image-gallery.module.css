@@ -406,7 +406,7 @@
     cursor: pointer;
     -webkit-tap-highlight-color: transparent;
     aspect-ratio: 4 / 5;
-    max-height: 55vh;
+    max-height: 60vh;
     overflow: hidden;
     border-radius: 12px;
   }
