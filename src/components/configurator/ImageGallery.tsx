@@ -97,6 +97,7 @@ export function ImageGallery({
                   loading={index === 0 ? "eager" : "lazy"}
                   sizes="(max-width: 1023px) 85vw, 52rem"
                   src={image.url}
+                  unoptimized
                   onLoad={() => {
                     if (index === 0) setIsLoaded(true);
                   }}
@@ -161,6 +162,7 @@ export function ImageGallery({
                 priority
                 sizes="(max-width: 1023px) 100vw, 52rem"
                 src={activeImage.url}
+                unoptimized
                 onLoad={() => setIsLoaded(true)}
               />
               <div className={styles.heroOverlay} aria-hidden="true">
@@ -206,6 +208,7 @@ export function ImageGallery({
               priority
               sizes="(max-width: 1023px) 100vw, 52rem"
               src={imageSrc}
+              unoptimized
               onLoad={() => setIsLoaded(true)}
             />
           </div>
@@ -239,6 +242,7 @@ export function ImageGallery({
                   loading={index === 0 ? "eager" : "lazy"}
                   sizes="(max-width: 767px) 50vw, (max-width: 1023px) 33vw, 25vw"
                   src={image.url}
+                  unoptimized
                 />
               </div>
               <div className={styles.gridLabel} aria-hidden="true">
@@ -273,6 +277,7 @@ export function ImageGallery({
                 loading="lazy"
                 sizes="72px"
                 src={image.url}
+                unoptimized
                 width={72}
               />
             </button>

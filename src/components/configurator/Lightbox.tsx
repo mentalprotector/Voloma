@@ -285,6 +285,7 @@ export function Lightbox({ images, initialIndex, caption, onClose }: LightboxPro
               priority
               sizes="(max-width: 1023px) 95vw, 80vw"
               src={currentImage.url}
+              unoptimized
             />
           </div>
         )}
@@ -322,6 +323,7 @@ export function Lightbox({ images, initialIndex, caption, onClose }: LightboxPro
                 loading="lazy"
                 sizes="56px"
                 src={img.url}
+                unoptimized
                 width={56}
               />
             </button>

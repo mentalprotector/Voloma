@@ -51,10 +51,10 @@ export function Configurator() {
     () => ({
       shape,
       size: availableSizes,
-      color: "natural" as const,
+      color: finish as string,
       quality,
     }),
-    [availableSizes, quality, shape],
+    [availableSizes, finish, quality, shape],
   );
 
   const resolvedMatch = resolveVariantMatch(productVariants, selection);
@@ -161,6 +161,7 @@ export function Configurator() {
                 loading="lazy"
                 sizes="80px"
                 src={image.url}
+                unoptimized
               />
             </button>
           ))}

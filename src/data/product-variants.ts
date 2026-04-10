@@ -4,18 +4,18 @@ import { getGalleryImages } from "@/lib/gallery-images";
 /**
  * Product variants for the new configurator model.
  *
- * Images are only populated for variants that actually have files on disk.
- * The matching logic falls back to a variant with images when the exact
- * selection has none yet.
+ * Images are populated for variants that have files on disk.
  */
 
-/** The single variant that currently has real photos */
-const squareNaturalStandardImages = getGalleryImages(
-  "square",
-  "m",
-  "natural",
-  "standard",
-);
+// --- Square (Квадратное) ---
+const squareNaturalImages = getGalleryImages("square", "m", "natural", "standard");
+const squareRosewoodImages = getGalleryImages("square", "m", "rosewood_stain", "standard");
+const squareOakImages = getGalleryImages("square", "m", "oak_stain", "standard");
+
+// --- Rectangular (Прямоугольное) ---
+const rectNaturalImages = getGalleryImages("rect", "m", "natural", "standard");
+const rectOakImages = getGalleryImages("rect", "m", "oak_stain", "standard");
+const rectRosewoodImages = getGalleryImages("rect", "m", "rosewood_stain", "standard");
 
 export const productVariants: ProductVariant[] = [
   // Narrow (Узкое) — S, M, L  (no images yet)
@@ -58,7 +58,8 @@ export const productVariants: ProductVariant[] = [
     isCustomizable: true,
     dimensions: { length: 86, width: 23.5, height: 22 },
   },
-  // Square (Квадратное) — single size, HAS REAL IMAGES
+
+  // Square (Квадратное) — HAS IMAGES for natural & rosewood-stain
   {
     id: "square-m-natural-standard",
     slug: "square-m-natural-standard",
@@ -67,12 +68,39 @@ export const productVariants: ProductVariant[] = [
     size: "m",
     finish: "natural",
     quality: "standard",
-    images: squareNaturalStandardImages,
+    images: squareNaturalImages,
     availability: "made_to_order",
     isCustomizable: true,
     dimensions: { length: 40, width: 40, height: 22 },
   },
-  // Rectangular (Прямоугольное) — single size  (no images yet)
+  {
+    id: "square-m-rosewood-standard",
+    slug: "square-m-rosewood-standard",
+    title: "Квадратное кашпо, палисандр, стандарт",
+    shape: "square",
+    size: "m",
+    finish: "rosewood_stain",
+    quality: "standard",
+    images: squareRosewoodImages,
+    availability: "made_to_order",
+    isCustomizable: true,
+    dimensions: { length: 40, width: 40, height: 22 },
+  },
+  {
+    id: "square-m-oak-standard",
+    slug: "square-m-oak-standard",
+    title: "Квадратное кашпо, дуб, стандарт",
+    shape: "square",
+    size: "m",
+    finish: "oak_stain",
+    quality: "standard",
+    images: squareOakImages, // empty — no originals yet
+    availability: "made_to_order",
+    isCustomizable: true,
+    dimensions: { length: 40, width: 40, height: 22 },
+  },
+
+  // Rectangular (Прямоугольное) — HAS IMAGES for all 3 finishes
   {
     id: "rect-m-natural-standard",
     slug: "rect-m-natural-standard",
@@ -81,7 +109,33 @@ export const productVariants: ProductVariant[] = [
     size: "m",
     finish: "natural",
     quality: "standard",
-    images: [],
+    images: rectNaturalImages,
+    availability: "made_to_order",
+    isCustomizable: true,
+    dimensions: { length: 61.5, width: 42.5, height: 22 },
+  },
+  {
+    id: "rect-m-oak-standard",
+    slug: "rect-m-oak-standard",
+    title: "Прямоугольное кашпо, дуб, стандарт",
+    shape: "rect",
+    size: "m",
+    finish: "oak_stain",
+    quality: "standard",
+    images: rectOakImages,
+    availability: "made_to_order",
+    isCustomizable: true,
+    dimensions: { length: 61.5, width: 42.5, height: 22 },
+  },
+  {
+    id: "rect-m-rosewood-standard",
+    slug: "rect-m-rosewood-standard",
+    title: "Прямоугольное кашпо, палисандр, стандарт",
+    shape: "rect",
+    size: "m",
+    finish: "rosewood_stain",
+    quality: "standard",
+    images: rectRosewoodImages,
     availability: "made_to_order",
     isCustomizable: true,
     dimensions: { length: 61.5, width: 42.5, height: 22 },
