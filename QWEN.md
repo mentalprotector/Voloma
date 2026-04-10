@@ -7,3 +7,4 @@
 - Deploy script on server: ~/voloma-current/deploy-remote.sh (tags image, restarts container, reloads Caddy)
 - Dockerfile uses Next.js standalone output (node:22-alpine, multi-stage build)
 - Local machine (win32) has no Docker, rsync — deploy always done via SSH to server
+- When user adds photos for узкие (narrow-S, narrow-M, narrow-L) variants, I need to: 1) Place originals in the appropriate originals/ folders, 2) Run node scripts/convert-gallery.js to generate WebP, 3) Add new product variants to src/data/product-variants.ts with getGalleryImages calls for each narrow size/finish combination (similar to how square and rect were done).
