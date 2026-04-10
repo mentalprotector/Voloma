@@ -13,7 +13,7 @@ export function createSelectionFromVariant(variant: ProductVariant): VariantSele
   return {
     shape: variant.shape,
     size: variant.size,
-    color: variant.finish,
+    finish: variant.finish,
     quality: variant.quality,
   };
 }
@@ -95,15 +95,15 @@ export function reconcileSelection(
   const size = availableSizes.includes(selection.size) ? selection.size : availableSizes[0];
 
   const availableFinishes = getAvailableFinishes(variants, shape, size);
-  const color = availableFinishes.includes(selection.color as Finish)
-    ? selection.color
-    : String(availableFinishes[0]);
+  const finish = availableFinishes.includes(selection.finish)
+    ? selection.finish
+    : availableFinishes[0];
 
-  const availableQualities = getAvailableQualities(variants, shape, size, selection.color as Finish);
+  const availableQualities = getAvailableQualities(variants, shape, size, finish);
   const quality = availableQualities.includes(selection.quality)
     ? selection.quality
     : availableQualities[0];
 
-  return { shape, size, color, quality };
+  return { shape, size, finish, quality };
 }
 

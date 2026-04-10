@@ -1,6 +1,5 @@
 import { finishLabels, qualityLabels, shapeLabels, sizeLabels } from "@/content/site-content";
 import type {
-  Finish,
   GalleryState,
   MatchType,
   PlaceholderGalleryData,
@@ -10,14 +9,13 @@ import type {
 } from "@/types/product";
 
 function buildVariantTitle(selection: VariantSelection) {
-  const finishValue = selection.color as Finish;
   return `${shapeLabels[selection.shape]} кашпо ${sizeLabels[selection.size]}, ${finishLabels[
-    finishValue
-  ]?.toLowerCase() ?? selection.color}, ${qualityLabels[selection.quality].toLowerCase()}`;
+    selection.finish
+  ]?.toLowerCase() ?? selection.finish}, ${qualityLabels[selection.quality].toLowerCase()}`;
 }
 
 export function selectionToSlug(selection: VariantSelection) {
-  return `${selection.shape}-${selection.size}-${selection.color}-${selection.quality}`;
+  return `${selection.shape}-${selection.size}-${selection.finish}-${selection.quality}`;
 }
 
 export function createPlaceholderData(selection: VariantSelection): PlaceholderGalleryData {
@@ -87,7 +85,7 @@ export function resolveVariantMatch(
       predicate: (variant) =>
         variant.shape === selection.shape &&
         variant.size === selection.size &&
-        variant.finish === selection.color &&
+        variant.finish === selection.finish &&
         variant.quality === selection.quality,
     },
     {
@@ -96,13 +94,13 @@ export function resolveVariantMatch(
       predicate: (variant) =>
         variant.shape === selection.shape &&
         variant.size === selection.size &&
-        variant.finish === selection.color,
+        variant.finish === selection.finish,
     },
     {
       type: "shape_color",
       label: "Показаны фото близкого варианта, размер или оттенок может отличаться.",
       predicate: (variant) =>
-        variant.shape === selection.shape && variant.finish === selection.color,
+        variant.shape === selection.shape && variant.finish === selection.finish,
     },
     {
       type: "shape_only",

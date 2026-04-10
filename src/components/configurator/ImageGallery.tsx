@@ -5,6 +5,7 @@ import { useState } from "react";
 
 import type { GalleryState, ProductImage } from "@/types/product";
 
+import { cn } from "@/lib/format";
 import { Lightbox } from "./Lightbox";
 import styles from "./image-gallery.module.css";
 
@@ -120,7 +121,7 @@ export function ImageGallery({
             {images.length > 1 && (
               <>
                 <button
-                  className={`${styles.navArrow} ${styles.navArrowPrev}`}
+                  className={cn(styles.navArrow, styles.navArrowPrev)}
                   type="button"
                   aria-label="Предыдущее фото"
                   onClick={() => {
@@ -133,7 +134,7 @@ export function ImageGallery({
                   </svg>
                 </button>
                 <button
-                  className={`${styles.navArrow} ${styles.navArrowNext}`}
+                  className={cn(styles.navArrow, styles.navArrowNext)}
                   type="button"
                   aria-label="Следующее фото"
                   onClick={() => {
@@ -230,7 +231,7 @@ export function ImageGallery({
             <button
               key={image.url}
               aria-label={`Открыть фото ${index + 1} на весь экран`}
-              className={`${styles.gridCard} ${index === activeIndex ? styles.gridCardActive : ""}`}
+              className={cn(styles.gridCard, index === activeIndex && styles.gridCardActive)}
               type="button"
               onClick={() => setLightboxIndex(index)}
             >

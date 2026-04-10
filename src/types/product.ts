@@ -40,8 +40,7 @@ export interface ProductVariant {
 export interface VariantSelection {
   shape: Shape;
   size: Size;
-  /** Legacy field name — now holds a Finish value as string */
-  color: string;
+  finish: Finish;
   quality: Quality;
 }
 

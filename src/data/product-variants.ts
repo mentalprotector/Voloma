@@ -2,27 +2,27 @@ import type { ProductVariant } from "@/types/product";
 import { getGalleryImages } from "@/lib/gallery-images";
 
 // --- Narrow (Узкое) — S, M, L ---
-const narrowSNaturalImages = getGalleryImages("narrow", "s", "natural", "standard");
-const narrowSOakImages = getGalleryImages("narrow", "s", "oak_stain", "standard");
-const narrowSRosewoodImages = getGalleryImages("narrow", "s", "rosewood_stain", "standard");
+const narrowSNaturalImages = getGalleryImages("narrow", "s", "natural");
+const narrowSOakImages = getGalleryImages("narrow", "s", "oak_stain");
+const narrowSRosewoodImages = getGalleryImages("narrow", "s", "rosewood_stain");
 
-const narrowMNaturalImages = getGalleryImages("narrow", "m", "natural", "standard");
-const narrowMOakImages = getGalleryImages("narrow", "m", "oak_stain", "standard");
-const narrowMRosewoodImages = getGalleryImages("narrow", "m", "rosewood_stain", "standard");
+const narrowMNaturalImages = getGalleryImages("narrow", "m", "natural");
+const narrowMOakImages = getGalleryImages("narrow", "m", "oak_stain");
+const narrowMRosewoodImages = getGalleryImages("narrow", "m", "rosewood_stain");
 
-const narrowLNaturalImages = getGalleryImages("narrow", "l", "natural", "standard");
-const narrowLOakImages = getGalleryImages("narrow", "l", "oak_stain", "standard");
-const narrowLRosewoodImages = getGalleryImages("narrow", "l", "rosewood_stain", "standard");
+const narrowLNaturalImages = getGalleryImages("narrow", "l", "natural");
+const narrowLOakImages = getGalleryImages("narrow", "l", "oak_stain");
+const narrowLRosewoodImages = getGalleryImages("narrow", "l", "rosewood_stain");
 
 // --- Square (Квадратное) ---
-const squareNaturalImages = getGalleryImages("square", "m", "natural", "standard");
-const squareRosewoodImages = getGalleryImages("square", "m", "rosewood_stain", "standard");
-const squareOakImages = getGalleryImages("square", "m", "oak_stain", "standard");
+const squareNaturalImages = getGalleryImages("square", "m", "natural");
+const squareRosewoodImages = getGalleryImages("square", "m", "rosewood_stain");
+const squareOakImages = getGalleryImages("square", "m", "oak_stain");
 
 // --- Rectangular (Прямоугольное) ---
-const rectNaturalImages = getGalleryImages("rect", "m", "natural", "standard");
-const rectOakImages = getGalleryImages("rect", "m", "oak_stain", "standard");
-const rectRosewoodImages = getGalleryImages("rect", "m", "rosewood_stain", "standard");
+const rectNaturalImages = getGalleryImages("rect", "m", "natural");
+const rectOakImages = getGalleryImages("rect", "m", "oak_stain");
+const rectRosewoodImages = getGalleryImages("rect", "m", "rosewood_stain");
 
 export const productVariants: ProductVariant[] = [
   // Narrow (Узкое) — S

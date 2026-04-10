@@ -1,4 +1,4 @@
-import type { Finish, ProductImage, Shape, Size, Quality } from "@/types/product";
+import type { Finish, ProductImage, Shape, Size } from "@/types/product";
 
 /** Maps shape enum value to folder name */
 const shapeFolderMap: Record<Shape, string> = {
@@ -35,7 +35,6 @@ export function getGalleryImages(
   shape: Shape,
   size: Size,
   finish: Finish,
-  _quality: Quality,
   maxImages = MAX_PHOTOS,
   tier: "thumbnails" | "medium" | "large" = "medium",
 ): ProductImage[] {
@@ -67,10 +66,9 @@ export function getGridImages(
   shape: Shape,
   size: Size,
   finish: Finish,
-  quality: Quality,
   count = GRID_PHOTOS,
 ): ProductImage[] {
-  return getGalleryImages(shape, size, finish, quality, count, "medium");
+  return getGalleryImages(shape, size, finish, count, "medium");
 }
 
 /** Build full-resolution image paths for the lightbox */
@@ -78,8 +76,7 @@ export function getLargeImages(
   shape: Shape,
   size: Size,
   finish: Finish,
-  quality: Quality,
   count = MAX_PHOTOS,
 ): ProductImage[] {
-  return getGalleryImages(shape, size, finish, quality, count, "large");
+  return getGalleryImages(shape, size, finish, count, "large");
 }

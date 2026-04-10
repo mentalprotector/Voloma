@@ -2,6 +2,7 @@
 
 import type { MessengerKey } from "@/types/messenger";
 
+import { cn, formatPrice } from "@/lib/format";
 import { usePriceAnimation } from "@/hooks/usePriceAnimation";
 import { OrderSheet } from "./OrderSheet";
 import styles from "./sticky-mobile-cta.module.css";
@@ -44,12 +45,12 @@ export function StickyMobileCTA({
             </div>
             <div className={styles.priceColumn}>
               <p className={styles.price}>
-                <span ref={priceRef}>{price.toLocaleString("ru-RU")} ₽</span>
+                <span ref={priceRef}>{formatPrice(price)}</span>
               </p>
             </div>
           </div>
           <button
-            className={[styles.cta, copied ? styles.ctaCopied : ""].filter(Boolean).join(" ")}
+            className={cn(styles.cta, copied && styles.ctaCopied)}
             type="button"
             onClick={onOpen}
           >

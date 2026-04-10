@@ -3,6 +3,8 @@
 import { FINISHES, QUALITIES, SIZES, type Finish, type Quality, type Shape, type Size } from "@/types/product";
 import { finishHint, qualityLabels, shapeLabels, sizeLabels, woodTypeHints } from "@/content/site-content";
 import { getDimensions, hasSizeOptions, isSizeAvailable } from "@/config/availability";
+import { STAIN_SURCHARGE } from "@/config/pricing";
+import { cn, formatPrice } from "@/lib/format";
 
 import { InfoTooltip } from "./InfoTooltip";
 import styles from "./configurator.module.css";
@@ -24,17 +26,13 @@ const shapeIcons: Record<Shape, string> = {
   rect: styles.shapeIconRect,
 };
 
-const finishSwatchStyles: Record<Finish, string> = {
-  natural: "#e8d5b7",
-  oak_stain: "#c4a265",
-  rosewood_stain: "#6b3a2a",
-};
 
 /** Finish labels with optional price surcharge */
+const surchargeLabel = `+${formatPrice(STAIN_SURCHARGE)}`;
 const finishDisplayLabels: Record<Finish, string> = {
   natural: "Без отделки",
-  oak_stain: "Под дуб +800 ₽",
-  rosewood_stain: "Под палисандр +800 ₽",
+  oak_stain: `Под дуб ${surchargeLabel}`,
+  rosewood_stain: `Под палисандр ${surchargeLabel}`,
 };
 
 /** Short finish labels for desktop swatches */
@@ -47,8 +45,8 @@ const finishShortLabels: Record<Finish, string> = {
 /** Price surcharge for finish options */
 const finishPrices: Record<Finish, string> = {
   natural: "",
-  oak_stain: "+800 ₽",
-  rosewood_stain: "+800 ₽",
+  oak_stain: `+${formatPrice(STAIN_SURCHARGE)}`,
+  rosewood_stain: `+${formatPrice(STAIN_SURCHARGE)}`,
 };
 
 export function ConfiguratorControls({
@@ -73,20 +71,18 @@ export function ConfiguratorControls({
         <p className={styles.optionLabel} id="config-shape-label">
           Форма
         </p>
-        <div className={[styles.optionControls, styles.segmentedControls].join(" ")}>
+        <div className={cn(styles.optionControls, styles.segmentedControls)}>
           {shapeOptions.map((item) => (
             <button
               key={item}
               aria-pressed={shape === item}
-              className={[styles.pill, shape === item ? styles.pillActive : ""].filter(Boolean).join(" ")}
+              className={cn(styles.pill, shape === item && styles.pillActive)}
               type="button"
               onClick={() => onShapeChange(item)}
             >
               <span
                 aria-hidden="true"
-                className={[styles.shapeIcon, shapeIcons[item], shape === item ? styles.shapeIconActive : ""]
-                  .filter(Boolean)
-                  .join(" ")}
+                className={cn(styles.shapeIcon, shapeIcons[item], shape === item && styles.shapeIconActive)}
               />
               {shapeLabels[item]}
             </button>
@@ -95,11 +91,11 @@ export function ConfiguratorControls({
       </section>
 
       {/* Size — hidden for single-size shapes, space reserved */}
-      <section className={[styles.optionGroup, !showSizeSelector ? styles.optionGroupHidden : ""].join(" ")} aria-labelledby="config-size-label">
+      <section className={cn(styles.optionGroup, !showSizeSelector && styles.optionGroupHidden)} aria-labelledby="config-size-label">
         <p className={styles.optionLabel} id="config-size-label">
           Размер
         </p>
-        <div className={[styles.optionControls, styles.segmentedControls].join(" ")}>
+        <div className={cn(styles.optionControls, styles.segmentedControls)}>
           {SIZES.map((item) => {
             const isAvailable = isSizeAvailable(shape, item);
 
@@ -108,13 +104,7 @@ export function ConfiguratorControls({
                 key={item}
                 aria-disabled={!isAvailable}
                 aria-pressed={size === item}
-                className={[
-                  styles.pill,
-                  size === item ? styles.pillActive : "",
-                  !isAvailable ? styles.pillDisabled : "",
-                ]
-                  .filter(Boolean)
-                  .join(" ")}
+                className={cn(styles.pill, size === item && styles.pillActive, !isAvailable && styles.pillDisabled)}
                 disabled={!isAvailable}
                 type="button"
                 onClick={() => onSizeChange(item)}
@@ -147,7 +137,7 @@ export function ConfiguratorControls({
           </p>
           <InfoTooltip text={finishHint} />
         </span>
-        <div className={[styles.optionControls, styles.swatchControls].join(" ")}>
+        <div className={cn(styles.optionControls, styles.swatchControls)}>
           {FINISHES.map((item) => (
             <button
               key={item}
@@ -158,8 +148,7 @@ export function ConfiguratorControls({
               onClick={() => onFinishChange(item)}
             >
               <span
-                className={[styles.swatch, finish === item ? styles.swatchActive : ""].filter(Boolean).join(" ")}
-                style={{ background: finishSwatchStyles[item] }}
+                className={cn(styles.swatch, styles[`swatch_${item}`], finish === item && styles.swatchActive)}
               />
               <span className={styles.swatchLabel}>
                 {finishShortLabels[item]}
@@ -178,12 +167,12 @@ export function ConfiguratorControls({
           </p>
           <InfoTooltip text={woodTypeHints[quality]} />
         </span>
-        <div className={[styles.optionControls, styles.chipControls].join(" ")}>
+        <div className={cn(styles.optionControls, styles.chipControls)}>
           {QUALITIES.map((item) => (
             <button
               key={item}
               aria-pressed={quality === item}
-              className={[styles.chip, quality === item ? styles.chipActive : ""].filter(Boolean).join(" ")}
+              className={cn(styles.chip, quality === item && styles.chipActive)}
               type="button"
               onClick={() => onQualityChange(item)}
             >

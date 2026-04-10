@@ -7,7 +7,6 @@ export {
   getFinishSurcharge,
   BASE_PRICES,
   STAIN_SURCHARGE,
-  WHEELS_AVAILABLE,
 } from "./pricing";
 export {
   SHAPE_AVAILABILITY,

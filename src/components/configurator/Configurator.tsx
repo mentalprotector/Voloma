@@ -9,6 +9,8 @@ import { finishLabels, shapeLabels, sizeLabels } from "@/content/site-content";
 import { productVariants } from "@/data/product-variants";
 import { useCopyToClipboard, useDynamicScroll, usePriceAnimation, useVibration } from "@/hooks";
 import { buildMessengerUrl } from "@/lib/messenger-links";
+import { formatPrice } from "@/lib/format";
+import { buildOrderMessage } from "@/lib/order-message";
 import { resolveVariantMatch } from "@/lib/product-matching";
 import type { MessengerKey } from "@/types/messenger";
 import type { Finish, Quality, Shape, Size } from "@/types/product";
@@ -51,7 +53,7 @@ export function Configurator() {
     () => ({
       shape,
       size: availableSizes,
-      color: finish as string,
+      finish,
       quality,
     }),
     [availableSizes, finish, quality, shape],
@@ -77,14 +79,14 @@ export function Configurator() {
   const summaryLine = summaryParts.join(" • ");
   const leadTime = "7–10 дней";
 
-  const finishLabel = finish === "natural" ? "Натуральная" : finishLabels[finish];
-
-  const orderMessage = `Здравствуйте!
-Хочу заказать кашпо Волома:
-Модель: ${shapeLabels[shape]}${showSizeSelector ? " " + sizeLabels[availableSizes] : ""}
-Тип дерева: ${qualityLabels[quality]}
-Пропитка: ${finishLabel}
-Ориентир по стоимости: ${total.toLocaleString("ru-RU")} ₽`;
+  const orderMessage = buildOrderMessage({
+    shape,
+    size: availableSizes,
+    finish,
+    quality,
+    showSize: showSizeSelector,
+    total,
+  });
 
   function handleShapeChange(nextShape: Shape) {
     vibrate();
@@ -196,7 +198,7 @@ export function Configurator() {
           <div className={styles.topBar}>
             <p className={styles.topBarTitle}>Кашпо Волома</p>
             <p className={styles.topBarPriceSecondary}>
-              <span ref={topPriceRef}>{total.toLocaleString("ru-RU")} ₽</span>
+              <span ref={topPriceRef}>{formatPrice(total)}</span>
             </p>
           </div>
 
@@ -215,7 +217,7 @@ export function Configurator() {
           <div className={styles.summaryBar}>
             <div className={styles.summaryBarLeft}>
               <p className={styles.summaryBarPrice}>
-                {total.toLocaleString("ru-RU")} ₽
+                {formatPrice(total)}
               </p>
               <p className={styles.summaryBarConfig}>{summaryLine}</p>
               <p className={styles.summaryBarDelivery}>Изготовим за {leadTime}</p>

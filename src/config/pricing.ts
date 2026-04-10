@@ -26,10 +26,6 @@ export const BASE_PRICES: Record<Shape, Record<Quality, Record<Size, number>>> =
 /** Surcharge for stain treatment (oak or rosewood) */
 export const STAIN_SURCHARGE = 800;
 
-/** Wheels availability: narrow S does not support wheels */
-export const WHEELS_AVAILABLE = (shape: Shape, size: Size): boolean =>
-  !(shape === "narrow" && size === "s");
-
 /**
  * Get base price for a planter configuration
  */

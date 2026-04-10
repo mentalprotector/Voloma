@@ -307,6 +307,10 @@
   box-shadow: 0 0.25rem 0.6rem rgba(0, 0, 0, 0.15);
 }
 
+.swatch_natural { background: #e8d5b7; }
+.swatch_oak_stain { background: #c4a265; }
+.swatch_rosewood_stain { background: #6b3a2a; }
+
 .swatchLabel {
   margin: 0;
   font-size: 0.7rem;
