@@ -21,10 +21,10 @@ const shapeLabelMap: Record<Shape, string> = {
 };
 
 /** Number of photos we expect per variant config */
-const MAX_PHOTOS = 8;
+const MAX_PHOTOS = 17;
 
 /** Number of photos shown in the main gallery grid */
-const GRID_PHOTOS = 4;
+const GRID_PHOTOS = 6;
 
 /**
  * Build image paths for a given variant configuration.

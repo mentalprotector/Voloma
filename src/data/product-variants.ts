@@ -1,11 +1,18 @@
 import type { ProductVariant } from "@/types/product";
 import { getGalleryImages } from "@/lib/gallery-images";
 
-/**
- * Product variants for the new configurator model.
- *
- * Images are populated for variants that have files on disk.
- */
+// --- Narrow (Узкое) — S, M, L ---
+const narrowSNaturalImages = getGalleryImages("narrow", "s", "natural", "standard");
+const narrowSOakImages = getGalleryImages("narrow", "s", "oak_stain", "standard");
+const narrowSRosewoodImages = getGalleryImages("narrow", "s", "rosewood_stain", "standard");
+
+const narrowMNaturalImages = getGalleryImages("narrow", "m", "natural", "standard");
+const narrowMOakImages = getGalleryImages("narrow", "m", "oak_stain", "standard");
+const narrowMRosewoodImages = getGalleryImages("narrow", "m", "rosewood_stain", "standard");
+
+const narrowLNaturalImages = getGalleryImages("narrow", "l", "natural", "standard");
+const narrowLOakImages = getGalleryImages("narrow", "l", "oak_stain", "standard");
+const narrowLRosewoodImages = getGalleryImages("narrow", "l", "rosewood_stain", "standard");
 
 // --- Square (Квадратное) ---
 const squareNaturalImages = getGalleryImages("square", "m", "natural", "standard");
@@ -18,7 +25,7 @@ const rectOakImages = getGalleryImages("rect", "m", "oak_stain", "standard");
 const rectRosewoodImages = getGalleryImages("rect", "m", "rosewood_stain", "standard");
 
 export const productVariants: ProductVariant[] = [
-  // Narrow (Узкое) — S, M, L  (no images yet)
+  // Narrow (Узкое) — S
   {
     id: "narrow-s-natural-standard",
     slug: "narrow-s-natural-standard",
@@ -27,11 +34,39 @@ export const productVariants: ProductVariant[] = [
     size: "s",
     finish: "natural",
     quality: "standard",
-    images: [], // photos not yet available
+    images: narrowSNaturalImages,
     availability: "made_to_order",
     isCustomizable: true,
     dimensions: { length: 46, width: 23.5, height: 22 },
   },
+  {
+    id: "narrow-s-oak-standard",
+    slug: "narrow-s-oak-standard",
+    title: "Узкое кашпо S, дуб, стандарт",
+    shape: "narrow",
+    size: "s",
+    finish: "oak_stain",
+    quality: "standard",
+    images: narrowSOakImages,
+    availability: "made_to_order",
+    isCustomizable: true,
+    dimensions: { length: 46, width: 23.5, height: 22 },
+  },
+  {
+    id: "narrow-s-rosewood-standard",
+    slug: "narrow-s-rosewood-standard",
+    title: "Узкое кашпо S, палисандр, стандарт",
+    shape: "narrow",
+    size: "s",
+    finish: "rosewood_stain",
+    quality: "standard",
+    images: narrowSRosewoodImages,
+    availability: "made_to_order",
+    isCustomizable: true,
+    dimensions: { length: 46, width: 23.5, height: 22 },
+  },
+
+  // Narrow (Узкое) — M
   {
     id: "narrow-m-natural-standard",
     slug: "narrow-m-natural-standard",
@@ -40,11 +75,39 @@ export const productVariants: ProductVariant[] = [
     size: "m",
     finish: "natural",
     quality: "standard",
-    images: [],
+    images: narrowMNaturalImages,
     availability: "made_to_order",
     isCustomizable: true,
     dimensions: { length: 66, width: 23.5, height: 22 },
   },
+  {
+    id: "narrow-m-oak-standard",
+    slug: "narrow-m-oak-standard",
+    title: "Узкое кашпо M, дуб, стандарт",
+    shape: "narrow",
+    size: "m",
+    finish: "oak_stain",
+    quality: "standard",
+    images: narrowMOakImages,
+    availability: "made_to_order",
+    isCustomizable: true,
+    dimensions: { length: 66, width: 23.5, height: 22 },
+  },
+  {
+    id: "narrow-m-rosewood-standard",
+    slug: "narrow-m-rosewood-standard",
+    title: "Узкое кашпо M, палисандр, стандарт",
+    shape: "narrow",
+    size: "m",
+    finish: "rosewood_stain",
+    quality: "standard",
+    images: narrowMRosewoodImages,
+    availability: "made_to_order",
+    isCustomizable: true,
+    dimensions: { length: 66, width: 23.5, height: 22 },
+  },
+
+  // Narrow (Узкое) — L
   {
     id: "narrow-l-natural-standard",
     slug: "narrow-l-natural-standard",
@@ -53,7 +116,33 @@ export const productVariants: ProductVariant[] = [
     size: "l",
     finish: "natural",
     quality: "standard",
-    images: [],
+    images: narrowLNaturalImages,
+    availability: "made_to_order",
+    isCustomizable: true,
+    dimensions: { length: 86, width: 23.5, height: 22 },
+  },
+  {
+    id: "narrow-l-oak-standard",
+    slug: "narrow-l-oak-standard",
+    title: "Узкое кашпо L, дуб, стандарт",
+    shape: "narrow",
+    size: "l",
+    finish: "oak_stain",
+    quality: "standard",
+    images: narrowLOakImages,
+    availability: "made_to_order",
+    isCustomizable: true,
+    dimensions: { length: 86, width: 23.5, height: 22 },
+  },
+  {
+    id: "narrow-l-rosewood-standard",
+    slug: "narrow-l-rosewood-standard",
+    title: "Узкое кашпо L, палисандр, стандарт",
+    shape: "narrow",
+    size: "l",
+    finish: "rosewood_stain",
+    quality: "standard",
+    images: narrowLRosewoodImages,
     availability: "made_to_order",
     isCustomizable: true,
     dimensions: { length: 86, width: 23.5, height: 22 },

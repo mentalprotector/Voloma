@@ -72,6 +72,24 @@ function convertImages() {
       const originalsDir = path.join(finishPath, "originals");
       const originals = getFiles(originalsDir, ORIGINALS_EXT);
 
+      // Skip if all output sizes already exist
+      let allExist = true;
+      if (originals.length > 0) {
+        for (let i = 0; i < originals.length && allExist; i++) {
+          for (const sizeName of Object.keys(SIZES)) {
+            const outFile = path.join(finishPath, sizeName, `${i + 1}.webp`);
+            if (!fs.existsSync(outFile)) {
+              allExist = false;
+              break;
+            }
+          }
+        }
+      }
+      if (allExist && originals.length > 0) {
+        console.log(`  Already converted: ${shapeFolder}/${finishFolder}`);
+        continue;
+      }
+
       if (originals.length === 0) {
         console.log(`  Skip ${shapeFolder}/${finishFolder} — no originals`);
         continue;
@@ -85,8 +103,17 @@ function convertImages() {
 
         for (const [sizeName, maxSize] of Object.entries(SIZES)) {
           const outDir = path.join(finishPath, sizeName);
-          fs.mkdirSync(outDir, { recursive: true });
           const outFile = path.join(outDir, `${num}.webp`);
+          
+          // Skip if already exists
+          if (fs.existsSync(outFile)) {
+            const stats = fs.statSync(outFile);
+            console.log(`  [skip] ${sizeName}/${num}.webp already exists — ${(stats.size / 1024).toFixed(0)} KB`);
+            totalConverted++;
+            continue;
+          }
+
+          fs.mkdirSync(outDir, { recursive: true });
 
           try {
             execSync(

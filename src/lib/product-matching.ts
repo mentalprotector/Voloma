@@ -92,7 +92,7 @@ export function resolveVariantMatch(
     },
     {
       type: "shape_size_color",
-      label: "Показаны фото близкого варианта, оттенок или уровень качества может отличаться.",
+      label: null, // Same photos for standard/premium — no "close match" label
       predicate: (variant) =>
         variant.shape === selection.shape &&
         variant.size === selection.size &&
@@ -120,16 +120,18 @@ export function resolveVariantMatch(
 
       return {
         matchType: strategy.type,
-        galleryState,
+        galleryState: strategy.type === "shape_size_color" ? "exact" : galleryState,
         matchedVariant,
         label:
           galleryState === "fallback"
             ? "Показан близкий вариант"
-            : galleryState === "placeholder"
-              ? "Изготавливаем под заказ"
-              : galleryState === "custom"
-                ? "Сделаем под ваш вариант"
-                : null,
+            : strategy.type === "shape_size_color"
+              ? null
+              : galleryState === "placeholder"
+                ? "Изготавливаем под заказ"
+                : galleryState === "custom"
+                  ? "Сделаем под ваш вариант"
+                  : null,
         images: matchedVariant.images,
         placeholder,
       };

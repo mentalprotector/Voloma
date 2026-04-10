@@ -144,7 +144,7 @@ export function Configurator() {
       {/* Left column: thumbnail strip (desktop only, hidden on mobile via CSS) */}
       <div className={styles.thumbnailStripCol} aria-label="Миниатюры">
         <div className={styles.thumbnailStripInner}>
-          {showGallery && resolvedMatch.images.length > 1 && resolvedMatch.images.slice(0, 6).map((image, index) => (
+          {showGallery && resolvedMatch.images.length > 1 && resolvedMatch.images.slice(0, 17).map((image, index) => (
             <button
               key={image.url}
               aria-label={`Показать изображение ${index + 1}`}
@@ -176,7 +176,11 @@ export function Configurator() {
             activeIndex={activeImageIndex}
             caption={summaryLine}
             images={resolvedMatch.images}
-            note={resolvedMatch.galleryState === "fallback" ? "Показан близкий вариант из каталога" : null}
+            note={
+              resolvedMatch.galleryState === "fallback" && resolvedMatch.matchType !== "shape_size_color"
+                ? "Показан близкий вариант из каталога"
+                : null
+            }
             onActiveIndexChange={setActiveImageIndex}
             placeholderTitle="Ваше кашпо"
             placeholderSubtitle={`${shapeLabels[shape]}${showSizeSelector ? " " + sizeLabels[availableSizes] : ""}`}
