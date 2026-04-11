@@ -71,6 +71,13 @@
   color: var(--color-text);
 }
 
+.priceAnchor {
+  margin: 0;
+  font-size: 13px;
+  color: rgba(0, 0, 0, 0.35);
+  margin-top: 12px;
+}
+
 @media (min-width: 768px) {
   .hero {
     min-height: 100svh;

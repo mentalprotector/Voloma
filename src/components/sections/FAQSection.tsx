@@ -16,8 +16,8 @@ export function FAQSection() {
 
   return (
     <SectionContainer>
-      <h2 className={styles.title}>Частые вопросы</h2>
       <div className={styles.list}>
+        <h2 className={styles.title}>Частые вопросы</h2>
         {siteContent.faq.map((item, index) => (
           <div
             className={[styles.item, openIndex === index ? styles.itemOpen : ""]

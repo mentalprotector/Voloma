@@ -16,6 +16,13 @@
   border-bottom: 0.5px solid rgba(221, 211, 197, 0.15);
 }
 
+@media (min-width: 768px) {
+  .grid {
+    grid-template-columns: 1.3fr 1fr 1fr;
+    gap: 60px;
+  }
+}
+
 .column {
   display: grid;
   gap: 0.35rem;
@@ -32,28 +39,28 @@
 
 .description {
   margin: 0;
-  color: var(--color-text-secondary);
-  font-size: 0.8125rem;
+  color: rgba(245, 243, 238, 0.7);
+  font-size: 13px;
   line-height: 1.6;
 }
 
 .email {
   width: fit-content;
-  color: var(--color-surface);
-  font-size: 0.8125rem;
+  color: rgba(245, 243, 238, 0.85);
+  font-size: 13px;
   margin-top: 0.5rem;
 }
 
 .emailInline {
-  color: var(--color-surface);
+  color: rgba(245, 243, 238, 0.85);
 }
 
 .columnTitle {
-  margin: 0 0 0.35rem;
+  margin: 0 0 12px;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  color: var(--color-text-muted);
-  font-size: 0.625rem;
+  color: rgba(245, 243, 238, 0.4);
+  font-size: 10px;
   font-weight: 500;
 }
 
@@ -63,8 +70,8 @@
 
 .infoLine {
   margin: 0;
-  color: var(--color-text-secondary);
-  font-size: 0.8125rem;
+  color: rgba(245, 243, 238, 0.85);
+  font-size: 13px;
   line-height: 1.6;
 }
 
@@ -74,8 +81,8 @@
 
 .copyright {
   margin: 0;
-  color: var(--color-text-muted);
-  font-size: 0.6875rem;
+  color: rgba(245, 243, 238, 0.4);
+  font-size: 13px;
 }
 
 @media (min-width: 768px) {
@@ -85,6 +92,6 @@
 
   .grid {
     grid-template-columns: 1.3fr 1fr 1fr;
-    gap: 2.5rem;
+    gap: 60px;
   }
 }

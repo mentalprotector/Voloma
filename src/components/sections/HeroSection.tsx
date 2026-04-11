@@ -29,6 +29,7 @@ export function HeroSection() {
             <Button href="/configurator" size="lg">
               Собрать своё кашпо
             </Button>
+            <p className={styles.priceAnchor}>от 1 900 ₽ · готово за 3 рабочих дня</p>
           </div>
         </div>
       </div>
