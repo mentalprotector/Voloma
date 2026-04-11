@@ -1,0 +1,51 @@
+.eyebrow {
+  margin: 0 0 1.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-text-muted);
+  font-size: 0.6875rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+.card {
+  padding: 1.5rem;
+  border-radius: 1rem;
+  background: #fff;
+  border: 0.5px solid rgba(0, 0, 0, 0.08);
+  display: grid;
+  gap: 0.5rem;
+  align-content: start;
+}
+
+.icon {
+  display: block;
+  color: var(--color-warm-accent);
+  margin-bottom: 0.25rem;
+}
+
+.cardTitle {
+  margin: 0;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  line-height: 1.35;
+  color: var(--color-text);
+}
+
+.cardDescription {
+  margin: 0;
+  font-size: 0.8125rem;
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+}
+
+@media (min-width: 768px) {
+  .grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+  }
+}

@@ -14,6 +14,9 @@
   --color-ink-strong: var(--color-text);
   --color-muted: var(--color-text-secondary);
   --color-accent-soft: var(--color-accent);
+  --color-dark-bg: #1e1e1c;
+  --color-dark-text: #f5f3ee;
+  --color-warm-accent: #c07a45;
   --color-bg-soft: var(--color-surface-soft);
   --color-wood: var(--color-surface);
   --font-body: var(--font-body);

@@ -263,13 +263,12 @@
     min-height: 4rem;
   }
 
-  .brand {
-    padding: 0.32rem;
-    border: 1px solid rgba(18, 13, 10, 0.68);
-    border-radius: 0.9rem;
-    background: rgba(18, 13, 10, 0.54);
-    backdrop-filter: blur(10px);
-    box-shadow: 0 0.45rem 1.2rem rgba(8, 5, 4, 0.28);
+  .homeInner .brandSymbol {
+    filter: drop-shadow(0 1px 4px rgba(8, 5, 4, 0.45));
+  }
+
+  .homeInner .brandWordmark {
+    filter: drop-shadow(0 0.5px 3px rgba(8, 5, 4, 0.4));
   }
 
   .brandSymbol {
@@ -280,10 +279,9 @@
     height: 0.86rem;
   }
 
-  .scrolled .homeInner .brand {
-    border-color: rgba(221, 211, 197, 0.38);
-    background: rgba(18, 13, 10, 0.7);
-    box-shadow: 0 0.35rem 1rem rgba(26, 19, 16, 0.08);
+  .scrolled .homeInner .brandSymbol,
+  .scrolled .homeInner .brandWordmark {
+    filter: none;
   }
 
   .actions {

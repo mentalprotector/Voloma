@@ -1,0 +1,105 @@
+.title {
+  margin: 0 0 0.5rem;
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 5vw, 2.5rem);
+  font-weight: 400;
+  line-height: 1.05;
+}
+
+.subtitle {
+  margin: 0 0 1.5rem;
+  color: var(--color-text-muted);
+  font-size: 0.9375rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+}
+
+.item {
+  position: relative;
+  border-radius: 0.875rem;
+  overflow: hidden;
+  aspect-ratio: 4 / 5;
+}
+
+.placeholder {
+  width: 100%;
+  height: 100%;
+  background: var(--color-gallery);
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 1rem;
+  background: rgba(26, 19, 16, 0);
+  transition: background-color 200ms ease;
+  pointer-events: none;
+}
+
+.modelName {
+  color: #fff;
+  font-weight: 500;
+  font-size: 0.9375rem;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 200ms ease, transform 200ms ease;
+}
+
+.modelPrice {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.8125rem;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 200ms ease, transform 200ms ease;
+}
+
+.item:hover .overlay {
+  background: rgba(26, 19, 16, 0.45);
+}
+
+.item:hover .modelName,
+.item:hover .modelPrice {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.ctaWrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+.ctaButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 3rem;
+  padding: 0.9375rem 1.5rem;
+  background: var(--color-accent);
+  color: var(--color-bg);
+  border: 1px solid transparent;
+  border-radius: 2px;
+  font-weight: 500;
+  font-size: 0.9375rem;
+  letter-spacing: 0.03em;
+  text-decoration: none;
+  transition: background 150ms ease;
+}
+
+.ctaButton:hover {
+  background: var(--color-accent-hover);
+}
+
+@media (min-width: 768px) {
+  .grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.75rem;
+  }
+}
