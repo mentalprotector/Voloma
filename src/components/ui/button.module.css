@@ -30,10 +30,13 @@
 .primary {
   background: var(--color-accent);
   color: var(--color-bg);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
 }
 
 .primary:hover {
   background: var(--color-accent-hover);
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .secondary {

@@ -1,9 +1,11 @@
 "use client";
 
 import { useEffect } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 
 import type { MessengerKey } from "@/types/messenger";
 
+import { overlayFade, sheetSpring } from "@/lib/animations";
 import styles from "./order-sheet.module.css";
 
 interface OrderSheetProps {
@@ -50,12 +52,26 @@ export function OrderSheet({
   }
 
   return (
-    <div className={styles.overlay} role="presentation" onClick={onClose}>
-      <section
-        aria-label="Отправить запрос"
-        className={styles.sheet}
-        onClick={(event) => event.stopPropagation()}
-      >
+    <AnimatePresence>
+      {isOpen && (
+        <motion.div
+          className={styles.overlay}
+          role="presentation"
+          onClick={onClose}
+          variants={overlayFade}
+          initial="hidden"
+          animate="visible"
+          exit="exit"
+        >
+          <motion.section
+            aria-label="Отправить запрос"
+            className={styles.sheet}
+            onClick={(event) => event.stopPropagation()}
+            variants={sheetSpring}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+          >
         <div className={styles.handle} aria-hidden="true" />
         <h2 className={styles.title}>Отправить запрос</h2>
         <p className={styles.subtitle}>Выберите мессенджер или скопируйте текст заказа.</p>
@@ -134,7 +150,9 @@ export function OrderSheet({
         <button className={styles.closeButton} type="button" onClick={onClose}>
           Закрыть
         </button>
-      </section>
-    </div>
+          </motion.section>
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 }

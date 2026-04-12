@@ -211,7 +211,7 @@ export const siteContent = {
 export const shapeLabels: Record<Shape, string> = {
   narrow: "Узкое",
   square: "Квадратное",
-  rect: "Прямоугольное",
+  rect: "Прямое",
 };
 
 export const sizeLabels: Record<Size, string> = {

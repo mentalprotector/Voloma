@@ -90,14 +90,6 @@ export function SiteHeader() {
             </Link>
 
           <nav className={styles.actions} aria-label="Основная навигация">
-            <a
-              className={styles.aboutLink}
-              href="#feature-01"
-              onClick={() => trackEvent("hero_cta_click", { source: "header_about" })}
-            >
-              О кашпо
-            </a>
-
             <Button
               href="/configurator"
               className={styles.orderButton}

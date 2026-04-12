@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useMemo, useState } from "react";
+import { motion } from "framer-motion";
 
 import { getInitialSize, hasSizeOptions, isSizeAvailable } from "@/config/availability";
 import { calculateTotalPrice } from "@/config/pricing";
@@ -12,6 +13,7 @@ import { buildMessengerUrl } from "@/lib/messenger-links";
 import { formatPrice } from "@/lib/format";
 import { buildOrderMessage } from "@/lib/order-message";
 import { resolveVariantMatch } from "@/lib/product-matching";
+import { subtleSpring } from "@/lib/animations";
 import type { MessengerKey } from "@/types/messenger";
 import type { Finish, Quality, Shape, Size } from "@/types/product";
 
@@ -147,12 +149,15 @@ export function Configurator() {
       <div className={styles.thumbnailStripCol} aria-label="Миниатюры">
         <div className={styles.thumbnailStripInner}>
           {showGallery && resolvedMatch.images.length > 1 && resolvedMatch.images.slice(0, 17).map((image, index) => (
-            <button
+            <motion.button
               key={image.url}
               aria-label={`Показать изображение ${index + 1}`}
               aria-pressed={index === activeImageIndex}
               className={`${styles.stripThumb} ${index === activeImageIndex ? styles.stripThumbActive : ""}`}
               type="button"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              transition={subtleSpring}
               onClick={() => setActiveImageIndex(index)}
             >
               <Image
@@ -165,7 +170,7 @@ export function Configurator() {
                 src={image.url}
                 unoptimized
               />
-            </button>
+            </motion.button>
           ))}
         </div>
       </div>
@@ -174,7 +179,6 @@ export function Configurator() {
       <section className={styles.mediaColumn} aria-label="Фото кашпо">
         <div className={styles.mediaFrame}>
           <ImageGallery
-            key={resolvedMatch.matchedVariant?.slug ?? `${shape}-${availableSizes}`}
             activeIndex={activeImageIndex}
             caption={summaryLine}
             images={resolvedMatch.images}

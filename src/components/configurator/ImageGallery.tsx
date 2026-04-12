@@ -1,11 +1,13 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { useEffect, useState } from "react";
 
 import type { GalleryState, ProductImage } from "@/types/product";
 
 import { cn } from "@/lib/format";
+import { imageCrossfade } from "@/lib/animations";
 import { Lightbox } from "./Lightbox";
 import styles from "./image-gallery.module.css";
 
@@ -38,9 +40,18 @@ export function ImageGallery({
   const [internalActiveIndex, setInternalActiveIndex] = useState(0);
   const [isLoaded, setIsLoaded] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+  const [isEntering, setIsEntering] = useState(false);
 
   const isControlled = typeof externalActiveIndex === "number";
   const activeIndex = isControlled ? externalActiveIndex : internalActiveIndex;
+
+  // Trigger entering animation when active image changes
+  useEffect(() => {
+    setIsEntering(true);
+    const timer = setTimeout(() => setIsEntering(false), 350);
+    return () => clearTimeout(timer);
+  }, [activeIndex]);
+
   const setActiveIndex = isControlled
     ? (value: number | ((prev: number) => number)) => {
         if (typeof value === "function") {
@@ -92,7 +103,7 @@ export function ImageGallery({
                 ) : null}
                 <Image
                   alt={image.alt}
-                  className={styles.heroImage}
+                  className={cn(styles.heroImage, isEntering && index === activeIndex && styles.entering)}
                   fill
                   priority={index === 0}
                   loading={index === 0 ? "eager" : "lazy"}
@@ -158,7 +169,7 @@ export function ImageGallery({
               {!isLoaded ? <div className={styles.skeleton} aria-hidden="true" /> : null}
               <Image
                 alt={activeImage.alt}
-                className={styles.heroImage}
+                className={cn(styles.heroImage, isEntering && styles.entering)}
                 fill
                 priority
                 sizes="(max-width: 1023px) 100vw, 52rem"
@@ -204,7 +215,7 @@ export function ImageGallery({
             {!isLoaded ? <div className={styles.skeleton} aria-hidden="true" /> : null}
             <Image
               alt={placeholderTitle ?? "Ваше кашпо"}
-              className={styles.heroImage}
+              className={cn(styles.heroImage, isEntering && styles.entering)}
               fill
               priority
               sizes="(max-width: 1023px) 100vw, 52rem"

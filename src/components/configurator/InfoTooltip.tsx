@@ -1,12 +1,34 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import styles from "./info-tooltip.module.css";
 
 interface InfoTooltipProps {
   text: string;
   children?: React.ReactNode;
+}
+
+function parseRichText(text: string): React.ReactNode {
+  const parts = text.split(/\*\*([^*]+)\*\*/g);
+  return parts.map((part, i) => {
+    if (i % 2 === 1) {
+      // Bold part
+      return <strong key={i}>{part}</strong>;
+    }
+    // Regular part — split by newlines
+    const lines = part.split("\n");
+    return (
+      <span key={i}>
+        {lines.map((line, j) => (
+          <span key={j}>
+            {line}
+            {j < lines.length - 1 && <br />}
+          </span>
+        ))}
+      </span>
+    );
+  });
 }
 
 export function InfoTooltip({ text, children }: InfoTooltipProps) {
@@ -17,6 +39,8 @@ export function InfoTooltip({ text, children }: InfoTooltipProps) {
     (window.matchMedia("(max-width: 767px)").matches ||
       "ontouchstart" in window);
   const [popoverStyle, setPopoverStyle] = useState<React.CSSProperties>({});
+
+  const content = useMemo(() => parseRichText(text), [text]);
 
   const updatePosition = useCallback(() => {
     const trigger = triggerRef.current;
@@ -128,12 +152,9 @@ export function InfoTooltip({ text, children }: InfoTooltipProps) {
           className={styles.popover}
           style={isMobile ? undefined : popoverStyle}
           role="tooltip"
-          dangerouslySetInnerHTML={{
-            __html: text
-              .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
-              .replace(/\n/g, "<br/>"),
-          }}
-        />
+        >
+          {content}
+        </div>
       )}
     </span>
   );

@@ -3,9 +3,13 @@
 import { FINISHES, QUALITIES, SIZES, type Finish, type Quality, type Shape, type Size } from "@/types/product";
 import { finishHint, qualityLabels, shapeLabels, sizeLabels, woodTypeHints } from "@/content/site-content";
 import { getDimensions, hasSizeOptions, isSizeAvailable } from "@/config/availability";
-import { STAIN_SURCHARGE } from "@/config/pricing";
+import { BASE_PRICES, STAIN_SURCHARGE } from "@/config/pricing";
 import { cn, formatPrice } from "@/lib/format";
+import { useRelativePricing } from "@/hooks/useRelativePricing";
 
+import { AnimatedPill } from "./AnimatedPill";
+import { AnimatedChip } from "./AnimatedChip";
+import { AnimatedSwatch } from "./AnimatedSwatch";
 import { InfoTooltip } from "./InfoTooltip";
 import styles from "./configurator.module.css";
 
@@ -27,12 +31,11 @@ const shapeIcons: Record<Shape, string> = {
 };
 
 
-/** Finish labels with optional price surcharge */
-const surchargeLabel = `+${formatPrice(STAIN_SURCHARGE)}`;
+/** Finish labels without price surcharge (prices handled by relative pricing hook) */
 const finishDisplayLabels: Record<Finish, string> = {
   natural: "Без отделки",
-  oak_stain: `Под дуб ${surchargeLabel}`,
-  rosewood_stain: `Под палисандр ${surchargeLabel}`,
+  oak_stain: "Под дуб",
+  rosewood_stain: "Под палисандр",
 };
 
 /** Short finish labels for desktop swatches */
@@ -42,12 +45,11 @@ const finishShortLabels: Record<Finish, string> = {
   rosewood_stain: "Палисандр",
 };
 
-/** Price surcharge for finish options */
-const finishPrices: Record<Finish, string> = {
-  natural: "",
-  oak_stain: `+${formatPrice(STAIN_SURCHARGE)}`,
-  rosewood_stain: `+${formatPrice(STAIN_SURCHARGE)}`,
-};
+/** Finish options with priceExtra for relative pricing calculation */
+const finishOptions = FINISHES.map((id) => ({
+  id,
+  priceExtra: id === "natural" ? 0 : STAIN_SURCHARGE,
+}));
 
 export function ConfiguratorControls({
   shape,
@@ -64,6 +66,23 @@ export function ConfiguratorControls({
 
   const noWheelsNote = shape === "narrow" && size === "s";
 
+  // Calculate relative price badges for finish options
+  const finishWithBadges = useRelativePricing(finishOptions, finish);
+
+  // Size options: priceExtra = base price for this size with current shape+quality
+  const sizeOptions = SIZES.map((id) => ({
+    id,
+    priceExtra: isSizeAvailable(shape, id) ? BASE_PRICES[shape][quality][id] : Infinity,
+  }));
+  const sizesWithBadges = useRelativePricing(sizeOptions, size);
+
+  // Quality options: priceExtra = base price for this quality with current shape+size
+  const qualityPricingOptions = QUALITIES.map((id) => ({
+    id,
+    priceExtra: BASE_PRICES[shape][id][size],
+  }));
+  const qualitiesWithBadges = useRelativePricing(qualityPricingOptions, quality);
+
   return (
     <div className={styles.selectors}>
       {/* Shape */}
@@ -73,10 +92,9 @@ export function ConfiguratorControls({
         </p>
         <div className={cn(styles.optionControls, styles.segmentedControls)}>
           {shapeOptions.map((item) => (
-            <button
+            <AnimatedPill
               key={item}
-              aria-pressed={shape === item}
-              className={cn(styles.pill, shape === item && styles.pillActive)}
+              isActive={shape === item}
               type="button"
               onClick={() => onShapeChange(item)}
             >
@@ -85,7 +103,7 @@ export function ConfiguratorControls({
                 className={cn(styles.shapeIcon, shapeIcons[item], shape === item && styles.shapeIconActive)}
               />
               {shapeLabels[item]}
-            </button>
+            </AnimatedPill>
           ))}
         </div>
       </section>
@@ -96,21 +114,20 @@ export function ConfiguratorControls({
           Размер
         </p>
         <div className={cn(styles.optionControls, styles.segmentedControls)}>
-          {SIZES.map((item) => {
-            const isAvailable = isSizeAvailable(shape, item);
+          {sizesWithBadges.map(({ option, displayBadge }) => {
+            const isAvailable = isSizeAvailable(shape, option.id as Size);
 
             return (
-              <button
-                key={item}
-                aria-disabled={!isAvailable}
-                aria-pressed={size === item}
-                className={cn(styles.pill, size === item && styles.pillActive, !isAvailable && styles.pillDisabled)}
-                disabled={!isAvailable}
+              <AnimatedPill
+                key={option.id}
+                isDisabled={!isAvailable}
+                isActive={size === option.id}
+                badge={displayBadge}
                 type="button"
-                onClick={() => onSizeChange(item)}
+                onClick={() => onSizeChange(option.id as Size)}
               >
-                {sizeLabels[item]}
-              </button>
+                {sizeLabels[option.id as Size]}
+              </AnimatedPill>
             );
           })}
         </div>
@@ -138,23 +155,26 @@ export function ConfiguratorControls({
           <InfoTooltip text={finishHint} />
         </span>
         <div className={cn(styles.optionControls, styles.swatchControls)}>
-          {FINISHES.map((item) => (
-            <button
-              key={item}
-              aria-label={finishDisplayLabels[item]}
-              aria-pressed={finish === item}
-              className={styles.swatchButton}
+          {finishWithBadges.map(({ option, displayBadge }) => (
+            <AnimatedSwatch
+              key={option.id}
+              ariaLabel={finishDisplayLabels[option.id as Finish]}
+              isActive={finish === option.id}
               type="button"
-              onClick={() => onFinishChange(item)}
+              onClick={() => onFinishChange(option.id as Finish)}
             >
-              <span
-                className={cn(styles.swatch, styles[`swatch_${item}`], finish === item && styles.swatchActive)}
-              />
-              <span className={styles.swatchLabel}>
-                {finishShortLabels[item]}
-                {finishPrices[item] ? <span className={styles.swatchPrice}>{finishPrices[item]}</span> : null}
+              <span className={styles.swatchWrapper}>
+                <span
+                  className={cn(styles.swatch, styles[`swatch_${option.id}`], finish === option.id && styles.swatchActive)}
+                />
+                {displayBadge && (
+                  <span className={styles.swatchBadge}>{displayBadge}</span>
+                )}
               </span>
-            </button>
+              <span className={styles.swatchLabel}>
+                {finishShortLabels[option.id as Finish]}
+              </span>
+            </AnimatedSwatch>
           ))}
         </div>
       </section>
@@ -168,16 +188,16 @@ export function ConfiguratorControls({
           <InfoTooltip text={woodTypeHints[quality]} />
         </span>
         <div className={cn(styles.optionControls, styles.chipControls)}>
-          {QUALITIES.map((item) => (
-            <button
-              key={item}
-              aria-pressed={quality === item}
-              className={cn(styles.chip, quality === item && styles.chipActive)}
+          {qualitiesWithBadges.map(({ option, displayBadge }) => (
+            <AnimatedChip
+              key={option.id}
+              isActive={quality === option.id}
+              badge={displayBadge}
               type="button"
-              onClick={() => onQualityChange(item)}
+              onClick={() => onQualityChange(option.id as Quality)}
             >
-              {qualityLabels[item]}
-            </button>
+              {qualityLabels[option.id as Quality]}
+            </AnimatedChip>
           ))}
         </div>
       </section>

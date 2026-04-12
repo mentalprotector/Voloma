@@ -1,5 +1,9 @@
+"use client";
+
+import { motion } from "framer-motion";
 import Link from "next/link";
 
+import { fadeSlideUp, viewportOptions } from "@/lib/animations";
 import { siteContent } from "@/content/site-content";
 
 import styles from "./cta-banner-section.module.css";
@@ -9,13 +13,19 @@ export function CTABannerSection() {
 
   return (
     <section className={styles.section}>
-      <div className={styles.inner}>
+      <motion.div
+        className={styles.inner}
+        initial="hidden"
+        whileInView="visible"
+        viewport={viewportOptions}
+        variants={fadeSlideUp}
+      >
         <h2 className={styles.title}>{title}</h2>
         <p className={styles.subtitle}>{subtitle}</p>
         <Link className={styles.ctaButton} href="/configurator">
           {cta}
         </Link>
-      </div>
+      </motion.div>
     </section>
   );
 }

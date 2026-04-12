@@ -34,11 +34,31 @@
   margin-bottom: 12px;
   border-radius: 14px;
   overflow: hidden;
+  position: relative;
+  cursor: pointer;
+}
+
+.item::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0);
+  transition: background 0.25s ease;
+  pointer-events: none;
+}
+
+.item:hover::after {
+  background: rgba(0, 0, 0, 0.08);
 }
 
 .item img {
   width: 100%;
   display: block;
+  transition: transform 0.4s ease;
+}
+
+.item:hover img {
+  transform: scale(1.03);
 }
 
 @media (max-width: 768px) {

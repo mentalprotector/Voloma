@@ -29,6 +29,13 @@
   color: inherit;
   cursor: pointer;
   gap: 1rem;
+  border-radius: 8px;
+  transition: background-color 0.15s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.trigger:hover {
+  background: rgba(0, 0, 0, 0.02);
 }
 
 .question {
@@ -46,18 +53,8 @@
   text-align: center;
 }
 
-.answerWrapper {
-  display: grid;
-  grid-template-rows: 0fr;
-  transition: grid-template-rows 300ms ease;
-}
-
-.itemOpen .answerWrapper {
-  grid-template-rows: 1fr;
-}
-
 .answerContent {
-  overflow: hidden;
+  padding-top: 0;
 }
 
 .answerText {

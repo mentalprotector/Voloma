@@ -1,12 +1,37 @@
-import { Button } from "../ui/Button";
+"use client";
+
+import { useRef } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
+
+import {
+  heroStaggerContainer,
+  heroChild,
+  priceFadeScale,
+} from "@/lib/animations";
 import styles from "./hero-section.module.css";
 
 export function HeroSection() {
+  const ref = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start start", "end start"],
+  });
+
+  // Subtle parallax: background image moves at 30% scroll speed
+  const heroImageY = useTransform(scrollYProgress, [0, 1], ["0%", "15%"]);
+  const heroOpacity = useTransform(scrollYProgress, [0, 0.6], [1, 0.3]);
+
   return (
-    <section className={styles.section}>
+    <section className={styles.section} ref={ref}>
       <div className={styles.shell}>
         <div className={styles.hero}>
-          <div className={styles.media}>
+          <motion.div
+            className={styles.media}
+            style={{ y: heroImageY, opacity: heroOpacity }}
+            initial={{ scale: 1.05, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 1.2, ease: [0.25, 0.1, 0.25, 1] }}
+          >
             <picture className={styles.picture}>
               <source
                 media="(min-width: 768px)"
@@ -21,16 +46,24 @@ export function HeroSection() {
                 src="/images/hero/voloma-hero-mobile.webp"
               />
             </picture>
-          </div>
+          </motion.div>
 
-          <div className={styles.copy}>
-            <p className={styles.subtitle}>Форма, размер и оттенок под ваше пространство.</p>
-            <h1 className={styles.title}>Деревянные кашпо для интерьера</h1>
-            <Button href="/configurator" size="lg">
-              Собрать своё кашпо
-            </Button>
-            <p className={styles.priceAnchor}>от 1 900 ₽ · готово за 3 рабочих дня</p>
-          </div>
+          <motion.div
+            className={styles.copy}
+            variants={heroStaggerContainer}
+            initial="hidden"
+            animate="visible"
+          >
+            <motion.p className={styles.subtitle} variants={heroChild}>
+              Форма, размер и оттенок под ваше пространство.
+            </motion.p>
+            <motion.h1 className={styles.title} variants={heroChild}>
+              Деревянные кашпо для интерьера
+            </motion.h1>
+            <motion.p className={styles.priceAnchor} variants={priceFadeScale}>
+              от 1 900 ₽ · готово за 3 рабочих дня
+            </motion.p>
+          </motion.div>
         </div>
       </div>
     </section>
