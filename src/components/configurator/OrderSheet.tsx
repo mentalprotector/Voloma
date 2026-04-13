@@ -51,7 +51,7 @@ const copyButtonAnimation = {
     scale: [0.92, 1.05, 1],
     transition: {
       duration: 0.3,
-      ease: "easeOut",
+      ease: "easeOut" as const,
     },
   },
 };
