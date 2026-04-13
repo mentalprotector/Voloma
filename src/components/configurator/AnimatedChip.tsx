@@ -15,12 +15,6 @@ interface AnimatedChipProps {
   onClick?: () => void;
 }
 
-function parseBadge(badge: string): { sign: string; amount: string } | null {
-  const match = badge.match(/^([+\-])\s*(.+)$/);
-  if (!match) return null;
-  return { sign: match[1], amount: match[2] };
-}
-
 export function AnimatedChip({
   children,
   isActive,
@@ -29,8 +23,6 @@ export function AnimatedChip({
   type = "button",
   onClick,
 }: AnimatedChipProps) {
-  const parsed = badge ? parseBadge(badge) : null;
-
   return (
     <motion.button
       type={type}
@@ -40,12 +32,7 @@ export function AnimatedChip({
       onClick={onClick}
     >
       {children}
-      {parsed && (
-        <span className={styles.chipBadge}>
-          <span className={styles.pillBadgePlus}>{parsed.sign}</span>
-          <span className={styles.chipBadgeAmount}>{parsed.amount}</span>
-        </span>
-      )}
+      {badge && <span className={styles.chipBadge}>{badge}</span>}
     </motion.button>
   );
 }

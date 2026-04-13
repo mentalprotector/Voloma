@@ -155,27 +155,34 @@ export function ConfiguratorControls({
           <InfoTooltip text={finishHint} />
         </span>
         <div className={cn(styles.optionControls, styles.swatchControls)}>
-          {finishWithBadges.map(({ option, displayBadge }) => (
-            <AnimatedSwatch
-              key={option.id}
-              ariaLabel={finishDisplayLabels[option.id as Finish]}
-              isActive={finish === option.id}
-              type="button"
-              onClick={() => onFinishChange(option.id as Finish)}
-            >
-              <span className={styles.swatchWrapper}>
-                <span
-                  className={cn(styles.swatch, styles[`swatch_${option.id}`], finish === option.id && styles.swatchActive)}
-                />
-                {displayBadge && (
-                  <span className={styles.swatchBadge}>{displayBadge}</span>
-                )}
-              </span>
-              <span className={styles.swatchLabel}>
-                {finishShortLabels[option.id as Finish]}
-              </span>
-            </AnimatedSwatch>
-          ))}
+          {finishWithBadges.map(({ option, displayBadge }) => {
+            const parsed = displayBadge ? displayBadge.match(/^([+\-])\s*(.+)$/) : null;
+
+            return (
+              <AnimatedSwatch
+                key={option.id}
+                ariaLabel={finishDisplayLabels[option.id as Finish]}
+                isActive={finish === option.id}
+                type="button"
+                onClick={() => onFinishChange(option.id as Finish)}
+              >
+                <span className={styles.swatchWrapper}>
+                  <span
+                    className={cn(styles.swatch, styles[`swatch_${option.id}`], finish === option.id && styles.swatchActive)}
+                  />
+                  {parsed && (
+                    <span className={styles.swatchBadge}>
+                      <span className={styles.swatchBadgePlus}>{parsed[1]}</span>
+                      <span className={styles.swatchBadgeAmount}>{parsed[2]}</span>
+                    </span>
+                  )}
+                </span>
+                <span className={styles.swatchLabel}>
+                  {finishShortLabels[option.id as Finish]}
+                </span>
+              </AnimatedSwatch>
+            );
+          })}
         </div>
       </section>
 
