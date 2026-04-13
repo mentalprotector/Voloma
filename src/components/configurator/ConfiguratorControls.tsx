@@ -166,16 +166,9 @@ export function ConfiguratorControls({
                 type="button"
                 onClick={() => onFinishChange(option.id as Finish)}
               >
-                <span className={styles.swatchWrapper}>
-                  <span
-                    className={cn(styles.swatch, styles[`swatch_${option.id}`], finish === option.id && styles.swatchActive)}
-                  />
-                  {parsed && (
-                    <span className={cn(styles.swatchBadge, styles[`swatchBadge_${option.id}`])}>
-                      <span className={styles.swatchBadgeDot} />
-                      <span className={styles.swatchBadgeAmount}>{parsed[2]}</span>
-                    </span>
-                  )}
+                <span className={cn(styles.swatchButtonInner, styles[`swatchButtonInner_${option.id}`])}>
+                  <span className={styles.swatchButtonDot} />
+                  {parsed && <span className={styles.swatchButtonPrice}>{parsed[2]}</span>}
                 </span>
                 <span className={styles.swatchLabel}>
                   {finishShortLabels[option.id as Finish]}
