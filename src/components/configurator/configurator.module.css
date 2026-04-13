@@ -259,14 +259,36 @@
   background: rgba(0, 0, 0, 0.03);
 }
 
-/* Pill badge — inline price difference */
+/* Pill badge — inline price difference with (+) circle */
 .pillBadge {
-  display: inline;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 2px 8px 2px 3px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.04);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.pillBadgePlus {
+  display: grid;
+  place-items: center;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: #ddd;
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1;
+  color: #555;
+  flex-shrink: 0;
+}
+
+.pillBadgeAmount {
   font-size: 11px;
   font-weight: 400;
   color: #999;
-  margin-left: 4px;
-  white-space: nowrap;
 }
 
 .pillActive .pillBadge {
@@ -405,14 +427,36 @@
   box-shadow: 0 0.35rem 0.8rem rgba(26, 19, 16, 0.12);
 }
 
-/* Chip badge — inline price difference */
+/* Chip badge — inline price difference with (+) circle */
 .chipBadge {
-  display: inline;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 2px 8px 2px 3px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.04);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.chipBadge .pillBadgePlus {
+  display: grid;
+  place-items: center;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: #ddd;
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1;
+  color: #555;
+  flex-shrink: 0;
+}
+
+.chipBadgeAmount {
   font-size: 11px;
   font-weight: 400;
   color: #999;
-  margin-left: 4px;
-  white-space: nowrap;
 }
 
 .chipActive .chipBadge {
