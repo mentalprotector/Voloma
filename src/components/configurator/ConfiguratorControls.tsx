@@ -171,8 +171,8 @@ export function ConfiguratorControls({
                     className={cn(styles.swatch, styles[`swatch_${option.id}`], finish === option.id && styles.swatchActive)}
                   />
                   {parsed && (
-                    <span className={styles.swatchBadge}>
-                      <span className={styles.swatchBadgePlus}>{parsed[1]}</span>
+                    <span className={cn(styles.swatchBadge, styles[`swatchBadge_${option.id}`])}>
+                      <span className={styles.swatchBadgeDot} />
                       <span className={styles.swatchBadgeAmount}>{parsed[2]}</span>
                     </span>
                   )}
