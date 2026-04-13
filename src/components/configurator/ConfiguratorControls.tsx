@@ -168,7 +168,7 @@ export function ConfiguratorControls({
               >
                 <span className={cn(styles.swatchButtonInner, styles[`swatchButtonInner_${option.id}`])}>
                   <span className={styles.swatchButtonDot} />
-                  {parsed && <span className={styles.swatchButtonPrice}>{parsed[2]}</span>}
+                  {parsed && <span className={styles.swatchButtonPrice}>{parsed[1]}{parsed[2]}</span>}
                 </span>
                 <span className={styles.swatchLabel}>
                   {finishShortLabels[option.id as Finish]}
