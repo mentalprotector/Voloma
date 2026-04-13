@@ -1,21 +1,11 @@
-"use client";
-
 import Image from "next/image";
-import { usePathname } from "next/navigation";
 
-import { trackEvent } from "@/lib/analytics";
 import { siteContent } from "@/content/site-content";
 
 import styles from "./site-footer.module.css";
 
 export function SiteFooter() {
-  const pathname = usePathname();
-
-  if (pathname === "/configurator") {
-    return null;
-  }
-
-  const { description, email, delivery, payment, guarantee, copyright } =
+  const { description, email, phone, delivery, payment, guarantee, copyright } =
     siteContent.footer;
 
   return (
@@ -34,9 +24,14 @@ export function SiteFooter() {
             <a
               className={styles.email}
               href={`mailto:${email}`}
-              onClick={() => trackEvent("contact_click", { source: "footer_email" })}
             >
               {email}
+            </a>
+            <a
+              className={styles.phone}
+              href={`tel:${phone}`}
+            >
+              {phone}
             </a>
           </div>
 
@@ -61,10 +56,9 @@ export function SiteFooter() {
               Свяжитесь с нами:{" "}
               <a
                 className={styles.emailInline}
-                href={`mailto:${email}`}
-                onClick={() => trackEvent("contact_click", { source: "footer_guarantee" })}
+                href={`tel:${phone}`}
               >
-                {email}
+                {phone}
               </a>
             </p>
           </div>

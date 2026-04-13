@@ -171,6 +171,7 @@ export const siteContent = {
   footer: {
     description: "Деревянные кашпо для спокойных интерьеров.",
     email: "hello@voloma.ru",
+    phone: "+79992900919",
     delivery: [
       "Вся Россия, транспортная компания на выбор",
       "Самовывоз: Петрозаводск",

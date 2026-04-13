@@ -1,13 +1,11 @@
 "use client";
 
 import Image from "next/image";
-import { AnimatePresence, motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import type { GalleryState, ProductImage } from "@/types/product";
 
 import { cn } from "@/lib/format";
-import { imageCrossfade } from "@/lib/animations";
 import { getImageCropStyleRequired } from "@/lib/image-crop";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { Lightbox } from "./Lightbox";
@@ -42,26 +40,31 @@ export function ImageGallery({
   const [internalActiveIndex, setInternalActiveIndex] = useState(0);
   const [isLoaded, setIsLoaded] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
-  const [isEntering, setIsEntering] = useState(false);
 
   const isControlled = typeof externalActiveIndex === "number";
   const activeIndex = isControlled ? externalActiveIndex : internalActiveIndex;
   const isMobile = useIsMobile();
 
-  // Trigger entering animation when active image changes
+  // Track entering animation without setState in effect (React 19 compliant)
+  // Use requestAnimationFrame to defer setState until after commit phase
+  const [isEntering, setIsEntering] = useState(false);
+  const prevIndexRef = useRef(activeIndex);
+
   useEffect(() => {
-    setIsEntering(true);
-    const timer = setTimeout(() => setIsEntering(false), 350);
-    return () => clearTimeout(timer);
+    if (activeIndex !== prevIndexRef.current) {
+      prevIndexRef.current = activeIndex;
+      // Defer setState to after commit via rAF (React 19 allows this)
+      const raf = requestAnimationFrame(() => {
+        setIsEntering(true);
+        setTimeout(() => setIsEntering(false), 350);
+      });
+      return () => cancelAnimationFrame(raf);
+    }
   }, [activeIndex]);
 
   const setActiveIndex = isControlled
     ? (value: number | ((prev: number) => number)) => {
-        if (typeof value === "function") {
-          onActiveIndexChange?.(value(activeIndex));
-        } else {
-          onActiveIndexChange?.(value);
-        }
+        onActiveIndexChange?.(typeof value === "function" ? value(activeIndex) : value);
       }
     : setInternalActiveIndex;
 

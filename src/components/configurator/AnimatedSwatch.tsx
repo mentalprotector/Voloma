@@ -26,7 +26,7 @@ export function AnimatedSwatch({
   return (
     <motion.button
       type={type}
-      className={styles.swatchButton}
+      className={`${styles.swatchButton} ${isActive ? styles.swatchActive : ""} ${className ?? ""}`.trim()}
       aria-label={ariaLabel}
       whileTap={{ scale: 0.92 }}
       transition={subtleSpring as Transition}

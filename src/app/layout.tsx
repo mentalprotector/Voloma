@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Cormorant_Garamond, Inter } from "next/font/google";
 import type { ReactNode } from "react";
 
+import { FooterVisibilityWrapper } from "@/components/layout/FooterVisibilityWrapper";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import { siteContent } from "@/content/site-content";
@@ -47,6 +48,7 @@ export const metadata: Metadata = {
   authors: [{ name: "Волома" }],
   creator: "Волома",
   publisher: "Волома",
+  // TODO: Update URL when custom domain is configured
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://voloma.94.140.224.220.sslip.io"),
   alternates: {
     canonical: "/",
@@ -84,9 +86,9 @@ export const metadata: Metadata = {
     },
   },
   verification: {
-    // Добавить ID верификации после регистрации в Яндекс.Вебмастере
-    // yandex: "YOUR_YANDEX_VERIFICATION_CODE",
-    // google: "YOUR_GOOGLE_VERIFICATION_CODE",
+    // TODO: Add verification codes when registered in Yandex.Webmaster and Google Search Console
+    yandex: process.env.YANDEX_VERIFICATION_CODE,
+    google: process.env.GOOGLE_VERIFICATION_CODE,
   },
   icons: {
     icon: "/favicon.svg",
@@ -116,7 +118,9 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
       <body className={`${cormorant.variable} ${inter.variable}`}>
         <SiteHeader />
         <main>{children}</main>
-        <SiteFooter />
+        <FooterVisibilityWrapper>
+          <SiteFooter />
+        </FooterVisibilityWrapper>
       </body>
     </html>
   );

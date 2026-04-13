@@ -1,53 +1,41 @@
 "use client";
 
 import type { MessengerKey } from "@/types/messenger";
-import type { Shape, Size } from "@/types/product";
 
-import { cn, formatPrice } from "@/lib/format";
+import { formatPrice } from "@/lib/format";
 import { usePriceAnimation } from "@/hooks/usePriceAnimation";
 import { OrderSheet } from "./OrderSheet";
-import { SpecsModal } from "./SpecsModal";
 import styles from "./sticky-mobile-cta.module.css";
 
 interface StickyMobileCTAProps {
-  copied: boolean;
   copyStatus: string | null;
   isOpen: boolean;
   message: string;
   price: number;
   pricePulseKey: number;
   selectionLine: string;
-  shape: Shape;
-  size: Size;
-  specsOpen: boolean;
   onClose: () => void;
   onCopyMessage: () => void;
   onMessengerClick: (target: MessengerKey) => void;
   onOpen: () => void;
-  onSpecsClose: () => void;
 }
 
 export function StickyMobileCTA({
-  copied,
   copyStatus,
   isOpen,
   message,
   price,
   selectionLine,
-  shape,
-  size,
-  specsOpen,
   onClose,
   onCopyMessage,
   onMessengerClick,
   onOpen,
-  onSpecsClose,
 }: StickyMobileCTAProps) {
   const { elementRef: priceRef } = usePriceAnimation();
 
   return (
     <>
-      <div className={styles.bar}>
+      <div className={styles.bar} data-cta>
         <div className={styles.barInner}>
           <div className={styles.infoRow}>
             <div className={styles.infoLeft}>
@@ -61,18 +49,7 @@ export function StickyMobileCTA({
           </div>
           <div className={styles.buttonRow}>
             <button
-              className={styles.specsBtn}
-              type="button"
-              onClick={() => onSpecsClose()}
-            >
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                <rect x="2" y="7" width="20" height="14" rx="2" stroke="currentColor" strokeWidth="1.5"/>
-                <path d="M6 7V5a2 2 0 012-2h8a2 2 0 012 2v2" stroke="currentColor" strokeWidth="1.5"/>
-              </svg>
-              <span>Упаковка и комплектация</span>
-            </button>
-            <button
-              className={cn(styles.cta, copied && styles.ctaCopied)}
+              className={styles.cta}
               type="button"
               onClick={onOpen}
             >
@@ -97,13 +74,6 @@ export function StickyMobileCTA({
         onClose={onClose}
         onCopyMessage={onCopyMessage}
         onMessengerClick={onMessengerClick}
-      />
-
-      <SpecsModal
-        isOpen={specsOpen}
-        shape={shape}
-        size={size}
-        onClose={onSpecsClose}
       />
     </>
   );

@@ -1,5 +1,4 @@
 import type { CropPosition, Finish, ProductImage, Shape, Size } from "@/types/product";
-// eslint-disable-next-line @typescript-eslint/no-require-imports
 import imageOrderConfig from "../../public/images/cashpo/configs/image-order.json";
 
 /** Maps shape enum value to folder name */

@@ -9,25 +9,16 @@ const MOBILE_BREAKPOINT = 1024;
  * SSR-safe: defaults to false, hydrates on mount.
  */
 export function useIsMobile(): boolean {
-  const [isMobile, setIsMobile] = useState(false);
+  const [isMobile, setIsMobile] = useState(() => {
+    if (typeof window === "undefined") return false;
+    return window.matchMedia(`(max-width: ${MOBILE_BREAKPOINT - 1}px)`).matches;
+  });
 
   useEffect(() => {
     const mq = window.matchMedia(`(max-width: ${MOBILE_BREAKPOINT - 1}px)`);
-    const handler = (e: MediaQueryListEvent | MediaQueryList) => {
-      setIsMobile(e.matches ?? ("matches" in e ? e.matches : false));
-    };
-
-    // Set initial
-    setIsMobile(mq.matches);
-
-    // Listen for changes
-    if (typeof mq.addEventListener === "function") {
-      mq.addEventListener("change", handler);
-      return () => mq.removeEventListener("change", handler);
-    }
-    // Fallback for older browsers
-    mq.addListener(handler as never);
-    return () => mq.removeListener(handler as never);
+    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+    mq.addEventListener("change", handler);
+    return () => mq.removeEventListener("change", handler);
   }, []);
 
   return isMobile;

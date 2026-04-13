@@ -59,7 +59,6 @@ export function getProductSchema(
   finish: Finish,
   dimensions?: { length: number; width: number; height: number }
 ) {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://voloma.94.140.224.220.sslip.io";
   const basePrice = BASE_PRICES[shape][quality][size];
   const finishSurcharge = finish === "natural" ? 0 : STAIN_SURCHARGE;
   const finalPrice = basePrice + finishSurcharge;
@@ -73,12 +72,6 @@ export function getProductSchema(
   const qualityNames: Record<Quality, string> = {
     standard: "стандарт",
     premium: "премиум"
-  };
-
-  const sizeNames: Record<Size, string> = {
-    s: "S",
-    m: "M",
-    l: "L"
   };
 
   return {

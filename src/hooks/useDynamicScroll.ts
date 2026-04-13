@@ -1,26 +1,30 @@
 "use client";
 
+import type { RefObject } from "react";
 import { useEffect } from "react";
 
 /**
- * Dynamically adjusts padding-bottom on .controlsColumn to prevent content
+ * Dynamically adjusts padding-bottom on the controls column to prevent content
  * from being overlapped by the fixed CTA bar.
- * 
+ *
  * Strategy: "Safe Bottom Margin" with GAP to avoid "stickiness"
  * - Always maintain a 20px gap between content and CTA/bottom edge
  * - If content fits → padding = GAP (clean spacing, no stickiness)
  * - If content overlaps CTA → padding = CTA height + GAP (no overlap + gap)
- * 
+ *
  * Uses ResizeObserver + scroll listener for reliable updates.
  * Measures the last VISIBLE element (ignores display:none elements).
+ *
+ * @param controlsRef - Ref to the controls column element
  */
-export function useDynamicScroll() {
+export function useDynamicScroll(controlsRef: RefObject<HTMLElement | null>) {
   useEffect(() => {
-    const controlsColumn = document.querySelector('.controlsColumn') as HTMLElement | null;
-    const controlsWrapper = controlsColumn?.querySelector('.controls') as HTMLElement | null;
-    const ctaElement = document.querySelector('[data-cta]') as HTMLElement | null;
+    const controlsColumn = controlsRef.current;
+    if (!controlsColumn) return;
 
-    if (!controlsColumn || !controlsWrapper || !ctaElement) return;
+    const controlsWrapper = controlsColumn.querySelector('.controls') as HTMLElement | null;
+    const ctaElement = document.querySelector('[data-cta]') as HTMLElement | null;
+    if (!controlsWrapper || !ctaElement) return;
 
     const GAP = 20; // Always maintain this gap between content and CTA/bottom
 
@@ -69,12 +73,12 @@ export function useDynamicScroll() {
     // Initial check
     checkOverflow();
 
-    // Observe body for layout changes (images loaded, content updates)
+    // Observe the controls column for layout changes
     const resizeObserver = new ResizeObserver(() => {
       requestAnimationFrame(checkOverflow);
     });
 
-    resizeObserver.observe(document.body);
+    resizeObserver.observe(controlsColumn);
 
     // Listen to scroll and resize events for dynamic recalculation
     window.addEventListener('scroll', checkOverflow, { passive: true });
@@ -87,5 +91,5 @@ export function useDynamicScroll() {
       // Reset CSS variable
       controlsColumn.style.removeProperty('--cta-offset');
     };
-  }, []);
+  }, [controlsRef]);
 }

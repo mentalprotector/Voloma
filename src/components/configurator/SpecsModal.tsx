@@ -3,6 +3,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 
 import { getKomplektatsiyaItems, getPackagingSpecs } from "@/config/specs";
+import { useFocusTrap } from "@/hooks/useFocusTrap";
 import { overlayFade, sheetSpring } from "@/lib/animations";
 import type { Shape, Size } from "@/types/product";
 
@@ -16,6 +17,7 @@ interface SpecsModalProps {
 }
 
 export function SpecsModal({ isOpen, shape, size, onClose }: SpecsModalProps) {
+  const focusTrapRef = useFocusTrap<HTMLDivElement>(isOpen);
   const specs = getPackagingSpecs(shape, size);
   const komplektatsiya = getKomplektatsiyaItems(shape, size);
 
@@ -34,6 +36,9 @@ export function SpecsModal({ isOpen, shape, size, onClose }: SpecsModalProps) {
           exit="exit"
         >
           <motion.section
+            ref={focusTrapRef}
+            role="dialog"
+            aria-modal="true"
             aria-label="Упаковка и комплектация"
             className={styles.sheet}
             onClick={(event) => event.stopPropagation()}

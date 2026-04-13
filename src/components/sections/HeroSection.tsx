@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 
 import {
@@ -17,8 +17,25 @@ export function HeroSection() {
     offset: ["start start", "end start"],
   });
 
+  // Gate reduced motion check behind useState to avoid hydration mismatch
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(() => {
+    if (typeof window === "undefined") return false;
+    return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  });
+
+  useEffect(() => {
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const handler = (e: MediaQueryListEvent) => setPrefersReducedMotion(e.matches);
+    mq.addEventListener("change", handler);
+    return () => mq.removeEventListener("change", handler);
+  }, []);
+
   // Subtle parallax: background image moves at 30% scroll speed
-  const heroImageY = useTransform(scrollYProgress, [0, 1], ["0%", "15%"]);
+  const heroImageY = useTransform(
+    scrollYProgress,
+    [0, 1],
+    prefersReducedMotion ? ["0%", "0%"] : ["0%", "15%"],
+  );
   const heroOpacity = useTransform(scrollYProgress, [0, 0.6], [1, 0.3]);
 
   return (
@@ -28,8 +45,8 @@ export function HeroSection() {
           <motion.div
             className={styles.media}
             style={{ y: heroImageY, opacity: heroOpacity }}
-            initial={{ scale: 1.05, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
+            initial={prefersReducedMotion ? false : { scale: 1.05, opacity: 0 }}
+            animate={{ scale: prefersReducedMotion ? 1 : 1, opacity: prefersReducedMotion ? 1 : 1 }}
             transition={{ duration: 1.2, ease: [0.25, 0.1, 0.25, 1] }}
           >
             <picture className={styles.picture}>

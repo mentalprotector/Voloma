@@ -117,6 +117,9 @@
 
   .cta {
     width: calc(100% - 48px);
+    white-space: normal;
+    padding: 15px 24px;
+    font-size: 14px;
   }
 }
 

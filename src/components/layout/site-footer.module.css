@@ -51,6 +51,10 @@
   margin-top: 0.5rem;
 }
 
+.phone {
+  composes: email;
+}
+
 .emailInline {
   color: rgba(245, 243, 238, 0.85);
 }

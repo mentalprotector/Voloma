@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { motion } from "framer-motion";
 
 import { getInitialSize, hasSizeOptions, isSizeAvailable } from "@/config/availability";
@@ -31,23 +31,32 @@ const qualityLabels: Record<Quality, string> = {
 };
 
 export function Configurator() {
-  const [shape, setShape] = useState<Shape>("narrow");
-  const [size, setSize] = useState<Size>("m");
-  const [finish, setFinish] = useState<Finish>("natural");
-  const [quality, setQuality] = useState<Quality>("standard");
+  // Read initial state from URL (client-side only)
+  const getInitialState = <T,>(key: string, fallback: T): T => {
+    if (typeof window === "undefined") return fallback;
+    const params = new URLSearchParams(window.location.search);
+    return (params.get(key) as T) || fallback;
+  };
+
+  const initialShape = getInitialState<Shape>("shape", "narrow");
+  const initialQuality = getInitialState<Quality>("quality", "standard");
+  const initialFinish = getInitialState<Finish>("finish", "natural");
+  const initialSizeFromUrl = getInitialState<Size | null>("size", null);
+  const initialSize = initialSizeFromUrl && isSizeAvailable(initialShape, initialSizeFromUrl)
+    ? initialSizeFromUrl
+    : getInitialSize(initialShape);
+
+  const [shape, setShape] = useState<Shape>(initialShape);
+  const [size, setSize] = useState<Size>(initialSize);
+  const [finish, setFinish] = useState<Finish>(initialFinish);
+  const [quality, setQuality] = useState<Quality>(initialQuality);
   const [sheetOpen, setSheetOpen] = useState(false);
   const [specsOpen, setSpecsOpen] = useState(false);
   const [activeImageIndex, setActiveImageIndex] = useState(0);
 
-  useDynamicScroll();
+  const controlsRef = useRef<HTMLDivElement>(null);
+  useDynamicScroll(controlsRef);
   const isMobile = useIsMobile();
-
-  const { vibrate } = useVibration();
-  const { pulse, elementRef: topPriceRef } = usePriceAnimation();
-  const {
-    status: copyStatus,
-    copy: copyMessage,
-  } = useCopyToClipboard();
 
   const availableSizes = useMemo(() => {
     if (!isSizeAvailable(shape, size)) {
@@ -55,6 +64,23 @@ export function Configurator() {
     }
     return size;
   }, [shape, size]);
+
+  // Update URL when selection changes
+  useEffect(() => {
+    const params = new URLSearchParams();
+    params.set("shape", shape);
+    params.set("size", availableSizes);
+    params.set("finish", finish);
+    params.set("quality", quality);
+    window.history.replaceState({}, "", `?${params.toString()}`);
+  }, [shape, availableSizes, finish, quality]);
+
+  const { vibrate } = useVibration();
+  const { pulse, elementRef: topPriceRef } = usePriceAnimation();
+  const {
+    status: copyStatus,
+    copy: copyMessage,
+  } = useCopyToClipboard();
 
   const selection = useMemo(
     () => ({
@@ -84,7 +110,7 @@ export function Configurator() {
   ].filter(Boolean);
 
   const summaryLine = summaryParts.join(" • ");
-  const leadTime = "7–10 дней";
+  const leadTime = "от 3 дней";
 
   const orderMessage = buildOrderMessage({
     shape,
@@ -134,13 +160,9 @@ export function Configurator() {
     );
   }
 
-  async function handleMessengerClick(target: MessengerKey) {
-    await copyMessage(
-      orderMessage,
-      "Сообщение скопировано. Вставьте его в чат.",
-      "Сообщение не скопировалось. Возьмите текст из превью ниже.",
-    );
-
+  function handleMessengerClick(target: MessengerKey) {
+    // Open messenger URL synchronously (within user gesture to avoid popup blocking)
+    // The URL already contains the pre-filled message — no need to copy
     const targetUrl = buildMessengerUrl(target, orderMessage);
     window.open(targetUrl, "_blank", "noopener,noreferrer");
   }
@@ -201,7 +223,7 @@ export function Configurator() {
       </section>
 
       {/* Right column: options + order card */}
-      <section className={styles.controlsColumn} aria-label="Параметры кашпо">
+      <section className={styles.controlsColumn} aria-label="Параметры кашпо" ref={controlsRef}>
         <div className={styles.controls}>
           {/* Desktop top summary bar — hidden on mobile */}
           <div className={styles.topBar}>
@@ -275,21 +297,16 @@ export function Configurator() {
 
       {/* Sticky bottom CTA (mobile) */}
       <StickyMobileCTA
-        copied={Boolean(copyStatus)}
         copyStatus={copyStatus}
         isOpen={sheetOpen}
         message={orderMessage}
         price={total}
         pricePulseKey={0}
         selectionLine={summaryLine}
-        shape={shape}
-        size={availableSizes}
-        specsOpen={specsOpen}
         onClose={() => setSheetOpen(false)}
         onCopyMessage={handleCopyMessage}
         onMessengerClick={handleMessengerClick}
         onOpen={() => setSheetOpen(true)}
-        onSpecsClose={() => setSpecsOpen(false)}
       />
     </div>
   );

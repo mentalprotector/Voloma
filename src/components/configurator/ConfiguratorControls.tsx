@@ -4,7 +4,7 @@ import { FINISHES, QUALITIES, SIZES, type Finish, type Quality, type Shape, type
 import { finishHint, qualityLabels, shapeLabels, sizeLabels, woodTypeHints } from "@/content/site-content";
 import { getDimensions, hasSizeOptions, isSizeAvailable } from "@/config/availability";
 import { BASE_PRICES, STAIN_SURCHARGE } from "@/config/pricing";
-import { cn, formatPrice } from "@/lib/format";
+import { cn } from "@/lib/format";
 import { useRelativePricing } from "@/hooks/useRelativePricing";
 
 import { AnimatedPill } from "./AnimatedPill";

@@ -1,10 +1,11 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
 import type { MessengerKey } from "@/types/messenger";
 
+import { useFocusTrap } from "@/hooks/useFocusTrap";
 import { overlayFade, sheetSpring } from "@/lib/animations";
 import styles from "./order-sheet.module.css";
 
@@ -16,32 +17,6 @@ interface OrderSheetProps {
   onCopyMessage: () => void;
   onMessengerClick: (target: MessengerKey) => void;
 }
-
-const toastAnimation = {
-  hidden: {
-    opacity: 0,
-    y: -20,
-    scale: 0.95,
-  },
-  visible: {
-    opacity: 1,
-    y: 0,
-    scale: 1,
-    transition: {
-      type: "spring" as const,
-      stiffness: 400,
-      damping: 25,
-    },
-  },
-  exit: {
-    opacity: 0,
-    y: -10,
-    scale: 0.95,
-    transition: {
-      duration: 0.2,
-    },
-  },
-};
 
 const copyButtonAnimation = {
   idle: { scale: 1 },
@@ -64,7 +39,7 @@ export function OrderSheet({
   onCopyMessage,
   onMessengerClick,
 }: OrderSheetProps) {
-  const prevStatusRef = useRef<string | null>(null);
+  const focusTrapRef = useFocusTrap<HTMLDivElement>(isOpen);
 
   useEffect(() => {
     if (!isOpen) {
@@ -87,10 +62,6 @@ export function OrderSheet({
     };
   }, [isOpen, onClose]);
 
-  useEffect(() => {
-    prevStatusRef.current = copyStatus;
-  }, [copyStatus]);
-
   if (!isOpen) {
     return null;
   }
@@ -108,6 +79,9 @@ export function OrderSheet({
           exit="exit"
         >
           <motion.section
+            ref={focusTrapRef}
+            role="dialog"
+            aria-modal="true"
             aria-label="Отправить запрос"
             className={styles.sheet}
             onClick={(event) => event.stopPropagation()}
@@ -116,26 +90,6 @@ export function OrderSheet({
             animate="visible"
             exit="exit"
           >
-            {/* Toast notification overlay */}
-            <AnimatePresence>
-              {copyStatus && (
-                <motion.div
-                  className={styles.toast}
-                  variants={toastAnimation}
-                  initial="hidden"
-                  animate="visible"
-                  exit="exit"
-                >
-                  <span className={styles.toastIcon} aria-hidden="true">
-                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M20 6L9 17l-5-5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
-                  </span>
-                  {copyStatus}
-                </motion.div>
-              )}
-            </AnimatePresence>
-
             <div className={styles.handle} aria-hidden="true" />
             <h2 className={styles.title}>Отправить запрос</h2>
             <p className={styles.subtitle}>Выберите мессенджер или скопируйте текст заказа.</p>
@@ -212,6 +166,19 @@ export function OrderSheet({
                   </motion.span>
                 </motion.button>
               </div>
+              <AnimatePresence>
+                {copyStatus && (
+                  <motion.p
+                    className={styles.copySuccessLabel}
+                    initial={{ opacity: 0, y: -4 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -4 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    ✓ Скопировано
+                  </motion.p>
+                )}
+              </AnimatePresence>
             </div>
 
             <button className={styles.closeButton} type="button" onClick={onClose}>

@@ -108,12 +108,13 @@
   transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-/* ===== Specs button (desktop) ===== */
+/* ===== Specs button ===== */
 .specsButton {
-  display: inline-flex;
+  display: flex;
   align-items: center;
+  justify-content: center;
   gap: 6px;
-  padding: 8px 14px;
+  padding: 10px 14px;
   border: 1px solid rgba(0, 0, 0, 0.12);
   border-radius: 8px;
   background: transparent;
@@ -123,6 +124,8 @@
   cursor: pointer;
   transition: all 0.15s ease;
   margin-top: 16px;
+  margin-bottom: 24px;
+  width: 100%;
 }
 
 .specsButton:hover {
@@ -133,6 +136,15 @@
 
 .specsButton svg {
   flex-shrink: 0;
+}
+
+/* Desktop overrides */
+@media (min-width: 1024px) {
+  .specsButton {
+    display: inline-flex;
+    width: auto;
+    margin-bottom: 0;
+  }
 }
 
 /* ===== Selectors area ===== */

@@ -1,6 +1,6 @@
 "use client";
 
-import type { ButtonHTMLAttributes, ReactNode } from "react";
+import type { ReactNode } from "react";
 import { type Transition, motion } from "framer-motion";
 
 import { subtleSpring } from "@/lib/animations";

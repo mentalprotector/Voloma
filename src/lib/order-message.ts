@@ -1,6 +1,5 @@
 import type { Finish, Quality, Shape, Size } from "@/types/product";
 import { finishLabels, shapeLabels, sizeLabels } from "@/content/site-content";
-import { formatPrice } from "./format";
 
 const qualityLabels: Record<Quality, string> = {
   standard: "Стандарт",

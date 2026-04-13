@@ -5,6 +5,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 import type { ProductImage } from "@/types/product";
 
+import { useFocusTrap } from "@/hooks/useFocusTrap";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { getImageCropStyleRequired } from "@/lib/image-crop";
 import styles from "./lightbox.module.css";
@@ -29,10 +30,12 @@ export function Lightbox({ images, initialIndex, caption, onClose }: LightboxPro
   const [isClosing, setIsClosing] = useState(false);
   const isMobile = useIsMobile();
 
+  // Focus trap for accessibility
+  const focusTrapRef = useFocusTrap<HTMLDivElement>(isOpen);
+
   // Touch / gesture state
   const touchRef = useRef<{ startX: number; startY: number; lastY: number } | null>(null);
   const imageRef = useRef<HTMLDivElement>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
 
   // Fade-in animation on mount
   useEffect(() => {
@@ -192,7 +195,7 @@ export function Lightbox({ images, initialIndex, caption, onClose }: LightboxPro
 
   return (
     <div
-      ref={containerRef}
+      ref={focusTrapRef}
       className={`${styles.overlay} ${isOpen ? styles.overlayOpen : ""} ${isClosing ? styles.overlayClosing : ""}`}
       role="dialog"
       aria-modal="true"
