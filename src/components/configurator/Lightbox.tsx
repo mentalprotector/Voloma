@@ -5,6 +5,8 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 import type { ProductImage } from "@/types/product";
 
+import { useIsMobile } from "@/hooks/useIsMobile";
+import { getImageCropStyleRequired } from "@/lib/image-crop";
 import styles from "./lightbox.module.css";
 
 interface LightboxProps {
@@ -25,6 +27,7 @@ export function Lightbox({ images, initialIndex, caption, onClose }: LightboxPro
   const [isDragging, setIsDragging] = useState(false);
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
   const [isClosing, setIsClosing] = useState(false);
+  const isMobile = useIsMobile();
 
   // Touch / gesture state
   const touchRef = useRef<{ startX: number; startY: number; lastY: number } | null>(null);
@@ -285,6 +288,7 @@ export function Lightbox({ images, initialIndex, caption, onClose }: LightboxPro
               priority
               sizes="(max-width: 1023px) 95vw, 80vw"
               src={currentImage.url}
+              style={getImageCropStyleRequired(currentImage, isMobile)}
               unoptimized
             />
           </div>
@@ -323,6 +327,7 @@ export function Lightbox({ images, initialIndex, caption, onClose }: LightboxPro
                 loading="lazy"
                 sizes="56px"
                 src={img.url}
+                style={getImageCropStyleRequired(img, isMobile)}
                 unoptimized
                 width={56}
               />

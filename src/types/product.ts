@@ -11,9 +11,16 @@ export type Finish = (typeof FINISHES)[number];
 export type Quality = (typeof QUALITIES)[number];
 export type Availability = (typeof AVAILABILITY)[number];
 
+/** CSS object-position value, e.g. 'center', 'top', '50% 20%' */
+export type CropPosition = string;
+
 export interface ProductImage {
   url: string;
   alt: string;
+  /** Crop position for desktop view */
+  objectPositionDesktop?: CropPosition;
+  /** Crop position for mobile view (4:5 carousel) */
+  objectPositionMobile?: CropPosition;
 }
 
 export interface ProductDimensions {

@@ -13,7 +13,6 @@ export function buildOrderMessage(params: {
   finish: Finish;
   quality: Quality;
   showSize: boolean;
-  total: number;
 }): string {
   const finishLabel = params.finish === "natural" ? "Натуральная" : finishLabels[params.finish];
 
@@ -21,6 +20,5 @@ export function buildOrderMessage(params: {
 Хочу заказать кашпо Волома:
 Модель: ${shapeLabels[params.shape]}${params.showSize ? " " + sizeLabels[params.size] : ""}
 Тип дерева: ${qualityLabels[params.quality]}
-Пропитка: ${finishLabel}
-Ориентир по стоимости: ${formatPrice(params.total)}`;
+Пропитка: ${finishLabel}`;
 }

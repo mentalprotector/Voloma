@@ -1,9 +1,11 @@
 /**
  * Analytics event tracking utilities
  *
- * Currently logs to console for development.
- * In production, integrate with analytics services (e.g., Google Analytics, Yandex.Metrica).
+ * Интегрируется с Яндекс.Метрикой для отслеживания событий.
+ * В режиме разработки также логирует в консоль.
  */
+
+import { yandexReachGoal } from "./yandex-metrika";
 
 export type AnalyticsEventName =
   | "hero_cta_click"
@@ -36,6 +38,12 @@ export function trackEvent(
     return;
   }
 
-  console.info("[analytics]", event, payload ?? {});
+  // Отправляем цель в Яндекс.Метрику
+  yandexReachGoal(event, payload);
+
+  // В режиме разработки — логируем в консоль
+  if (process.env.NODE_ENV === "development") {
+    console.info("[analytics]", event, payload ?? {});
+  }
 }
 

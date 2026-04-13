@@ -68,7 +68,7 @@ export function MasonryGallerySection() {
             >
               <img
                 src={src}
-                alt={`Кашпо Voloma в интерьере — фото ${src.split("/").pop()?.replace(".jpg", "")}`}
+                alt={`Деревянное кашпо Волома в интерьере — вариант ${src.split("/").pop()?.replace(".jpg", "")}, карельская сосна`}
                 loading="lazy"
               />
             </motion.div>

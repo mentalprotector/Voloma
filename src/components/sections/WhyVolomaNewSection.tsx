@@ -24,9 +24,11 @@ export function WhyVolomaNewSection() {
     <section className={styles.section}>
       <motion.img
         src="/images/landing/plant.jpg"
-        alt="Несколько кашпо Voloma с растениями — детали и фактура дерева"
+        alt="Деревянные кашпо Волома с растениями — преимущества: быстрое изготовление, колёсики в комплекте, разборная конструкция"
         className={styles.image}
         loading="lazy"
+        width={1200}
+        height={800}
         initial="hidden"
         whileInView="visible"
         viewport={viewportOptions}

@@ -40,10 +40,12 @@ export function HeroSection() {
               />
               <source srcSet="/images/hero/voloma-hero-mobile.webp" type="image/webp" />
               <img
-                alt="Деревянные кашпо Волома разных размеров и оттенков крупным планом"
+                alt="Деревянные кашпо Волома из карельской сосны для интерьера — различные формы и размеры"
                 className={styles.image}
                 fetchPriority="high"
                 src="/images/hero/voloma-hero-mobile.webp"
+                width={800}
+                height={600}
               />
             </picture>
           </motion.div>

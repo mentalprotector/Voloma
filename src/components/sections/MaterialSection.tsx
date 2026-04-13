@@ -10,9 +10,11 @@ export function MaterialSection() {
     <section className={styles.section}>
       <motion.img
         src="/images/landing/Фактура.jpg"
-        alt="Фактура карельской сосны крупным планом"
+        alt="Фактура карельской сосны крупным планом — натуральная древесина для кашпо Волома"
         className={styles.image}
         loading="eager"
+        width={1200}
+        height={800}
         initial="hidden"
         whileInView="visible"
         viewport={viewportOptions}

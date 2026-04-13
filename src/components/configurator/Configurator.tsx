@@ -9,16 +9,19 @@ import { calculateTotalPrice } from "@/config/pricing";
 import { finishLabels, shapeLabels, sizeLabels } from "@/content/site-content";
 import { productVariants } from "@/data/product-variants";
 import { useCopyToClipboard, useDynamicScroll, usePriceAnimation, useVibration } from "@/hooks";
+import { useIsMobile } from "@/hooks/useIsMobile";
 import { buildMessengerUrl } from "@/lib/messenger-links";
 import { formatPrice } from "@/lib/format";
 import { buildOrderMessage } from "@/lib/order-message";
 import { resolveVariantMatch } from "@/lib/product-matching";
+import { getImageCropStyleRequired } from "@/lib/image-crop";
 import { subtleSpring } from "@/lib/animations";
 import type { MessengerKey } from "@/types/messenger";
 import type { Finish, Quality, Shape, Size } from "@/types/product";
 
 import { ConfiguratorControls } from "./ConfiguratorControls";
 import { ImageGallery } from "./ImageGallery";
+import { SpecsModal } from "./SpecsModal";
 import { StickyMobileCTA } from "./StickyMobileCTA";
 import styles from "./configurator.module.css";
 
@@ -33,9 +36,11 @@ export function Configurator() {
   const [finish, setFinish] = useState<Finish>("natural");
   const [quality, setQuality] = useState<Quality>("standard");
   const [sheetOpen, setSheetOpen] = useState(false);
+  const [specsOpen, setSpecsOpen] = useState(false);
   const [activeImageIndex, setActiveImageIndex] = useState(0);
 
   useDynamicScroll();
+  const isMobile = useIsMobile();
 
   const { vibrate } = useVibration();
   const { pulse, elementRef: topPriceRef } = usePriceAnimation();
@@ -87,7 +92,6 @@ export function Configurator() {
     finish,
     quality,
     showSize: showSizeSelector,
-    total,
   });
 
   function handleShapeChange(nextShape: Shape) {
@@ -168,6 +172,7 @@ export function Configurator() {
                 loading="lazy"
                 sizes="80px"
                 src={image.url}
+                style={getImageCropStyleRequired(image, isMobile)}
                 unoptimized
               />
             </motion.button>
@@ -217,6 +222,19 @@ export function Configurator() {
             size={availableSizes}
           />
 
+          {/* Desktop specs button — above order card */}
+          <button
+            className={styles.specsButton}
+            type="button"
+            onClick={() => setSpecsOpen(true)}
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+              <rect x="2" y="7" width="20" height="14" rx="2" stroke="currentColor" strokeWidth="1.5"/>
+              <path d="M6 7V5a2 2 0 012-2h8a2 2 0 012 2v2" stroke="currentColor" strokeWidth="1.5"/>
+            </svg>
+            Упаковка и комплектация
+          </button>
+
           {/* Desktop order card */}
           <div className={styles.summaryBar}>
             <div className={styles.summaryBarLeft}>
@@ -247,6 +265,14 @@ export function Configurator() {
         </div>
       </section>
 
+      {/* Specs modal (desktop + mobile) */}
+      <SpecsModal
+        isOpen={specsOpen}
+        shape={shape}
+        size={availableSizes}
+        onClose={() => setSpecsOpen(false)}
+      />
+
       {/* Sticky bottom CTA (mobile) */}
       <StickyMobileCTA
         copied={Boolean(copyStatus)}
@@ -256,10 +282,14 @@ export function Configurator() {
         price={total}
         pricePulseKey={0}
         selectionLine={summaryLine}
+        shape={shape}
+        size={availableSizes}
+        specsOpen={specsOpen}
         onClose={() => setSheetOpen(false)}
         onCopyMessage={handleCopyMessage}
         onMessengerClick={handleMessengerClick}
         onOpen={() => setSheetOpen(true)}
+        onSpecsClose={() => setSpecsOpen(false)}
       />
     </div>
   );

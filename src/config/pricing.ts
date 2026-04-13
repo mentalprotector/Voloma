@@ -14,7 +14,7 @@ export const BASE_PRICES: Record<Shape, Record<Quality, Record<Size, number>>> =
     premium: { s: 2300, m: 2600, l: 3300 },
   },
   square: {
-    standard: { s: 2700, m: 2700, l: 2700 },
+    standard: { s: 2800, m: 2800, l: 2800 },
     premium: { s: 3500, m: 3500, l: 3500 },
   },
   rect: {

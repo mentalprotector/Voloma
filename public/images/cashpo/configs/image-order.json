@@ -1,0 +1,115 @@
+{
+  "_comment": "Image order and crop positions for each variant configuration. Order: array of photo numbers. Crops: desktop and mobile object-position values.",
+
+  "квадратное/natural": {
+    "order": [7, 1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13, 14, 15, 16],
+    "crops": {
+      "7": { "desktop": "center", "mobile": "center" },
+      "1": { "desktop": "center", "mobile": "top" }
+    }
+  },
+
+  "квадратное/rosewood-stain": {
+    "order": [7, 1, 2, 3, 4, 5, 6, 8, 9, 10, 11],
+    "crops": {
+      "7": { "desktop": "center", "mobile": "center" },
+      "1": { "desktop": "center", "mobile": "top" }
+    }
+  },
+
+  "прямоугольное/natural": {
+    "order": [7, 1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17],
+    "crops": {
+      "7": { "desktop": "center", "mobile": "center" },
+      "1": { "desktop": "center", "mobile": "top" }
+    }
+  },
+
+  "прямоугольное/oak-stain": {
+    "order": [7, 1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17],
+    "crops": {
+      "7": { "desktop": "center", "mobile": "center" },
+      "1": { "desktop": "center", "mobile": "top" }
+    }
+  },
+
+  "прямоугольное/rosewood-stain": {
+    "order": [7, 1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13, 14],
+    "crops": {
+      "7": { "desktop": "center", "mobile": "center" },
+      "1": { "desktop": "center", "mobile": "top" }
+    }
+  },
+
+  "узкое-L/natural": {
+    "order": [7, 1, 2, 3, 4, 5, 6, 8, 9, 10, 11],
+    "crops": {
+      "7": { "desktop": "center", "mobile": "center" },
+      "1": { "desktop": "center", "mobile": "top" }
+    }
+  },
+
+  "узкое-L/oak-stain": {
+    "order": [7, 1, 2, 3, 4, 5, 6, 8, 9, 10, 11],
+    "crops": {
+      "7": { "desktop": "center", "mobile": "center" },
+      "1": { "desktop": "center", "mobile": "top" }
+    }
+  },
+
+  "узкое-L/rosewood-stain": {
+    "order": [7, 1, 2, 3, 4, 5, 6, 8, 9, 10],
+    "crops": {
+      "7": { "desktop": "center", "mobile": "center" },
+      "1": { "desktop": "center", "mobile": "top" }
+    }
+  },
+
+  "узкое-M/natural": {
+    "order": [7, 1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13],
+    "crops": {
+      "7": { "desktop": "center", "mobile": "center" },
+      "1": { "desktop": "center", "mobile": "top" }
+    }
+  },
+
+  "узкое-M/oak-stain": {
+    "order": [7, 1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13, 14, 15, 16],
+    "crops": {
+      "7": { "desktop": "center", "mobile": "center" },
+      "1": { "desktop": "center", "mobile": "top" }
+    }
+  },
+
+  "узкое-M/rosewood-stain": {
+    "order": [7, 1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13],
+    "crops": {
+      "7": { "desktop": "center", "mobile": "center" },
+      "1": { "desktop": "center", "mobile": "top" }
+    }
+  },
+
+  "узкое-S/natural": {
+    "order": [7, 1, 2, 3, 4, 5, 6, 8, 9, 10],
+    "crops": {
+      "7": { "desktop": "center", "mobile": "center" },
+      "1": { "desktop": "center", "mobile": "top" }
+    }
+  },
+
+  "узкое-S/oak-stain": {
+    "order": [7, 1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13],
+    "crops": {
+      "7": { "desktop": "center", "mobile": "center" },
+      "1": { "desktop": "center", "mobile": "top" }
+    }
+  },
+
+  "узкое-S/rosewood-stain": {
+    "order": [7, 1, 2, 3, 4, 5, 6, 8, 9, 10, 11],
+    "crops": {
+      "7": { "desktop": "center", "mobile": "center" },
+      "1": { "desktop": "center", "mobile": "top" }
+    }
+  }
+}

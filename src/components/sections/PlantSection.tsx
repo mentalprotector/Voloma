@@ -11,9 +11,11 @@ export function PlantSection() {
     <section className={styles.section}>
       <motion.img
         src="/images/landing/с живым.jpg"
-        alt="Кашпо Voloma с живым растением"
+        alt="Деревянное кашпо Волома с живым зелёным растением — натуральное дерево в интерьере"
         className={styles.image}
         loading="lazy"
+        width={1200}
+        height={800}
         initial="hidden"
         whileInView="visible"
         viewport={viewportOptions}

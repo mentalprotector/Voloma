@@ -10,9 +10,11 @@ export function InteriorSection() {
     <section className={styles.section}>
       <motion.img
         src="/images/landing/DSC_7853-редакт.jpg"
-        alt="Кашпо Voloma в реальном интерьере — у стеклянной двери"
+        alt="Деревянное кашпо Волома в современном интерьере — у стеклянной двери, натуральное дерево"
         className={styles.image}
         loading="lazy"
+        width={1200}
+        height={800}
         initial="hidden"
         whileInView="visible"
         viewport={viewportOptions}

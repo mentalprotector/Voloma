@@ -30,7 +30,7 @@ export const siteContent = {
         "Спокойная фактура и плотная древесина, отобранная для аккуратного внешнего вида.",
       image: {
         src: "/images/features/custom/feature-01.jpg",
-        alt: "Деревянное кашпо Волома из фотоархива бренда",
+        alt: "Деревянное кашпо Волома из карельской сосны — натуральная древесина, фактура дерева",
         position: "center 48%",
         tone: "sand",
       },
@@ -40,7 +40,7 @@ export const siteContent = {
       description: "Каждое изделие сохраняет естественный рисунок дерева.",
       image: {
         src: "/images/features/custom/feature-02.jpg",
-        alt: "Фактура дерева и поверхность кашпо Волома крупным планом",
+        alt: "Живая текстура дерева на поверхности кашпо Волома — естественный рисунок древесины",
         position: "center 54%",
         tone: "linen",
       },
@@ -50,7 +50,7 @@ export const siteContent = {
       description: "Точные соединения и ровная геометрия.",
       image: {
         src: "/images/features/custom/feature-03.jpg",
-        alt: "Аккуратная сборка деревянного кашпо Волома",
+        alt: "Аккуратная сборка деревянного кашпо Волома — точные соединения и ровная геометрия",
         position: "center 54%",
         tone: "clay",
       },
@@ -60,7 +60,7 @@ export const siteContent = {
       description: "Защищает поверхность от влаги и повседневного износа, подчёркивает фактуру дерева.",
       image: {
         src: "/images/hero/voloma-hero-mobile.webp",
-        alt: "Поверхность кашпо с ровным защитным покрытием",
+        alt: "Поверхность кашпо Волома с декоративной пропиткой DUFA — защитное покрытие до 5 лет",
         position: "center 48%",
         tone: "mist",
       },
@@ -70,7 +70,7 @@ export const siteContent = {
       description: "Выбирайте форму, размер и вариант пропитки под своё пространство.",
       image: {
         src: "/images/features/custom/feature-05.jpg",
-        alt: "Разные варианты деревянных кашпо Волома на фото",
+        alt: "Разные варианты деревянных кашпо Волома — формы, размеры и пропитка под любой интерьер",
         position: "center 52%",
         tone: "forest",
       },
@@ -120,7 +120,7 @@ export const siteContent = {
       { name: "Узкое S", price: "от 1 900 ₽", slug: "uzkoe-s" },
       { name: "Узкое M", price: "от 2 000 ₽", slug: "uzkoe-m" },
       { name: "Узкое L", price: "от 2 500 ₽", slug: "uzkoe-l" },
-      { name: "Квадратное", price: "от 2 700 ₽", slug: "kvadratnoe" },
+      { name: "Квадратное", price: "от 2 800 ₽", slug: "kvadratnoe" },
       { name: "Прямоугольное", price: "от 3 700 ₽", slug: "pryamougolnoe" },
     ],
     cta: "Собрать своё кашпо →",

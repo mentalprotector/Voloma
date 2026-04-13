@@ -1,0 +1,163 @@
+/* SpecsModal — bottom sheet for packaging & комплектация specs */
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.sheet {
+  width: 100%;
+  max-width: 600px;
+  max-height: 85vh;
+  overflow-y: auto;
+  background: #fff;
+  border-radius: 20px 20px 0 0;
+  padding: 12px 20px 32px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.handle {
+  width: 36px;
+  height: 4px;
+  margin: 0 auto 16px;
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: 2px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.closeBtn {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: rgba(0, 0, 0, 0.06);
+  border-radius: 50%;
+  cursor: pointer;
+  color: #555;
+  transition: background 0.15s;
+}
+
+.closeBtn:hover {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+/* Sections */
+.section {
+  margin-bottom: 24px;
+}
+
+.section:last-child {
+  margin-bottom: 0;
+}
+
+.sectionTitle {
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin: 0 0 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sectionIcon {
+  flex-shrink: 0;
+  color: #888;
+}
+
+/* Spec grid */
+.specGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: #f7f7f8;
+  border-radius: 12px;
+  padding: 12px 16px;
+}
+
+.specRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.specLabel {
+  font-size: 0.82rem;
+  color: #777;
+}
+
+.specValue {
+  font-size: 0.9rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* Комплектация list */
+.komplektatsiyaList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: #f7f7f8;
+  border-radius: 12px;
+  padding: 12px 16px;
+}
+
+.komplektatsiyaItem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.88rem;
+}
+
+.checkIcon {
+  flex-shrink: 0;
+  color: #34c759;
+}
+
+.note {
+  margin-top: 10px;
+  font-size: 0.78rem;
+  color: #999;
+  font-style: italic;
+}
+
+/* Desktop (wider sheet) */
+@media (min-width: 768px) {
+  .overlay {
+    align-items: center;
+    justify-content: center;
+  }
+
+  .sheet {
+    max-height: 70vh;
+    border-radius: 20px;
+    padding: 24px 28px 32px;
+  }
+
+  .handle {
+    display: none;
+  }
+}

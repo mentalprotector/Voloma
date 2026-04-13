@@ -1,10 +1,12 @@
 "use client";
 
 import type { MessengerKey } from "@/types/messenger";
+import type { Shape, Size } from "@/types/product";
 
 import { cn, formatPrice } from "@/lib/format";
 import { usePriceAnimation } from "@/hooks/usePriceAnimation";
 import { OrderSheet } from "./OrderSheet";
+import { SpecsModal } from "./SpecsModal";
 import styles from "./sticky-mobile-cta.module.css";
 
 interface StickyMobileCTAProps {
@@ -15,10 +17,14 @@ interface StickyMobileCTAProps {
   price: number;
   pricePulseKey: number;
   selectionLine: string;
+  shape: Shape;
+  size: Size;
+  specsOpen: boolean;
   onClose: () => void;
   onCopyMessage: () => void;
   onMessengerClick: (target: MessengerKey) => void;
   onOpen: () => void;
+  onSpecsClose: () => void;
 }
 
 export function StickyMobileCTA({
@@ -28,10 +34,14 @@ export function StickyMobileCTA({
   message,
   price,
   selectionLine,
+  shape,
+  size,
+  specsOpen,
   onClose,
   onCopyMessage,
   onMessengerClick,
   onOpen,
+  onSpecsClose,
 }: StickyMobileCTAProps) {
   const { elementRef: priceRef } = usePriceAnimation();
 
@@ -49,21 +59,34 @@ export function StickyMobileCTA({
               </p>
             </div>
           </div>
-          <button
-            className={cn(styles.cta, copied && styles.ctaCopied)}
-            type="button"
-            onClick={onOpen}
-          >
-            <span className={styles.icon} aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path
-                  d="M21.2 4.8 18 19.9c-.2.9-.7 1.1-1.5.7L11.6 17l-2.4 2.3c-.3.3-.5.5-1 .5l.4-5.1 9.2-8.3c.4-.4-.1-.6-.6-.2L5.8 13.4.9 11.9c-1-.3-1-.9.2-1.4L20 3.2c.9-.3 1.6.2 1.2 1.6Z"
-                  fill="currentColor"
-                />
+          <div className={styles.buttonRow}>
+            <button
+              className={styles.specsBtn}
+              type="button"
+              onClick={() => onSpecsClose()}
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                <rect x="2" y="7" width="20" height="14" rx="2" stroke="currentColor" strokeWidth="1.5"/>
+                <path d="M6 7V5a2 2 0 012-2h8a2 2 0 012 2v2" stroke="currentColor" strokeWidth="1.5"/>
               </svg>
-            </span>
-            Написать менеджеру
-          </button>
+              <span>Упаковка и комплектация</span>
+            </button>
+            <button
+              className={cn(styles.cta, copied && styles.ctaCopied)}
+              type="button"
+              onClick={onOpen}
+            >
+              <span className={styles.icon} aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path
+                    d="M21.2 4.8 18 19.9c-.2.9-.7 1.1-1.5.7L11.6 17l-2.4 2.3c-.3.3-.5.5-1 .5l.4-5.1 9.2-8.3c.4-.4-.1-.6-.6-.2L5.8 13.4.9 11.9c-1-.3-1-.9.2-1.4L20 3.2c.9-.3 1.6.2 1.2 1.6Z"
+                    fill="currentColor"
+                  />
+                </svg>
+              </span>
+              Написать менеджеру
+            </button>
+          </div>
         </div>
       </div>
 
@@ -74,6 +97,13 @@ export function StickyMobileCTA({
         onClose={onClose}
         onCopyMessage={onCopyMessage}
         onMessengerClick={onMessengerClick}
+      />
+
+      <SpecsModal
+        isOpen={specsOpen}
+        shape={shape}
+        size={size}
+        onClose={onSpecsClose}
       />
     </>
   );

@@ -8,6 +8,8 @@ import type { GalleryState, ProductImage } from "@/types/product";
 
 import { cn } from "@/lib/format";
 import { imageCrossfade } from "@/lib/animations";
+import { getImageCropStyleRequired } from "@/lib/image-crop";
+import { useIsMobile } from "@/hooks/useIsMobile";
 import { Lightbox } from "./Lightbox";
 import styles from "./image-gallery.module.css";
 
@@ -44,6 +46,7 @@ export function ImageGallery({
 
   const isControlled = typeof externalActiveIndex === "number";
   const activeIndex = isControlled ? externalActiveIndex : internalActiveIndex;
+  const isMobile = useIsMobile();
 
   // Trigger entering animation when active image changes
   useEffect(() => {
@@ -109,6 +112,7 @@ export function ImageGallery({
                   loading={index === 0 ? "eager" : "lazy"}
                   sizes="(max-width: 1023px) 85vw, 52rem"
                   src={image.url}
+                  style={getImageCropStyleRequired(image, isMobile)}
                   unoptimized
                   onLoad={() => {
                     if (index === 0) setIsLoaded(true);
@@ -174,6 +178,7 @@ export function ImageGallery({
                 priority
                 sizes="(max-width: 1023px) 100vw, 52rem"
                 src={activeImage.url}
+                style={getImageCropStyleRequired(activeImage, isMobile)}
                 unoptimized
                 onLoad={() => setIsLoaded(true)}
               />
@@ -254,6 +259,7 @@ export function ImageGallery({
                   loading={index === 0 ? "eager" : "lazy"}
                   sizes="(max-width: 767px) 50vw, (max-width: 1023px) 33vw, 25vw"
                   src={image.url}
+                  style={getImageCropStyleRequired(image, isMobile)}
                   unoptimized
                 />
               </div>
@@ -289,6 +295,7 @@ export function ImageGallery({
                 loading="lazy"
                 sizes="72px"
                 src={image.url}
+                style={getImageCropStyleRequired(image, isMobile)}
                 unoptimized
                 width={72}
               />
