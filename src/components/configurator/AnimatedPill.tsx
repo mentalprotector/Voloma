@@ -38,12 +38,8 @@ export function AnimatedPill({
       transition={springTransition as Transition}
       onClick={onClick}
     >
-      {badge && (
-        <span className={styles.pillBadge}>{badge}</span>
-      )}
-      <span className={styles.pillInner}>
-        {children}
-      </span>
+      {children}
+      {badge && <span className={styles.pillBadge}>{badge}</span>}
     </motion.button>
   );
 }

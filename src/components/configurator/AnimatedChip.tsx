@@ -31,12 +31,8 @@ export function AnimatedChip({
       transition={subtleSpring as Transition}
       onClick={onClick}
     >
-      {badge && (
-        <span className={styles.chipBadge}>{badge}</span>
-      )}
-      <span className={styles.chipInner}>
-        {children}
-      </span>
+      {children}
+      {badge && <span className={styles.chipBadge}>{badge}</span>}
     </motion.button>
   );
 }
