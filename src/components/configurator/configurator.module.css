@@ -334,8 +334,8 @@
 .swatchButtonInner {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 6px 14px 6px 8px;
+  gap: 0;
+  padding: 5px 14px 5px 5px;
   border: 1.5px solid rgba(0, 0, 0, 0.1);
   border-radius: 999px;
   background: #faf8f5;
@@ -348,20 +348,30 @@
   box-shadow: 0 2px 6px rgba(0,0,0,0.08);
 }
 
-.swatchActive .swatchButtonInner {
-  border-color: #1e1e1c;
-  background: #f5f3ef;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+.swatchActive:hover .swatchButtonInner {
+  transform: none;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
 }
 
-/* Colored dot inside the pill */
+.swatchActive .swatchButtonInner {
+  border-color: #1e1e1c;
+  background: #1e1e1c;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+.swatchActive .swatchButtonPrice {
+  color: #fff;
+}
+
+/* Colored dot inside the pill — fills the left semicircle */
 .swatchButtonDot {
   display: inline-block;
-  width: 16px;
-  height: 16px;
+  width: 26px;
+  height: 26px;
   border-radius: 50%;
-  border: 1px solid rgba(0,0,0,0.1);
+  border: 2px solid rgba(0,0,0,0.08);
   flex-shrink: 0;
+  margin-right: 8px;
 }
 
 .swatchButtonInner_natural .swatchButtonDot {
@@ -381,6 +391,7 @@
   font-size: 12px;
   font-weight: 600;
   color: #555;
+  white-space: nowrap;
 }
 
 /* Label below the pill */
@@ -391,6 +402,12 @@
   color: var(--color-text-secondary);
   text-align: center;
   letter-spacing: 0.01em;
+  transition: color 0.15s ease;
+}
+
+.swatchActive .swatchLabel {
+  color: var(--color-text);
+  font-weight: 600;
 }
 
 /* ===== Chip controls (quality, wheels) ===== */
@@ -816,16 +833,25 @@
   }
 
   .swatchButtonInner {
-    padding: 8px 18px 8px 10px;
+    padding: 6px 20px 6px 6px;
   }
 
   .swatchButtonDot {
-    width: 18px;
-    height: 18px;
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
   }
 
   .swatchButtonPrice {
     font-size: 13px;
+  }
+
+  .swatchActive .swatchButtonInner {
+    background: #1e1e1c;
+  }
+
+  .swatchActive .swatchButtonPrice {
+    color: #fff;
   }
 
   .swatchLabel {
