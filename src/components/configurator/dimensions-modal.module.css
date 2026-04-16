@@ -1,0 +1,132 @@
+/* DimensionsModal — bottom sheet for dimensions & pot compatibility */
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.sheet {
+  width: 100%;
+  max-width: 480px;
+  max-height: 85vh;
+  overflow-y: auto;
+  background: #fff;
+  border-radius: 20px 20px 0 0;
+  padding: 12px 20px 32px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.handle {
+  width: 36px;
+  height: 4px;
+  margin: 0 auto 16px;
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: 2px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.closeBtn {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: rgba(0, 0, 0, 0.06);
+  border-radius: 50%;
+  cursor: pointer;
+  color: #555;
+  transition: background 0.15s;
+}
+
+.closeBtn:hover {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+/* Sections */
+.section {
+  margin-bottom: 20px;
+}
+
+.section:last-child {
+  margin-bottom: 0;
+}
+
+.sectionTitle {
+  font-size: 0.88rem;
+  font-weight: 600;
+  margin: 0 0 10px;
+  color: var(--color-text);
+}
+
+/* Spec grid */
+.specGrid {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 6px 16px;
+  background: #f7f7f8;
+  border-radius: 12px;
+  padding: 12px 16px;
+}
+
+.specRow {
+  display: contents;
+}
+
+.specLabel {
+  font-size: 0.82rem;
+  color: #777;
+}
+
+.specValue {
+  font-size: 0.9rem;
+  font-weight: 600;
+  white-space: nowrap;
+  text-align: right;
+}
+
+/* Compatibility note */
+.compatibilityNote {
+  font-size: 0.88rem;
+  line-height: 1.6;
+  color: var(--color-text-secondary);
+  background: #f7f7f8;
+  border-radius: 12px;
+  padding: 12px 16px;
+}
+
+/* Desktop (centered modal) */
+@media (min-width: 768px) {
+  .overlay {
+    align-items: center;
+    justify-content: center;
+  }
+
+  .sheet {
+    max-height: 70vh;
+    border-radius: 20px;
+    padding: 24px 28px 32px;
+  }
+
+  .handle {
+    display: none;
+  }
+}

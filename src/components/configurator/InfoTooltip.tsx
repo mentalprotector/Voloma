@@ -150,7 +150,7 @@ export function InfoTooltip({ text, children }: InfoTooltipProps) {
         <div
           ref={popoverRef}
           className={styles.popover}
-          style={isMobile ? undefined : popoverStyle}
+          style={popoverStyle}
           role="tooltip"
         >
           {content}

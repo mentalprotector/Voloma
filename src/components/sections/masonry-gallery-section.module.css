@@ -1,6 +1,6 @@
 .section {
   background: #f5f3ee;
-  padding: 80px 40px;
+  padding: clamp(48px, 10vh, 80px) clamp(24px, 4vw, 40px);
 }
 
 .inner {

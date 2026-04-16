@@ -8,21 +8,10 @@
   margin: 0 auto;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 1200px) {
   .section {
-    padding-top: 0.25rem;
-    padding-bottom: 0.5rem;
-  }
-
-  .inner {
-    width: min(100% - 1rem, 92rem);
-  }
-}
-
-@media (min-width: 1024px) {
-  .section {
-    padding-top: 0.25rem;
-    padding-bottom: 0.25rem;
+    padding-top: 0;
+    padding-bottom: 0;
   }
 
   .inner {

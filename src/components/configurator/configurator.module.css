@@ -42,7 +42,7 @@
 }
 
 /* ===== Mobile: media adapts to carousel ===== */
-@media (max-width: 767px) {
+@media (max-width: 1199px) {
   .mediaFrame {
     height: auto;
     max-height: none;
@@ -56,7 +56,7 @@
   padding-bottom: var(--cta-offset, 100px);
 }
 
-@media (max-width: 767px) {
+@media (max-width: 1199px) {
   .controlsColumn {
     padding-top: 0.75rem;
   }
@@ -70,17 +70,6 @@
 /* Hidden on mobile — price/summary only in sticky bottom CTA */
 .topBar {
   display: none;
-}
-
-@media (min-width: 768px) {
-  .topBar {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 0.5rem;
-    padding: 0.4rem 0 0.25rem;
-    margin-bottom: 0;
-  }
 }
 
 .topBarTitle {
@@ -139,7 +128,7 @@
 }
 
 /* Desktop overrides */
-@media (min-width: 1024px) {
+@media (min-width: 1200px) {
   .specsButton {
     display: inline-flex;
     width: auto;
@@ -170,7 +159,7 @@
   pointer-events: none;
 }
 
-@media (min-width: 1024px) {
+@media (min-width: 1200px) {
   .optionGroupHidden {
     display: none !important;
   }
@@ -231,7 +220,7 @@
 }
 
 /* Mobile: force 3 shape pills into single row */
-@media (max-width: 767px) {
+@media (max-width: 1199px) {
   .segmentedControls {
     flex-wrap: nowrap !important;
   }
@@ -476,60 +465,34 @@
   display: none;
 }
 
-/* ===== Dimensions info block ===== */
-.dimensionsRow {
+/* ===== Dimensions button ===== */
+.dimensionsButton {
   display: flex;
   align-items: center;
-  flex-wrap: wrap;
-  gap: 8px 16px;
-  padding: 8px 0;
-  border-bottom: 0.5px solid rgba(0,0,0,0.06);
+  justify-content: center;
+  gap: 6px;
+  padding: 10px 14px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--color-text-muted);
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  margin-top: 4px;
+  width: 100%;
+  -webkit-tap-highlight-color: transparent;
 }
 
-/* Mobile: force dimensions into single row */
-@media (max-width: 767px) {
-  .dimensionsRow {
-    flex-wrap: nowrap !important;
-    gap: 4px 8px !important;
-    overflow: hidden;
-  }
-
-  .dimItem {
-    min-width: 0 !important;
-    flex-shrink: 1 !important;
-  }
-
-  .dimValue {
-    font-size: 11px !important;
-  }
-
-  .dimSep {
-    flex-shrink: 0 !important;
-  }
+.dimensionsButton:hover {
+  border-color: rgba(0, 0, 0, 0.25);
+  color: var(--color-text);
+  background: rgba(0, 0, 0, 0.02);
 }
 
-.dimItem {
-  white-space: nowrap;
-  display: inline-flex;
-  align-items: center;
-}
-
-.dimLabel {
-  font-size: 10px;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: #bbb;
-  margin-right: 4px;
-}
-
-.dimValue {
-  font-size: 13px;
-  color: #555;
-}
-
-.dimSep {
-  color: #ddd;
-  font-size: 13px;
+.dimensionsButton svg {
+  flex-shrink: 0;
 }
 
 /* ===== Micro-note: no wheels for narrow S ===== */
@@ -594,74 +557,22 @@
   }
 }
 
-/* ===== Responsive: tablet ===== */
-@media (min-width: 768px) and (max-width: 1023px) {
-  .mediaFrame {
-    height: 280px;
-    min-height: 280px;
-  }
-
-  .controlsColumn {
-    padding-bottom: 2rem;
-  }
-
-  .segmentedControls .pill {
-    min-width: 7.5rem;
-  }
-}
-
-/* ===== Thumbnail strip column — hidden by default ===== */
+/* ===== Thumbnail strip column — hidden by default, shown on desktop ===== */
 .thumbnailStripCol {
   display: none;
 }
 
-.thumbnailStripInner {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.stripThumb {
-  width: 84px;
-  height: 84px;
-  padding: 0;
-  border: 2px solid transparent;
-  border-radius: 10px;
-  overflow: hidden;
-  cursor: pointer;
-  opacity: 0.5;
-  background: transparent;
-  transition: border-color 0.15s ease, opacity 0.15s ease;
-  flex-shrink: 0;
-}
-
-.stripThumb:hover {
-  opacity: 0.8;
-}
-
-.stripThumbActive {
-  opacity: 1;
-  border-color: #1e1e1c;
-}
-
-.stripThumbImage {
-  display: block;
-  width: 100%;
-  height: 100%;
-  border-radius: 8px;
-  object-fit: cover;
-}
-
-/* ===== Responsive: desktop ===== */
-@media (min-width: 1024px) {
+/* ===== Responsive: desktop (1200+) — multi-column layout ===== */
+@media (min-width: 1200px) {
   .layout {
     grid-template-columns: 100px 1fr 460px;
-    align-items: start;
+    align-items: stretch;
     gap: 0 28px;
     max-width: 1400px;
     margin: 0 auto;
-    padding: 52px 32px 32px;
-    min-height: calc(100svh - var(--site-header-height));
+    padding: 24px 32px 24px;
+    align-content: stretch;
+    height: calc(100svh - var(--site-header-height));
   }
 
   /* Left column — thumbnail strip */
@@ -671,8 +582,8 @@
 
   .thumbnailStripInner {
     position: sticky;
-    top: calc(var(--site-header-height) + 32px);
-    max-height: calc(100svh - var(--site-header-height) - 64px);
+    top: calc(var(--site-header-height) + 24px);
+    max-height: calc(100svh - var(--site-header-height) - 48px);
     overflow-y: auto;
     scrollbar-width: thin;
     scrollbar-color: rgba(0, 0, 0, 0.15) transparent;
@@ -696,16 +607,49 @@
     background: rgba(0, 0, 0, 0.25);
   }
 
+  .stripThumb {
+    width: 84px;
+    height: 84px;
+    padding: 0;
+    border: 2px solid transparent;
+    border-radius: 10px;
+    overflow: hidden;
+    cursor: pointer;
+    opacity: 0.5;
+    background: transparent;
+    transition: border-color 0.15s ease, opacity 0.15s ease;
+    flex-shrink: 0;
+  }
+
+  .stripThumb:hover {
+    opacity: 0.8;
+  }
+
+  .stripThumbActive {
+    opacity: 1;
+    border-color: #1e1e1c;
+  }
+
+  .stripThumbImage {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border-radius: 8px;
+    object-fit: cover;
+  }
+
   /* Center column — remove mobile negative margins */
   .mediaColumn {
     margin-left: 0;
     margin-right: 0;
+    height: 100%;
+    min-height: 0;
   }
 
   .mediaFrame {
     position: relative;
     top: auto;
-    height: auto;
+    height: 100%;
     min-height: 0;
     max-height: none;
     border-radius: 0;
@@ -717,6 +661,7 @@
   /* Right column — options + order card */
   .controlsColumn {
     min-width: 0;
+    align-self: start;
     padding: 0 0 40px 24px;
     border-left: 1px solid rgba(0, 0, 0, 0.08);
   }
@@ -751,7 +696,7 @@
     display: none;
   }
 
-  /* Shape icons visible on desktop */
+  /* Shape icons visible */
   .shapeIcon {
     display: inline-flex;
   }
@@ -764,10 +709,6 @@
     padding: 8px 0;
     border-bottom: 0.5px solid rgba(0, 0, 0, 0.06);
     margin-bottom: 0;
-  }
-
-  .optionGroupHidden {
-    display: none !important;
   }
 
   .optionLabel {
@@ -873,7 +814,7 @@
     white-space: nowrap;
   }
 
-  /* Chip controls on desktop */
+  /* Chip controls */
   .chipControls {
     display: flex;
     flex-direction: row;

@@ -1,7 +1,6 @@
 .section {
   position: relative;
   min-height: 80vh;
-  height: 100vh;
   overflow: hidden;
 }
 
@@ -116,7 +115,7 @@
   }
 
   .cta {
-    width: calc(100% - 48px);
+    width: 100%;
     white-space: normal;
     padding: 15px 24px;
     font-size: 14px;

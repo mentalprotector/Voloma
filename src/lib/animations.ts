@@ -11,7 +11,7 @@ export const fadeSlideUp: Variants = {
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }, // ease-out quad
+    transition: { duration: 0.35, ease: [0.25, 0.1, 0.25, 1] }, // ease-out quad
   },
 };
 
@@ -21,7 +21,7 @@ export const fadeScale: Variants = {
   visible: {
     opacity: 1,
     scale: 1,
-    transition: { duration: 0.7, ease: [0.25, 0.1, 0.25, 1] },
+    transition: { duration: 0.4, ease: [0.25, 0.1, 0.25, 1] },
   },
 };
 
@@ -51,7 +51,7 @@ export const staggerChild: Variants = {
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.5, ease: [0.25, 0.1, 0.25, 1] },
+    transition: { duration: 0.35, ease: [0.25, 0.1, 0.25, 1] },
   },
 };
 
@@ -60,8 +60,8 @@ export const heroStaggerContainer = {
   hidden: {},
   visible: {
     transition: {
-      staggerChildren: 0.15,
-      delayChildren: 0.3,
+      staggerChildren: 0.08,
+      delayChildren: 0.1,
     },
   },
 };
@@ -72,7 +72,7 @@ export const heroChild: Variants = {
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.7, ease: [0.25, 0.1, 0.25, 1] },
+    transition: { duration: 0.4, ease: [0.25, 0.1, 0.25, 1] },
   },
 };
 
@@ -82,14 +82,14 @@ export const priceFadeScale: Variants = {
   visible: {
     opacity: 1,
     scale: 1,
-    transition: { duration: 0.6, ease: [0.25, 0.1, 0.25, 1], delay: 0.6 },
+    transition: { duration: 0.4, ease: [0.25, 0.1, 0.25, 1], delay: 0.3 },
   },
 };
 
 // Viewport trigger options (default settings)
 export const viewportOptions = {
   once: true, // only animate once
-  amount: 0.15 as const, // trigger when 15% visible
+  amount: 0.2 as const, // trigger when 20% visible
   margin: "0px 0px -50px 0px", // trigger slightly before entering viewport
 };
 

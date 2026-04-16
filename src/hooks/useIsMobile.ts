@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-const MOBILE_BREAKPOINT = 1024;
+const MOBILE_BREAKPOINT = 1200;
 
 /**
  * Returns true when viewport is below the mobile breakpoint (1024px).

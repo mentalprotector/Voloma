@@ -1,8 +1,12 @@
 "use client";
 
+"use client";
+
+import { useState } from "react";
+
 import { FINISHES, QUALITIES, SIZES, type Finish, type Quality, type Shape, type Size } from "@/types/product";
 import { finishHint, qualityLabels, shapeLabels, sizeLabels, woodTypeHints } from "@/content/site-content";
-import { getDimensions, hasSizeOptions, isSizeAvailable } from "@/config/availability";
+import { hasSizeOptions, isSizeAvailable } from "@/config/availability";
 import { BASE_PRICES, STAIN_SURCHARGE } from "@/config/pricing";
 import { cn } from "@/lib/format";
 import { useRelativePricing } from "@/hooks/useRelativePricing";
@@ -11,6 +15,7 @@ import { AnimatedPill } from "./AnimatedPill";
 import { AnimatedChip } from "./AnimatedChip";
 import { AnimatedSwatch } from "./AnimatedSwatch";
 import { InfoTooltip } from "./InfoTooltip";
+import { DimensionsModal } from "./DimensionsModal";
 import styles from "./configurator.module.css";
 
 interface ConfiguratorControlsProps {
@@ -63,6 +68,7 @@ export function ConfiguratorControls({
 }: ConfiguratorControlsProps) {
   const shapeOptions: Shape[] = ["narrow", "square", "rect"];
   const showSizeSelector = hasSizeOptions(shape);
+  const [showDimensions, setShowDimensions] = useState(false);
 
   const noWheelsNote = shape === "narrow" && size === "s";
 
@@ -133,18 +139,18 @@ export function ConfiguratorControls({
         </div>
       </section>
 
-      {/* Dimensions info — compact inline row */}
-      <section className={styles.dimensionsRow} aria-label="Размеры (габариты)">
-        <span className={styles.dimItem}>
-          <span className={styles.dimLabel}>Внешние</span>
-          <span className={styles.dimValue}>{getDimensions(shape, size).external.l} × {getDimensions(shape, size).external.w} × {getDimensions(shape, size).external.h} мм</span>
-        </span>
-        <span className={styles.dimSep}>·</span>
-        <span className={styles.dimItem}>
-          <span className={styles.dimLabel}>Внутри</span>
-          <span className={styles.dimValue}>{getDimensions(shape, size).internal.l} × {getDimensions(shape, size).internal.w} × {getDimensions(shape, size).internal.h} мм</span>
-        </span>
-      </section>
+      {/* Dimensions button — opens modal with sizes & compatibility */}
+      <button
+        className={styles.dimensionsButton}
+        type="button"
+        onClick={() => setShowDimensions(true)}
+      >
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <rect x="3" y="3" width="18" height="18" rx="3" stroke="currentColor" strokeWidth="1.5"/>
+          <path d="M3 9h18M9 3v18" stroke="currentColor" strokeWidth="1.5"/>
+        </svg>
+        Размеры и совместимость
+      </button>
 
       {/* Finish (stain/color treatment) — SINGLE option with 3 choices */}
       <section className={styles.optionGroup} aria-labelledby="config-finish-label">
@@ -206,6 +212,13 @@ export function ConfiguratorControls({
       {noWheelsNote && (
         <p className={styles.noWheelsNote}>Узкое S поставляется без колёсиков</p>
       )}
+
+      <DimensionsModal
+        isOpen={showDimensions}
+        shape={shape}
+        size={size}
+        onClose={() => setShowDimensions(false)}
+      />
     </div>
   );
 }

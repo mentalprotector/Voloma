@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
 import { motion, useScroll, useTransform } from "framer-motion";
 
 import {
@@ -47,7 +48,7 @@ export function HeroSection() {
             style={{ y: heroImageY, opacity: heroOpacity }}
             initial={prefersReducedMotion ? false : { scale: 1.05, opacity: 0 }}
             animate={{ scale: prefersReducedMotion ? 1 : 1, opacity: prefersReducedMotion ? 1 : 1 }}
-            transition={{ duration: 1.2, ease: [0.25, 0.1, 0.25, 1] }}
+            transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1] }}
           >
             <picture className={styles.picture}>
               <source
@@ -82,6 +83,11 @@ export function HeroSection() {
             <motion.p className={styles.priceAnchor} variants={priceFadeScale}>
               от 1 900 ₽ · готово за 3 рабочих дня
             </motion.p>
+            <motion.div variants={heroChild}>
+              <Link href="/configurator" className={styles.ctaButton}>
+                Собрать своё кашпо →
+              </Link>
+            </motion.div>
           </motion.div>
         </div>
       </div>

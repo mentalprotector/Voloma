@@ -209,6 +209,7 @@ export function Lightbox({ images, initialIndex, caption, onClose }: LightboxPro
         className={styles.closeButton}
         type="button"
         aria-label="Закрыть"
+        style={{ padding: '8px' }}
         onClick={(e) => {
           e.stopPropagation();
           handleClose();
