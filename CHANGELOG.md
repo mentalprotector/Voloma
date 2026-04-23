@@ -9,3 +9,4 @@
 - Expanded the gallery admin crop editor with draggable framing, crop position parsing, preview state, and explicit apply behavior.
 - Updated gallery image ordering data and removed obsolete source/reference images from the repository.
 - Polished section layouts and responsive styles across hero, materials, masonry gallery, FAQ, plant, and why-Voloma sections.
+- Added branded favicon, Apple touch icon, app icons, and manifest metadata for cleaner browser tab and saved-app display.
