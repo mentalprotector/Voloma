@@ -29,8 +29,8 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: {
-    default: "Волома | Деревянные кашпо для интерьера из карельской сосны",
-    template: "%s | Волома",
+    default: "Волома - деревянные кашпо для интерьера из карельской сосны",
+    template: "%s - Волома",
   },
   description: siteContent.description,
   keywords: [
@@ -54,7 +54,7 @@ export const metadata: Metadata = {
     canonical: "/",
   },
   openGraph: {
-    title: "Волома | Деревянные кашпо для интерьера",
+    title: "Волома - деревянные кашпо для интерьера",
     description: siteContent.description,
     url: "/",
     siteName: "Волома",
@@ -71,7 +71,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Волома | Деревянные кашпо для интерьера",
+    title: "Волома - деревянные кашпо для интерьера",
     description: siteContent.description,
   },
   robots: {
