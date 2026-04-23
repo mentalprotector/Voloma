@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 
 import type { ProductImage } from "@/types/product";
 
@@ -46,23 +47,21 @@ export function Lightbox({ images, initialIndex, caption, onClose }: LightboxPro
   useEffect(() => {
     const html = document.documentElement;
     const body = document.body;
-    const scrollY = window.scrollY;
+    const previousHtmlOverflow = html.style.overflow;
+    const previousHtmlOverscrollBehavior = html.style.overscrollBehavior;
+    const previousBodyOverflow = body.style.overflow;
+    const previousBodyOverscrollBehavior = body.style.overscrollBehavior;
 
-    // Store current scroll position
-    html.style.scrollBehavior = "auto";
-    body.style.position = "fixed";
-    body.style.top = `-${scrollY}px`;
-    body.style.width = "100%";
-    body.style.overflowY = "scroll";
+    html.style.overflow = "hidden";
+    html.style.overscrollBehavior = "none";
+    body.style.overflow = "hidden";
+    body.style.overscrollBehavior = "none";
 
     return () => {
-      body.style.position = "";
-      body.style.top = "";
-      body.style.width = "";
-      body.style.overflowY = "";
-      html.style.scrollBehavior = "";
-      // Restore scroll position
-      window.scrollTo(0, scrollY);
+      html.style.overflow = previousHtmlOverflow;
+      html.style.overscrollBehavior = previousHtmlOverscrollBehavior;
+      body.style.overflow = previousBodyOverflow;
+      body.style.overscrollBehavior = previousBodyOverscrollBehavior;
     };
   }, []);
 
@@ -193,7 +192,11 @@ export function Lightbox({ images, initialIndex, caption, onClose }: LightboxPro
 
   const currentImage = images[currentIndex];
 
-  return (
+  if (typeof document === "undefined") {
+    return null;
+  }
+
+  return createPortal((
     <div
       ref={focusTrapRef}
       className={`${styles.overlay} ${isOpen ? styles.overlayOpen : ""} ${isClosing ? styles.overlayClosing : ""}`}
@@ -204,26 +207,34 @@ export function Lightbox({ images, initialIndex, caption, onClose }: LightboxPro
         if (e.target === e.currentTarget) handleClose();
       }}
     >
-      {/* Close button */}
-      <button
-        className={styles.closeButton}
-        type="button"
-        aria-label="Закрыть"
-        style={{ padding: '8px' }}
-        onClick={(e) => {
-          e.stopPropagation();
-          handleClose();
-        }}
-      >
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path
-            d="M6 6L18 18M18 6L6 18"
-            stroke="currentColor"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-          />
-        </svg>
-      </button>
+      <div className={styles.topControls}>
+        {/* Counter pill */}
+        {images.length > 1 && (
+          <div className={styles.counter} aria-live="polite">
+            {currentIndex + 1} / {images.length}
+          </div>
+        )}
+
+        {/* Close button */}
+        <button
+          className={styles.closeButton}
+          type="button"
+          aria-label="Закрыть"
+          onClick={(e) => {
+            e.stopPropagation();
+            handleClose();
+          }}
+        >
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M6 6L18 18M18 6L6 18"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+            />
+          </svg>
+        </button>
+      </div>
 
       {/* Navigation arrows */}
       {images.length > 1 && (
@@ -299,13 +310,6 @@ export function Lightbox({ images, initialIndex, caption, onClose }: LightboxPro
         )}
       </div>
 
-      {/* Counter pill */}
-      {images.length > 1 && (
-        <div className={styles.counter} aria-live="polite">
-          {currentIndex + 1} / {images.length}
-        </div>
-      )}
-
       {/* Caption */}
       {caption && <div className={styles.caption}>{caption}</div>}
 
@@ -340,5 +344,5 @@ export function Lightbox({ images, initialIndex, caption, onClose }: LightboxPro
         </div>
       )}
     </div>
-  );
+  ), document.documentElement);
 }

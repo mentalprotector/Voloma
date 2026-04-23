@@ -2,11 +2,23 @@
 
 import { useState } from "react";
 
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
 
 import { fadeSlideUp, staggerContainer, staggerChild, viewportOptions, subtleSpring } from "@/lib/animations";
 
 import styles from "./faq-section.module.css";
+
+function renderAnswer(text: string) {
+  const parts = text.split(/(\*\*[^*]+\*\*)/g);
+
+  return parts.map((part, index) => {
+    if (part.startsWith("**") && part.endsWith("**")) {
+      return <strong key={`${part}-${index}`}>{part.slice(2, -2)}</strong>;
+    }
+
+    return part;
+  });
+}
 
 export function FAQAccordion({ items }: { items: Array<{ question: string; answer: string }> }) {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
@@ -54,32 +66,30 @@ export function FAQAccordion({ items }: { items: Array<{ question: string; answe
                 +
               </motion.span>
             </motion.button>
-            <AnimatePresence initial={false}>
-              {openIndex === index && (
-                <motion.div
-                  className={styles.answerWrapper}
-                  initial={{ height: 0, opacity: 0 }}
-                  animate={{ height: "auto", opacity: 1 }}
-                  exit={{ height: 0, opacity: 0 }}
-                  transition={{
-                    height: { duration: 0.3, ease: [0.25, 0.1, 0.25, 1] },
-                    opacity: { duration: 0.2, ease: "linear" },
+            <motion.div
+              className={styles.answerWrapper}
+              aria-hidden={openIndex !== index}
+              initial={false}
+              animate={{ gridTemplateRows: openIndex === index ? "1fr" : "0fr" }}
+              transition={{ duration: 0.32, ease: [0.25, 0.1, 0.25, 1] }}
+            >
+              <div className={styles.answerContent}>
+                <motion.p
+                  className={styles.answerText}
+                  initial={false}
+                  animate={{
+                    opacity: openIndex === index ? 1 : 0,
+                    y: openIndex === index ? 0 : -4,
                   }}
-                  style={{ overflow: "hidden" }}
+                  transition={{
+                    opacity: { duration: openIndex === index ? 0.18 : 0.08, ease: "linear" },
+                    y: { duration: 0.22, ease: [0.25, 0.1, 0.25, 1] },
+                  }}
                 >
-                  <div className={styles.answerContent}>
-                    <motion.p
-                      className={styles.answerText}
-                      initial={{ y: -8, opacity: 0 }}
-                      animate={{ y: 0, opacity: 1 }}
-                      transition={{ duration: 0.25, ease: [0.25, 0.1, 0.25, 1], delay: 0.05 }}
-                    >
-                      {item.answer}
-                    </motion.p>
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
+                  {renderAnswer(item.answer)}
+                </motion.p>
+              </div>
+            </motion.div>
           </motion.div>
         ))}
       </motion.div>

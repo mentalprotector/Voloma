@@ -17,7 +17,7 @@ const narrowLRosewoodImages = getGalleryImages("narrow", "l", "rosewood_stain");
 // --- Square (Квадратное) ---
 const squareNaturalImages = getGalleryImages("square", "m", "natural");
 const squareRosewoodImages = getGalleryImages("square", "m", "rosewood_stain");
-const squareOakImages = getGalleryImages("square", "m", "oak_stain");
+const squareOakImages: ProductVariant["images"] = [];
 
 // --- Rectangular (Прямоугольное) ---
 const rectNaturalImages = getGalleryImages("rect", "m", "natural");

@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -19,6 +19,11 @@ type ImageOrderJson = Record<string, VariantConfig>;
 interface DragState {
   draggedIndex: number | null;
   overIndex: number | null;
+}
+
+interface CropEditorState {
+  xPercent: number;
+  yPercent: number;
 }
 
 // ─── Constants ───────────────────────────────────────────────────────────────
@@ -59,6 +64,47 @@ function buildBasePath(shape: string, finish: string): string {
   return `/images/cashpo/configs/${shape}/${finish}`;
 }
 
+function clamp(value: number, min: number, max: number): number {
+  return Math.min(Math.max(value, min), max);
+}
+
+function parseCropPosition(position?: string): CropEditorState {
+  if (!position) {
+    return { xPercent: 50, yPercent: 50 };
+  }
+
+  const presetMap: Record<string, CropEditorState> = {
+    center: { xPercent: 50, yPercent: 50 },
+    top: { xPercent: 50, yPercent: 0 },
+    bottom: { xPercent: 50, yPercent: 100 },
+    left: { xPercent: 0, yPercent: 50 },
+    right: { xPercent: 100, yPercent: 50 },
+    "top left": { xPercent: 0, yPercent: 0 },
+    "top right": { xPercent: 100, yPercent: 0 },
+    "bottom left": { xPercent: 0, yPercent: 100 },
+    "bottom right": { xPercent: 100, yPercent: 100 },
+  };
+
+  const preset = presetMap[position];
+  if (preset) {
+    return preset;
+  }
+
+  const match = position.match(/^(\d+)%\s+(\d+)%$/);
+  if (!match) {
+    return { xPercent: 50, yPercent: 50 };
+  }
+
+  return {
+    xPercent: clamp(Number.parseInt(match[1], 10), 0, 100),
+    yPercent: clamp(Number.parseInt(match[2], 10), 0, 100),
+  };
+}
+
+function formatCropPosition(state: CropEditorState): string {
+  return `${Math.round(state.xPercent)}% ${Math.round(state.yPercent)}%`;
+}
+
 // ─── Main Page Component ─────────────────────────────────────────────────────
 
 export default function GalleryConfigAdmin() {
@@ -88,6 +134,10 @@ export default function GalleryConfigAdmin() {
   const [deleteLoading, setDeleteLoading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const cropModalImageRef = useRef<HTMLDivElement>(null);
+  const [cropEditor, setCropEditor] = useState<CropEditorState>({
+    xPercent: 50,
+    yPercent: 50,
+  });
 
   // Load config on mount
   useEffect(() => {
@@ -305,19 +355,24 @@ export default function GalleryConfigAdmin() {
   // ─── Crop Editor ──────────────────────────────────────────────────────────
 
   const handleCropClick = (photoNumber: number, mode: "desktop" | "mobile") => {
+    const currentPosition = localCrops[String(photoNumber)]?.[mode];
+    setCropEditor(parseCropPosition(currentPosition));
     setEditingCrop({ photoNumber, mode });
   };
 
-  const handleCropImageClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!editingCrop || !cropModalImageRef.current) return;
+  const updateCropFromPointer = useCallback((clientX: number, clientY: number) => {
+    if (!cropModalImageRef.current) return;
 
     const rect = cropModalImageRef.current.getBoundingClientRect();
-    const x = ((e.clientX - rect.left) / rect.width) * 100;
-    const y = ((e.clientY - rect.top) / rect.height) * 100;
+    const x = clamp(((clientX - rect.left) / rect.width) * 100, 0, 100);
+    const y = clamp(((clientY - rect.top) / rect.height) * 100, 0, 100);
+    setCropEditor({ xPercent: x, yPercent: y });
+  }, []);
 
-    // Convert click position to object-position value
-    const objectPosition = `${Math.round(x)}% ${Math.round(y)}%`;
+  const saveCropEditor = useCallback(() => {
+    if (!editingCrop) return;
 
+    const objectPosition = formatCropPosition(cropEditor);
     setLocalCrops((prev) => ({
       ...prev,
       [String(editingCrop.photoNumber)]: {
@@ -325,9 +380,35 @@ export default function GalleryConfigAdmin() {
         [editingCrop.mode]: objectPosition,
       },
     }));
-
     setEditingCrop(null);
-  };
+  }, [cropEditor, editingCrop]);
+
+  const cropFrameStyle = useMemo(() => {
+    if (!editingCrop) return null;
+
+    const frameAspect = editingCrop.mode === "desktop" ? 5 / 4 : 9 / 16;
+    const containerWidth = editingCrop.mode === "desktop" ? 600 : 320;
+    const containerHeight = editingCrop.mode === "desktop" ? 480 : 568;
+    const containerAspect = containerWidth / containerHeight;
+
+    let frameWidth = 0;
+    let frameHeight = 0;
+
+    if (frameAspect > containerAspect) {
+      frameWidth = containerWidth * 0.82;
+      frameHeight = frameWidth / frameAspect;
+    } else {
+      frameHeight = containerHeight * 0.82;
+      frameWidth = frameHeight * frameAspect;
+    }
+
+    return {
+      width: frameWidth,
+      height: frameHeight,
+      left: `calc(${cropEditor.xPercent}% - ${frameWidth / 2}px)`,
+      top: `calc(${cropEditor.yPercent}% - ${frameHeight / 2}px)`,
+    };
+  }, [cropEditor, editingCrop]);
 
   // ─── Upload ───────────────────────────────────────────────────────────────
 
@@ -783,11 +864,13 @@ export default function GalleryConfigAdmin() {
                   <button
                     key={preset.value}
                     onClick={() => {
+                      const next = parseCropPosition(preset.value);
+                      setCropEditor(next);
                       setLocalCrops((prev) => ({
                         ...prev,
                         [String(editingCrop.photoNumber)]: {
                           ...prev[String(editingCrop.photoNumber)],
-                          [editingCrop.mode]: preset.value,
+                          [editingCrop.mode]: formatCropPosition(next),
                         },
                       }));
                       setEditingCrop(null);
@@ -820,19 +903,33 @@ export default function GalleryConfigAdmin() {
 
             {/* Click-to-set area */}
             <div style={{ marginBottom: "0.5rem", fontSize: "0.875rem" }}>
-              Or click on the image to set a custom position:
+              Drag the frame to choose what stays inside the viewport:
             </div>
             <div
               ref={cropModalImageRef}
-              onClick={handleCropImageClick}
+              onPointerDown={(e) => {
+                (e.currentTarget as HTMLDivElement).setPointerCapture(e.pointerId);
+                updateCropFromPointer(e.clientX, e.clientY);
+              }}
+              onPointerMove={(e) => {
+                if ((e.buttons & 1) !== 1) return;
+                updateCropFromPointer(e.clientX, e.clientY);
+              }}
+              onPointerUp={(e) => {
+                if ((e.currentTarget as HTMLDivElement).hasPointerCapture(e.pointerId)) {
+                  (e.currentTarget as HTMLDivElement).releasePointerCapture(e.pointerId);
+                }
+              }}
               style={{
                 width: editingCrop.mode === "desktop" ? 600 : 280,
                 height: editingCrop.mode === "desktop" ? 480 : 500,
                 position: "relative",
-                cursor: "crosshair",
+                cursor: "grab",
                 overflow: "hidden",
                 border: "1px solid #ddd",
                 borderRadius: "0.375rem",
+                background: "#111",
+                touchAction: "none",
               }}
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -842,17 +939,74 @@ export default function GalleryConfigAdmin() {
                 style={{
                   width: "100%",
                   height: "100%",
-                  objectFit: "cover",
-                  objectPosition:
-                    localCrops[String(editingCrop.photoNumber)]?.[
-                      editingCrop.mode
-                    ] || "center",
+                  objectFit: "contain",
+                  display: "block",
                 }}
               />
+              {cropFrameStyle ? (
+                <>
+                  <div
+                    style={{
+                      position: "absolute",
+                      inset: 0,
+                      background:
+                        "linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45))",
+                    }}
+                  />
+                  <div
+                    style={{
+                      position: "absolute",
+                      ...cropFrameStyle,
+                      border: "2px solid #fff",
+                      borderRadius: "0.5rem",
+                      boxShadow: "0 0 0 9999px rgba(0,0,0,0.35)",
+                      pointerEvents: "none",
+                    }}
+                  >
+                    <div
+                      style={{
+                        position: "absolute",
+                        inset: 0,
+                        border: "1px solid rgba(255,255,255,0.35)",
+                      }}
+                    />
+                    <div
+                      style={{
+                        position: "absolute",
+                        left: "50%",
+                        top: "50%",
+                        width: 14,
+                        height: 14,
+                        borderRadius: "999px",
+                        background: "#fff",
+                        transform: "translate(-50%, -50%)",
+                        boxShadow: "0 0 0 3px rgba(59,130,246,0.35)",
+                      }}
+                    />
+                  </div>
+                </>
+              ) : null}
+            </div>
+            <div style={{ marginTop: "0.5rem", fontSize: "0.75rem", color: "#666" }}>
+              Position: {formatCropPosition(cropEditor)}
             </div>
 
             {/* Clear crop button */}
-            <div style={{ marginTop: "0.75rem" }}>
+            <div style={{ marginTop: "0.75rem", display: "flex", gap: "0.5rem" }}>
+              <button
+                onClick={saveCropEditor}
+                style={{
+                  padding: "0.375rem 0.75rem",
+                  border: "none",
+                  borderRadius: "0.25rem",
+                  background: "#3b82f6",
+                  color: "#fff",
+                  cursor: "pointer",
+                  fontSize: "0.75rem",
+                }}
+              >
+                Apply crop
+              </button>
               <button
                 onClick={() => {
                   const newCrops = { ...localCrops };

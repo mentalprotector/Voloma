@@ -13,10 +13,10 @@ import {
 import styles from "./why-voloma-new-section.module.css";
 
 const facts = [
-  "Готово за 3 рабочих дня",
+  "Готово от 1 до 3х дней",
+  "Сборка за 10 минут",
   "Колёсики в комплекте",
   "Гидроизоляция в комплекте",
-  "Доставка по всей России",
 ];
 
 export function WhyVolomaNewSection() {

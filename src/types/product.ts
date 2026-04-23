@@ -56,6 +56,7 @@ export type MatchType =
   | "shape_size_color"
   | "shape_color"
   | "shape_only"
+  | "square_oak_reference"
   | "none";
 
 export type GalleryState = "exact" | "fallback" | "placeholder" | "custom";
@@ -71,6 +72,7 @@ export interface ResolvedVariantMatch {
   galleryState: GalleryState;
   matchedVariant: ProductVariant | null;
   label: string | null;
+  note: string | null;
   images: ProductImage[];
   placeholder: PlaceholderGalleryData;
 }

@@ -20,22 +20,23 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 100%;
-  padding: 20px 0;
+  width: calc(100% + 36px);
+  margin: 0 -18px;
+  padding: 20px 18px;
   background: none;
   border: none;
   text-align: left;
   font: inherit;
   color: inherit;
   cursor: pointer;
-  gap: 1rem;
+  gap: 2rem;
   border-radius: 8px;
   transition: background-color 0.15s ease;
   -webkit-tap-highlight-color: transparent;
 }
 
 .trigger:hover {
-  background: rgba(0, 0, 0, 0.02);
+  background: rgba(74, 55, 40, 0.045);
 }
 
 .question {
@@ -49,12 +50,19 @@
   font-size: 1.25rem;
   color: #c07a45;
   line-height: 1;
-  width: 1.5rem;
+  width: 2rem;
   text-align: center;
 }
 
+.answerWrapper {
+  display: grid;
+  overflow: hidden;
+}
+
 .answerContent {
+  min-height: 0;
   padding-top: 0;
+  overflow: hidden;
 }
 
 .answerText {

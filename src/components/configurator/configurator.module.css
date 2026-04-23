@@ -580,15 +580,20 @@
     display: block;
   }
 
-  .thumbnailStripInner {
-    position: sticky;
-    top: calc(var(--site-header-height) + 24px);
-    max-height: calc(100svh - var(--site-header-height) - 48px);
-    overflow-y: auto;
-    scrollbar-width: thin;
-    scrollbar-color: rgba(0, 0, 0, 0.15) transparent;
-    padding-right: 4px;
-  }
+.thumbnailStripInner {
+  position: sticky;
+  top: calc(var(--site-header-height) + 24px);
+  max-height: calc(100svh - var(--site-header-height) - 48px);
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 6px 8px 6px 0;
+  box-sizing: border-box;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.15) transparent;
+}
 
   .thumbnailStripInner::-webkit-scrollbar {
     width: 6px;
@@ -729,6 +734,18 @@
     flex-wrap: nowrap;
     gap: 8px;
     align-items: center;
+  }
+
+  .optionGroupCompact {
+    align-items: center;
+  }
+
+  .optionGroupCompact .optionLabelWithHint {
+    align-self: center;
+  }
+
+  .optionGroupCompact .optionLabel {
+    padding-top: 0;
   }
 
   /* Form & Size — single row, no wrapping */
@@ -938,5 +955,155 @@
 
   .layoutNoThumbs .thumbnailStripCol {
     display: none;
+  }
+}
+
+/* ===== Compact desktop: 1280x720 / 1366x768 class screens ===== */
+@media (min-width: 1200px) and (max-width: 1399px), (min-width: 1200px) and (max-height: 820px) {
+  .layout {
+    grid-template-columns: 88px minmax(0, 1fr) 420px;
+    gap: 0 20px;
+    padding: 16px 24px;
+  }
+
+  .layoutNoThumbs {
+    grid-template-columns: minmax(0, 1fr) 420px;
+  }
+
+  .thumbnailStripInner {
+    top: calc(var(--site-header-height) + 16px);
+    max-height: calc(100svh - var(--site-header-height) - 32px);
+    gap: 6px;
+    padding-top: 2px;
+  }
+
+  .stripThumb {
+    width: 76px;
+    height: 76px;
+  }
+
+  .controlsColumn {
+    padding: 0 0 20px 18px;
+  }
+
+  .topBar {
+    margin-bottom: 12px;
+  }
+
+  .topBarTitle {
+    font-size: 16px;
+  }
+
+  .optionGroup {
+    gap: 12px;
+    padding: 6px 0;
+  }
+
+  .optionLabel {
+    width: 94px;
+    padding-top: 6px;
+  }
+
+  .optionGroupCompact .optionLabel {
+    padding-top: 0;
+  }
+
+  .optionControls {
+    gap: 6px;
+  }
+
+  .segmentedControls {
+    gap: 6px;
+  }
+
+  .segmentedControls .pill {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+
+  .pillBadge,
+  .chipBadge {
+    font-size: 10px;
+    margin-left: 3px;
+  }
+
+  .dimensionsButton,
+  .specsButton {
+    padding: 9px 12px;
+    font-size: 0.76rem;
+  }
+
+  .specsButton {
+    margin-top: 12px;
+  }
+
+  .swatchControls {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+    align-items: start;
+  }
+
+  .swatchButton {
+    min-width: 0;
+    width: 100%;
+  }
+
+  .swatchButtonInner {
+    width: 100%;
+    justify-content: center;
+    padding: 5px 10px 5px 5px;
+  }
+
+  .swatchButtonDot {
+    width: 24px;
+    height: 24px;
+    margin-right: 6px;
+  }
+
+  .swatchButtonPrice {
+    font-size: 11px;
+  }
+
+  .swatchLabel {
+    font-size: 10px;
+    white-space: normal;
+    line-height: 1.15;
+  }
+
+  .chipControls {
+    gap: 6px;
+  }
+
+  .chip {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+
+  .noWheelsNote {
+    padding-top: 0.15rem;
+    padding-bottom: 0.35rem;
+    font-size: 0.64rem;
+  }
+
+  .summaryBar {
+    gap: 12px;
+    padding: 16px;
+    margin-top: 16px;
+    border-radius: 14px;
+  }
+
+  .summaryBarPrice {
+    font-size: 20px;
+  }
+
+  .summaryBarConfig,
+  .summaryBarDelivery {
+    font-size: 11px;
+  }
+
+  .summaryBarButton {
+    padding: 13px;
+    font-size: 14px;
   }
 }

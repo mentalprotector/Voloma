@@ -18,6 +18,14 @@ voloma-deploy.tar.gz
 conf.jpg
 cuted.jpg
 
+# Root-level scratch assets and review artifacts
+/*.jpg
+/*.jpeg
+/*.png
+/*.webp
+/*.nef
+/*.NEF
+
 # Raw originals (NEF/CR2/ARW) — not deployed
 **/originals/
 *.nef

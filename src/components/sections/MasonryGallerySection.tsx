@@ -1,29 +1,27 @@
 import styles from "./masonry-gallery-section.module.css";
 
-// Define the range of gallery images to render (gallery-01 through gallery-09)
-const galleryImageCount = 9;
-
-function getGalleryImages(): string[] {
-  const images: string[] = [];
-  for (let i = 1; i <= galleryImageCount; i++) {
-    const padded = i.toString().padStart(2, "0");
-    images.push(`/images/gallery/gallery-${padded}.jpg`);
-  }
-  return images;
-}
+const galleryImages = [
+  { src: "/images/gallery/gallery-01.jpg", className: `${styles.itemTall} ${styles.slotOne}` },
+  { src: "/images/gallery/gallery-02.jpg", className: `${styles.itemTall} ${styles.slotTwo}` },
+  { src: "/images/gallery/gallery-03.jpg", className: `${styles.itemLandscape} ${styles.slotThree}` },
+  { src: "/images/gallery/gallery-04.jpg", className: `${styles.itemLandscape} ${styles.slotFour}` },
+  { src: "/images/gallery/gallery-05.jpg", className: `${styles.itemTall} ${styles.slotFive}` },
+  { src: "/images/gallery/gallery-06.jpg", className: `${styles.itemWide} ${styles.slotSix}` },
+  { src: "/images/gallery/gallery-07.jpg", className: `${styles.itemTall} ${styles.slotSeven}` },
+  { src: "/images/gallery/gallery-08.jpg", className: `${styles.itemTall} ${styles.slotEight}` },
+  { src: "/images/gallery/gallery-09.jpg", className: `${styles.itemLandscape} ${styles.slotNine}` },
+];
 
 export function MasonryGallerySection() {
-  const images = getGalleryImages();
-
   return (
     <section className={styles.section}>
       <div className={styles.inner}>
         <h2 className={styles.heading}>Кашпо в интерьере</h2>
         <p className={styles.subheading}>Реальные пространства</p>
         <div className={styles.masonry}>
-          {images.map((src) => (
+          {galleryImages.map(({ src, className }) => (
             <div
-              className={styles.item}
+              className={`${styles.item} ${className}`}
               key={src}
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}

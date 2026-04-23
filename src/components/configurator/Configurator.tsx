@@ -110,7 +110,7 @@ export function Configurator() {
   ].filter(Boolean);
 
   const summaryLine = summaryParts.join(" • ");
-  const leadTime = "от 3 дней";
+  const leadTime = "от 1 до 3х дней";
 
   const orderMessage = buildOrderMessage({
     shape,
@@ -181,7 +181,7 @@ export function Configurator() {
               aria-pressed={index === activeImageIndex}
               className={`${styles.stripThumb} ${index === activeImageIndex ? styles.stripThumbActive : ""}`}
               type="button"
-              whileHover={{ scale: 1.05 }}
+              whileHover={index === activeImageIndex ? { scale: 1 } : { scale: 1.02 }}
               whileTap={{ scale: 0.95 }}
               transition={subtleSpring}
               onClick={() => setActiveImageIndex(index)}
@@ -210,9 +210,10 @@ export function Configurator() {
             caption={summaryLine}
             images={resolvedMatch.images}
             note={
-              resolvedMatch.galleryState === "fallback" && resolvedMatch.matchType !== "shape_size_color"
+              resolvedMatch.note ??
+              (resolvedMatch.galleryState === "fallback" && resolvedMatch.matchType !== "shape_size_color"
                 ? "Показан близкий вариант из каталога"
-                : null
+                : null)
             }
             onActiveIndexChange={setActiveImageIndex}
             placeholderTitle="Ваше кашпо"

@@ -186,7 +186,7 @@ export function ConfiguratorControls({
       </section>
 
       {/* Quality — Standard / Premium */}
-      <section className={styles.optionGroup} aria-labelledby="config-quality-label">
+      <section className={`${styles.optionGroup} ${styles.optionGroupCompact}`} aria-labelledby="config-quality-label">
         <span className={styles.optionLabelWithHint}>
           <p className={styles.optionLabel} id="config-quality-label">
             Тип дерева

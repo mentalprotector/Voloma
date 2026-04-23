@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useRef, useSyncExternalStore } from "react";
 import Link from "next/link";
 import { motion, useScroll, useTransform } from "framer-motion";
 
@@ -13,23 +13,19 @@ import styles from "./hero-section.module.css";
 
 export function HeroSection() {
   const ref = useRef<HTMLDivElement>(null);
+  const prefersReducedMotion = useSyncExternalStore(
+    (onStoreChange) => {
+      const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+      mediaQuery.addEventListener("change", onStoreChange);
+      return () => mediaQuery.removeEventListener("change", onStoreChange);
+    },
+    () => window.matchMedia("(prefers-reduced-motion: reduce)").matches,
+    () => false,
+  );
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start start", "end start"],
   });
-
-  // Gate reduced motion check behind useState to avoid hydration mismatch
-  const [prefersReducedMotion, setPrefersReducedMotion] = useState(() => {
-    if (typeof window === "undefined") return false;
-    return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  });
-
-  useEffect(() => {
-    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const handler = (e: MediaQueryListEvent) => setPrefersReducedMotion(e.matches);
-    mq.addEventListener("change", handler);
-    return () => mq.removeEventListener("change", handler);
-  }, []);
 
   // Subtle parallax: background image moves at 30% scroll speed
   const heroImageY = useTransform(
@@ -75,17 +71,17 @@ export function HeroSection() {
             animate="visible"
           >
             <motion.p className={styles.subtitle} variants={heroChild}>
-              Форма, размер и оттенок под ваше пространство.
+              Для дома, террасы и сада.
             </motion.p>
             <motion.h1 className={styles.title} variants={heroChild}>
-              Деревянные кашпо для интерьера
+              Деревянные кашпо из карельской сосны
             </motion.h1>
             <motion.p className={styles.priceAnchor} variants={priceFadeScale}>
-              от 1 900 ₽ · готово за 3 рабочих дня
+              от 1 900 ₽ · готово от 1 до 3х дней · сборка за 10 минут
             </motion.p>
             <motion.div variants={heroChild}>
               <Link href="/configurator" className={styles.ctaButton}>
-                Собрать своё кашпо →
+                Собрать своё кашпо
               </Link>
             </motion.div>
           </motion.div>

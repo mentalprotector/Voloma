@@ -1,115 +1,454 @@
 {
   "_comment": "Image order and crop positions for each variant configuration. Order: array of photo numbers. Crops: desktop and mobile object-position values.",
-
   "квадратное/natural": {
-    "order": [7, 1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13, 14, 15, 16],
+    "order": [
+      7,
+      16,
+      2,
+      3,
+      4,
+      5,
+      6,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15
+    ],
     "crops": {
-      "7": { "desktop": "center", "mobile": "center" },
-      "1": { "desktop": "center", "mobile": "top" }
+      "1": {
+        "desktop": "center",
+        "mobile": "top"
+      },
+      "7": {
+        "desktop": "center",
+        "mobile": "center"
+      }
     }
   },
-
   "квадратное/rosewood-stain": {
-    "order": [7, 1, 2, 3, 4, 5, 6, 8, 9, 10, 11],
+    "order": [
+      8,
+      11,
+      6,
+      7,
+      3,
+      2,
+      4,
+      5,
+      9,
+      10
+    ],
     "crops": {
-      "7": { "desktop": "center", "mobile": "center" },
-      "1": { "desktop": "center", "mobile": "top" }
+      "7": {
+        "desktop": "center",
+        "mobile": "center"
+      }
     }
   },
-
   "прямоугольное/natural": {
-    "order": [7, 1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17],
+    "order": [
+      13,
+      17,
+      3,
+      9,
+      4,
+      1,
+      2,
+      7,
+      5,
+      6,
+      8,
+      10,
+      11,
+      12,
+      15,
+      16
+    ],
     "crops": {
-      "7": { "desktop": "center", "mobile": "center" },
-      "1": { "desktop": "center", "mobile": "top" }
+      "1": {
+        "desktop": "center",
+        "mobile": "top"
+      },
+      "7": {
+        "desktop": "center",
+        "mobile": "center"
+      }
     }
   },
-
   "прямоугольное/oak-stain": {
-    "order": [7, 1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17],
+    "order": [
+      3,
+      17,
+      16,
+      1,
+      2,
+      13,
+      4,
+      5,
+      6,
+      11,
+      7,
+      8,
+      10,
+      9,
+      12,
+      14
+    ],
     "crops": {
-      "7": { "desktop": "center", "mobile": "center" },
-      "1": { "desktop": "center", "mobile": "top" }
+      "1": {
+        "desktop": "center",
+        "mobile": "top"
+      },
+      "3": {
+        "desktop": "51% 51%"
+      },
+      "4": {
+        "desktop": "51% 54%",
+        "mobile": "50% 50%"
+      },
+      "5": {
+        "desktop": "51% 42%",
+        "mobile": "50% 50%"
+      },
+      "7": {
+        "desktop": "center",
+        "mobile": "center"
+      }
     }
   },
-
   "прямоугольное/rosewood-stain": {
-    "order": [7, 1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13, 14],
+    "order": [
+      7,
+      1,
+      3,
+      4,
+      5,
+      6,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13
+    ],
     "crops": {
-      "7": { "desktop": "center", "mobile": "center" },
-      "1": { "desktop": "center", "mobile": "top" }
+      "1": {
+        "desktop": "center",
+        "mobile": "top"
+      },
+      "7": {
+        "desktop": "center",
+        "mobile": "center"
+      }
     }
   },
-
   "узкое-L/natural": {
-    "order": [7, 1, 2, 3, 4, 5, 6, 8, 9, 10, 11],
+    "order": [
+      5,
+      11,
+      4,
+      1,
+      6,
+      8,
+      10,
+      9,
+      7,
+      3
+    ],
     "crops": {
-      "7": { "desktop": "center", "mobile": "center" },
-      "1": { "desktop": "center", "mobile": "top" }
+      "1": {
+        "desktop": "center",
+        "mobile": "top"
+      },
+      "3": {
+        "desktop": "53% 53%"
+      },
+      "7": {
+        "desktop": "50% 50%",
+        "mobile": "center"
+      },
+      "8": {
+        "desktop": "52% 47%"
+      },
+      "9": {
+        "desktop": "49% 54%"
+      },
+      "10": {
+        "desktop": "49% 43%"
+      },
+      "11": {
+        "desktop": "50% 56%"
+      }
     }
   },
-
   "узкое-L/oak-stain": {
-    "order": [7, 1, 2, 3, 4, 5, 6, 8, 9, 10, 11],
+    "order": [
+      4,
+      11,
+      2,
+      3,
+      10,
+      8,
+      6,
+      7,
+      9,
+      5
+    ],
     "crops": {
-      "7": { "desktop": "center", "mobile": "center" },
-      "1": { "desktop": "center", "mobile": "top" }
+      "3": {
+        "desktop": "52% 54%"
+      },
+      "6": {
+        "desktop": "50% 50%"
+      },
+      "7": {
+        "desktop": "center",
+        "mobile": "center"
+      },
+      "10": {
+        "desktop": "50% 53%"
+      },
+      "11": {
+        "desktop": "49% 56%"
+      }
     }
   },
-
   "узкое-L/rosewood-stain": {
-    "order": [7, 1, 2, 3, 4, 5, 6, 8, 9, 10],
+    "order": [
+      5,
+      4,
+      10,
+      7,
+      6,
+      1,
+      9,
+      3,
+      8
+    ],
     "crops": {
-      "7": { "desktop": "center", "mobile": "center" },
-      "1": { "desktop": "center", "mobile": "top" }
+      "1": {
+        "desktop": "center",
+        "mobile": "top"
+      },
+      "3": {
+        "desktop": "49% 53%"
+      },
+      "7": {
+        "desktop": "center",
+        "mobile": "center"
+      },
+      "8": {
+        "desktop": "52% 42%"
+      }
     }
   },
-
   "узкое-M/natural": {
-    "order": [7, 1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13],
+    "order": [
+      5,
+      13,
+      4,
+      7,
+      2,
+      8,
+      9,
+      10,
+      11,
+      12,
+      3
+    ],
     "crops": {
-      "7": { "desktop": "center", "mobile": "center" },
-      "1": { "desktop": "center", "mobile": "top" }
+      "2": {
+        "desktop": "50% 55%",
+        "mobile": "50% 50%"
+      },
+      "3": {
+        "desktop": "51% 57%"
+      },
+      "4": {
+        "desktop": "52% 55%",
+        "mobile": "50% 50%"
+      },
+      "7": {
+        "desktop": "50% 50%",
+        "mobile": "50% 50%"
+      },
+      "8": {
+        "desktop": "49% 46%"
+      },
+      "9": {
+        "desktop": "52% 57%"
+      },
+      "10": {
+        "desktop": "50% 50%"
+      },
+      "11": {
+        "desktop": "50% 50%"
+      }
     }
   },
-
   "узкое-M/oak-stain": {
-    "order": [7, 1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13, 14, 15, 16],
+    "order": [
+      9,
+      16,
+      6,
+      7,
+      5,
+      1,
+      10,
+      3,
+      11,
+      12,
+      13,
+      14,
+      15,
+      4,
+      8
+    ],
     "crops": {
-      "7": { "desktop": "center", "mobile": "center" },
-      "1": { "desktop": "center", "mobile": "top" }
+      "1": {
+        "desktop": "center",
+        "mobile": "top"
+      },
+      "4": {
+        "desktop": "52% 59%"
+      },
+      "7": {
+        "desktop": "51% 52%",
+        "mobile": "center"
+      },
+      "9": {
+        "desktop": "49% 58%"
+      },
+      "16": {
+        "desktop": "50% 59%"
+      }
     }
   },
-
   "узкое-M/rosewood-stain": {
-    "order": [7, 1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13],
+    "order": [
+      6,
+      3,
+      4,
+      5,
+      7,
+      8,
+      2,
+      9,
+      10,
+      11,
+      12,
+      13
+    ],
     "crops": {
-      "7": { "desktop": "center", "mobile": "center" },
-      "1": { "desktop": "center", "mobile": "top" }
+      "2": {
+        "desktop": "50% 52%"
+      },
+      "3": {
+        "desktop": "50% 60%"
+      },
+      "4": {
+        "desktop": "49% 52%"
+      },
+      "7": {
+        "desktop": "center",
+        "mobile": "center"
+      }
     }
   },
-
   "узкое-S/natural": {
-    "order": [7, 1, 2, 3, 4, 5, 6, 8, 9, 10],
+    "order": [
+      3,
+      10,
+      2,
+      5,
+      6,
+      1,
+      7,
+      4,
+      8,
+      9
+    ],
     "crops": {
-      "7": { "desktop": "center", "mobile": "center" },
-      "1": { "desktop": "center", "mobile": "top" }
+      "1": {
+        "desktop": "center",
+        "mobile": "top"
+      },
+      "2": {
+        "desktop": "51% 53%"
+      },
+      "3": {
+        "desktop": "50% 50%"
+      },
+      "4": {
+        "desktop": "49% 57%"
+      },
+      "7": {
+        "desktop": "center",
+        "mobile": "center"
+      },
+      "10": {
+        "desktop": "49% 59%"
+      }
     }
   },
-
   "узкое-S/oak-stain": {
-    "order": [7, 1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13],
+    "order": [
+      3,
+      13,
+      2,
+      1,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11
+    ],
     "crops": {
-      "7": { "desktop": "center", "mobile": "center" },
-      "1": { "desktop": "center", "mobile": "top" }
+      "1": {
+        "desktop": "52% 82%",
+        "mobile": "top"
+      },
+      "2": {
+        "desktop": "48% 57%"
+      },
+      "7": {
+        "desktop": "51% 52%",
+        "mobile": "center"
+      }
     }
   },
-
   "узкое-S/rosewood-stain": {
-    "order": [7, 1, 2, 3, 4, 5, 6, 8, 9, 10, 11],
+    "order": [
+      8,
+      11,
+      7,
+      5,
+      9,
+      10,
+      1,
+      2,
+      4,
+      6
+    ],
     "crops": {
-      "7": { "desktop": "center", "mobile": "center" },
-      "1": { "desktop": "center", "mobile": "top" }
+      "1": {
+        "desktop": "center",
+        "mobile": "top"
+      },
+      "6": {
+        "desktop": "50% 50%"
+      },
+      "7": {
+        "desktop": "50% 58%",
+        "mobile": "center"
+      }
     }
   }
 }

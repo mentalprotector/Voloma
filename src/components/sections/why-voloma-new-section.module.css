@@ -1,6 +1,7 @@
 .section {
   position: relative;
-  min-height: 80vh;
+  min-height: 100svh;
+  min-height: 100dvh;
   overflow: hidden;
 }
 
@@ -102,7 +103,8 @@
 
 @media (max-width: 768px) {
   .section {
-    min-height: 80vh;
+    min-height: 100svh;
+    min-height: 100dvh;
     height: auto;
   }
 

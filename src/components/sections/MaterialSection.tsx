@@ -20,8 +20,8 @@ export function MaterialSection() {
           карельской сосны.
         </h2>
         <p className={styles.body}>
-          Сырьё высшего качества
-          с благородным рисунком.
+          Премиальная древесина
+          с естественным рисунком.
         </p>
       </div>
     </section>

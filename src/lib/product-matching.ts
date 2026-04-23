@@ -1,5 +1,6 @@
 import { finishLabels, qualityLabels, shapeLabels, sizeLabels } from "@/content/site-content";
 import type {
+  Finish,
   GalleryState,
   MatchType,
   PlaceholderGalleryData,
@@ -7,6 +8,10 @@ import type {
   ResolvedVariantMatch,
   VariantSelection,
 } from "@/types/product";
+
+const PREMIUM_STANDARD_NOTE = "На фото показано кашпо Премиум в выбранном размере и цвете";
+const SQUARE_OAK_REFERENCE_NOTE =
+  "Фото этой конфигурации пока нет, скоро добавим. Показано бесцветное квадратное M Премиум.";
 
 function buildVariantTitle(selection: VariantSelection) {
   return `${shapeLabels[selection.shape]} кашпо ${sizeLabels[selection.size]}, ${finishLabels[
@@ -38,6 +43,26 @@ function matchBy(
 
 function hasImages(variant: ProductVariant | null) {
   return Boolean(variant?.images?.length);
+}
+
+function isPremiumPhotoReference(selection: VariantSelection, matchedVariant: ProductVariant) {
+  return selection.quality === "standard" && hasImages(matchedVariant);
+}
+
+function getPhotoNote(
+  selection: VariantSelection,
+  matchType: MatchType,
+  matchedVariant: ProductVariant | null,
+) {
+  if (matchType === "square_oak_reference") {
+    return SQUARE_OAK_REFERENCE_NOTE;
+  }
+
+  if (matchedVariant && isPremiumPhotoReference(selection, matchedVariant)) {
+    return PREMIUM_STANDARD_NOTE;
+  }
+
+  return null;
 }
 
 function getGalleryState(matchType: MatchType, matchedVariant: ProductVariant | null): GalleryState {
@@ -74,6 +99,16 @@ export function resolveVariantMatch(
 ): ResolvedVariantMatch {
   const placeholder = createPlaceholderData(selection);
 
+  const findSquareReference = (finish: Finish) =>
+    matchBy(
+      variants,
+      (variant) =>
+        variant.shape === "square" &&
+        variant.size === "m" &&
+        variant.finish === finish &&
+        hasImages(variant),
+    );
+
   const strategies: Array<{
     type: MatchType;
     label: string | null;
@@ -109,6 +144,22 @@ export function resolveVariantMatch(
     },
   ];
 
+  if (selection.shape === "square" && selection.size === "m" && selection.finish === "oak_stain") {
+    const matchedVariant = findSquareReference("natural");
+
+    if (matchedVariant && hasImages(matchedVariant)) {
+      return {
+        matchType: "square_oak_reference",
+        galleryState: "fallback",
+        matchedVariant,
+        label: "Показан близкий вариант",
+        note: getPhotoNote(selection, "square_oak_reference", matchedVariant),
+        images: matchedVariant.images,
+        placeholder,
+      };
+    }
+  }
+
   for (const strategy of strategies) {
     const matchedVariant = matchBy(variants, strategy.predicate);
 
@@ -128,8 +179,9 @@ export function resolveVariantMatch(
               : galleryState === "placeholder"
                 ? "Изготавливаем под заказ"
                 : galleryState === "custom"
-                  ? "Сделаем под ваш вариант"
-                  : null,
+                ? "Сделаем под ваш вариант"
+                : null,
+        note: getPhotoNote(selection, strategy.type, matchedVariant),
         images: matchedVariant.images,
         placeholder,
       };
@@ -144,6 +196,7 @@ export function resolveVariantMatch(
       galleryState: "fallback",
       matchedVariant: anyWithImages,
       label: "Показан близкий вариант",
+      note: getPhotoNote(selection, "none", anyWithImages),
       images: anyWithImages.images,
       placeholder,
     };
@@ -154,6 +207,7 @@ export function resolveVariantMatch(
     galleryState: "custom",
     matchedVariant: null,
     label: "Сделаем под ваш вариант",
+    note: null,
     images: [],
     placeholder,
   };

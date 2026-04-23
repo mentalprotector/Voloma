@@ -126,6 +126,7 @@
   }
 
   .copy {
-    left: 2rem;
+    left: clamp(8rem, 16vw, 16rem);
+    max-width: 22.5rem;
   }
 }

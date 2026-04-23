@@ -31,6 +31,20 @@ describe('product-matching', () => {
       expect(result.images.length).toBeGreaterThanOrEqual(1);
     });
 
+    it('adds premium photo note for standard selections', () => {
+      const selection = makeSelection({ shape: 'narrow', size: 's', finish: 'natural', quality: 'standard' });
+      const result = resolveVariantMatch(productVariants, selection);
+
+      expect(result.note).toBe('На фото показано кашпо Премиум в выбранном размере и цвете');
+    });
+
+    it('does not add premium photo note for premium selections', () => {
+      const selection = makeSelection({ shape: 'narrow', size: 's', finish: 'natural', quality: 'premium' });
+      const result = resolveVariantMatch(productVariants, selection);
+
+      expect(result.note).toBeNull();
+    });
+
     it('falls back to shape_size_color when size matches but quality differs', () => {
       const selection = makeSelection({ shape: 'square', size: 'm', finish: 'natural', quality: 'premium' });
       const result = resolveVariantMatch(productVariants, selection);
@@ -61,6 +75,16 @@ describe('product-matching', () => {
       const result = resolveVariantMatch(productVariants, selection);
 
       expect(result.placeholder.slug).toBe('narrow-m-oak_stain-standard');
+    });
+
+    it('uses natural square reference for missing square oak photos', () => {
+      const selection = makeSelection({ shape: 'square', size: 'm', finish: 'oak_stain', quality: 'standard' });
+      const result = resolveVariantMatch(productVariants, selection);
+
+      expect(result.matchType).toBe('square_oak_reference');
+      expect(result.matchedVariant?.finish).toBe('natural');
+      expect(result.note).toBe('Фото этой конфигурации пока нет, скоро добавим. Показано бесцветное квадратное M Премиум.');
+      expect(result.images.length).toBeGreaterThanOrEqual(1);
     });
 
     it('returns galleryState based on match quality', () => {
