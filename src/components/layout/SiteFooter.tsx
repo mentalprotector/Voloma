@@ -5,8 +5,9 @@ import { siteContent } from "@/content/site-content";
 import styles from "./site-footer.module.css";
 
 export function SiteFooter() {
-  const { description, email, phone, delivery, payment, guarantee, copyright } =
+  const { description, email, phone, messengerPhone, maxLink, delivery, payment, guarantee, copyright } =
     siteContent.footer;
+  const phoneHref = "+7" + phone.replace(/\D/g, "");
 
   return (
     <footer className={styles.footer}>
@@ -29,9 +30,18 @@ export function SiteFooter() {
             </a>
             <a
               className={styles.phone}
-              href={`tel:${phone}`}
+              href={`tel:${phoneHref}`}
             >
               {phone}
+            </a>
+            <p className={styles.messengerLine}>
+              Telegram / ВК:{" "}
+              <a className={styles.emailInline} href={`tel:${messengerPhone}`}>
+                {messengerPhone}
+              </a>
+            </p>
+            <a className={styles.emailInline} href={maxLink} target="_blank" rel="noreferrer">
+              Макс
             </a>
           </div>
 
@@ -56,7 +66,7 @@ export function SiteFooter() {
               Свяжитесь с нами:{" "}
               <a
                 className={styles.emailInline}
-                href={`tel:${phone}`}
+                href={`tel:${phoneHref}`}
               >
                 {phone}
               </a>

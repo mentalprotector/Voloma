@@ -276,7 +276,12 @@ export function Configurator() {
                 <span className={styles.desktopCtaButtonIcon} aria-hidden="true">
                   <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
-                      d="M21.2 4.8 18 19.9c-.2.9-.7 1.1-1.5.7L11.6 17l-2.4 2.3c-.3.3-.5.5-1 .5l.4-5.1 9.2-8.3c.4-.4-.1-.6-.6-.2L5.8 13.4.9 11.9c-1-.3-1-.9.2-1.4L20 3.2c.9-.3 1.6.2 1.2 1.6Z"
+                      d="M21 12A9 9 0 1 1 3 12a9 9 0 0 1 18 0Z"
+                      fill="currentColor"
+                      opacity="0.16"
+                    />
+                    <path
+                      d="m8.62 12.16 7.24-2.8c.34-.12.64.08.53.58l-1.23 5.8c-.08.41-.31.51-.64.32l-1.87-1.38-.9.87c-.1.1-.18.18-.39.18l.14-1.95 3.56-3.22c.15-.14-.03-.21-.24-.14l-4.4 2.77-1.9-.59c-.42-.13-.43-.42.1-.64Z"
                       fill="currentColor"
                     />
                   </svg>

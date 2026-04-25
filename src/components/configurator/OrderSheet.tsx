@@ -103,7 +103,12 @@ export function OrderSheet({
               <span className={styles.ctaIcon} aria-hidden="true">
                 <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path
-                    d="M21.2 4.8 18 19.9c-.2.9-.7 1.1-1.5.7L11.6 17l-2.4 2.3c-.3.3-.5.5-1 .5l.4-5.1 9.2-8.3c.4-.4-.1-.6-.6-.2L5.8 13.4.9 11.9c-1-.3-1-.9.2-1.4L20 3.2c.9-.3 1.6.2 1.2 1.6Z"
+                    d="M21 12A9 9 0 1 1 3 12a9 9 0 0 1 18 0Z"
+                    fill="currentColor"
+                    opacity="0.16"
+                  />
+                  <path
+                    d="m8.62 12.16 7.24-2.8c.34-.12.64.08.53.58l-1.23 5.8c-.08.41-.31.51-.64.32l-1.87-1.38-.9.87c-.1.1-.18.18-.39.18l.14-1.95 3.56-3.22c.15-.14-.03-.21-.24-.14l-4.4 2.77-1.9-.59c-.42-.13-.43-.42.1-.64Z"
                     fill="currentColor"
                   />
                 </svg>
@@ -116,18 +121,22 @@ export function OrderSheet({
               <button className={styles.messengerButton} type="button" onClick={() => onMessengerClick("vk")}>
                 <span className={styles.messengerIconVk} aria-hidden="true">
                   <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M12.755 21.58c-6.84 0-10.173-4.637-10.313-11.76h3.22c.093 4.824 2.044 6.884 3.64 7.28V7.02h2.8v5.073c1.576-.167 3.186-1.97 3.67-4.073h2.8A7.773 7.773 0 0116.1 11.32c1.473 1.547 3.633 3.073 5.46 3.26h3.22c-.187 5.06-3.02 7.1-3.02 7.1h-2.8s-.627-.667-1.547-1.667c-.96-1.04-1.813-1.96-2.587-2.16V21.58h-2.066Z" fill="#0077FF"/>
+                    <path
+                      d="M4.92 7.88c.12 5.73 2.88 9.18 7.73 9.18h.28v-3.27c1.83.18 3.21 1.52 3.77 3.27h2.59c-.72-2.62-2.61-4.06-3.79-4.62 1.18-.68 2.83-2.33 3.22-4.56h-2.36c-.5 1.81-2.03 3.46-3.43 3.61V7.88h-2.36v6.32c-1.42-.36-3.22-2.13-3.3-6.32H4.92Z"
+                      fill="currentColor"
+                    />
                   </svg>
                 </span>
-                VK
+                ВК
               </button>
               <button className={styles.messengerButton} type="button" onClick={() => onMessengerClick("max")}>
                 <span className={styles.messengerIconMax} aria-hidden="true">
                   <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="#7B61FF" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M12 3.5 4.5 7.25 12 11l7.5-3.75L12 3.5Z" fill="currentColor" opacity="0.22"/>
+                    <path d="M4.5 11.75 12 15.5l7.5-3.75M4.5 16.25 12 20l7.5-3.75" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
                   </svg>
                 </span>
-                MAX
+                Макс
               </button>
             </div>
 
@@ -166,19 +175,6 @@ export function OrderSheet({
                   </motion.span>
                 </motion.button>
               </div>
-              <AnimatePresence>
-                {copyStatus && (
-                  <motion.p
-                    className={styles.copySuccessLabel}
-                    initial={{ opacity: 0, y: -4 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -4 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    ✓ Скопировано
-                  </motion.p>
-                )}
-              </AnimatePresence>
             </div>
 
             <button className={styles.closeButton} type="button" onClick={onClose}>

@@ -61,6 +61,13 @@
   flex: 0 0 auto;
 }
 
+.brandLockup {
+  display: block;
+  width: auto;
+  height: 2.8rem;
+  flex: 0 0 auto;
+}
+
 .brandWordmark {
   display: block;
   width: auto;
@@ -181,6 +188,10 @@
     height: 4.8rem;
   }
 
+  .brandLockup {
+    height: 5rem;
+  }
+
   .brandWordmark {
     height: 1.8rem;
   }
@@ -191,6 +202,10 @@
 
   .scrolled .homeInner .brandSymbol {
     height: 2.55rem;
+  }
+
+  .scrolled .homeInner .brandLockup {
+    height: 3.05rem;
   }
 
   .scrolled .homeInner .brandWordmark {
@@ -242,11 +257,17 @@
     height: 2.75rem;
   }
 
+  .brandLockup {
+    height: 3.35rem;
+    filter: drop-shadow(0 1px 4px rgba(8, 5, 4, 0.45));
+  }
+
   .brandWordmark {
     height: 1.4rem;
   }
 
   .scrolled .homeInner .brandSymbol,
+  .scrolled .homeInner .brandLockup,
   .scrolled .homeInner .brandWordmark {
     filter: none;
   }

@@ -31,6 +31,7 @@ export function getOrganizationSchema() {
     },
     "contactPoint": {
       "@type": "ContactPoint",
+      "telephone": "+7 8142 27-27-00",
       "email": "hello@voloma.ru",
       "contactType": "sales",
       "availableLanguage": "Russian"
@@ -135,4 +136,3 @@ export function getBreadcrumbSchema(items: Array<{ name: string; url: string }>)
     }))
   };
 }
-

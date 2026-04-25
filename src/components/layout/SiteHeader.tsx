@@ -72,19 +72,11 @@ export function SiteHeader() {
           <>
             <Link className={styles.brand} href="/">
               <Image
-                src="/voloma-symbol.svg"
-                alt="Voloma"
-                width={386}
-                height={411}
-                className={styles.brandSymbol}
-                priority
-              />
-              <Image
-                src="/voloma-wordmark.svg"
+                src="/voloma-logo.svg"
                 alt="Voloma Wood"
-                width={802}
-                height={132}
-                className={styles.brandWordmark}
+                width={1024}
+                height={1024}
+                className={styles.brandLockup}
                 priority
               />
             </Link>

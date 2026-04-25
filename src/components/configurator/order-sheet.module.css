@@ -126,8 +126,8 @@
 
 /* VK branded */
 .messengerButton:first-of-type {
-  background: #F0F4FA;
-  color: #0077FF;
+  background: #f0f4fa;
+  color: #0077ff;
 }
 
 .messengerIconVk {
@@ -143,8 +143,8 @@
 
 /* MAX branded */
 .messengerButton:last-of-type {
-  background: #F4F0FF;
-  color: #7B61FF;
+  background: #f4f0ff;
+  color: #6b5cff;
 }
 
 .messengerIconMax {
@@ -227,14 +227,6 @@
 .copyIcon svg {
   width: 100%;
   height: 100%;
-}
-
-.copySuccessLabel {
-  margin: 0.4rem 0 0;
-  font-size: 0.75rem;
-  font-weight: 500;
-  color: #2d6a4f;
-  text-align: right;
 }
 
 .closeButton {
