@@ -7,6 +7,7 @@ import type { MessengerKey } from "@/types/messenger";
 
 import { useFocusTrap } from "@/hooks/useFocusTrap";
 import { overlayFade, sheetSpring } from "@/lib/animations";
+import { MaxIcon, TelegramIcon } from "./MessengerIcons";
 import styles from "./order-sheet.module.css";
 
 interface OrderSheetProps {
@@ -91,8 +92,7 @@ export function OrderSheet({
             exit="exit"
           >
             <div className={styles.handle} aria-hidden="true" />
-            <h2 className={styles.title}>Отправить запрос</h2>
-            <p className={styles.subtitle}>Выберите мессенджер или скопируйте текст заказа.</p>
+            <h2 className={styles.title}>Выберите мессенджер или скопируйте текст заказа.</h2>
 
             {/* Primary CTA: Telegram */}
             <button
@@ -101,17 +101,7 @@ export function OrderSheet({
               onClick={() => onMessengerClick("telegram")}
             >
               <span className={styles.ctaIcon} aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path
-                    d="M21 12A9 9 0 1 1 3 12a9 9 0 0 1 18 0Z"
-                    fill="currentColor"
-                    opacity="0.16"
-                  />
-                  <path
-                    d="m8.62 12.16 7.24-2.8c.34-.12.64.08.53.58l-1.23 5.8c-.08.41-.31.51-.64.32l-1.87-1.38-.9.87c-.1.1-.18.18-.39.18l.14-1.95 3.56-3.22c.15-.14-.03-.21-.24-.14l-4.4 2.77-1.9-.59c-.42-.13-.43-.42.1-.64Z"
-                    fill="currentColor"
-                  />
-                </svg>
+                <TelegramIcon />
               </span>
               Написать менеджеру в Telegram
             </button>
@@ -131,10 +121,7 @@ export function OrderSheet({
               </button>
               <button className={styles.messengerButton} type="button" onClick={() => onMessengerClick("max")}>
                 <span className={styles.messengerIconMax} aria-hidden="true">
-                  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M12 3.5 4.5 7.25 12 11l7.5-3.75L12 3.5Z" fill="currentColor" opacity="0.22"/>
-                    <path d="M4.5 11.75 12 15.5l7.5-3.75M4.5 16.25 12 20l7.5-3.75" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
+                  <MaxIcon />
                 </span>
                 Макс
               </button>
