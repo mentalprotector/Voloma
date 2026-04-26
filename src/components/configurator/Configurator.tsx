@@ -282,6 +282,10 @@ export function Configurator() {
             </div>
           </div>
         </div>
+        <div className={styles.controlsScrollHint} aria-hidden="true">
+          <span className={styles.controlsScrollHintLine} />
+          <span>Ниже</span>
+        </div>
       </section>
 
       {/* Specs modal (desktop + mobile) */}

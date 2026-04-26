@@ -51,6 +51,11 @@ export function ImageGallery({
   const prevIndexRef = useRef(activeIndex);
 
   useEffect(() => {
+    if (isMobile) {
+      prevIndexRef.current = activeIndex;
+      return;
+    }
+
     if (activeIndex !== prevIndexRef.current) {
       prevIndexRef.current = activeIndex;
       // Defer setState to after commit via rAF (React 19 allows this)
@@ -60,7 +65,7 @@ export function ImageGallery({
       });
       return () => cancelAnimationFrame(raf);
     }
-  }, [activeIndex]);
+  }, [activeIndex, isMobile]);
 
   const setActiveIndex = isControlled
     ? (value: number | ((prev: number) => number)) => {
@@ -92,7 +97,6 @@ export function ImageGallery({
               const newIndex = Math.round(scrollLeft / (itemWidth + gap));
               if (images[newIndex] && newIndex !== activeIndex) {
                 setActiveIndex(newIndex);
-                setIsLoaded(false);
               }
             }}
           >
@@ -104,12 +108,9 @@ export function ImageGallery({
                 aria-label={`Открыть фото ${index + 1} на весь экран`}
                 onClick={() => setLightboxIndex(index)}
               >
-                {!isLoaded && index === activeIndex ? (
-                  <div className={styles.skeleton} aria-hidden="true" />
-                ) : null}
                 <Image
                   alt={image.alt}
-                  className={cn(styles.heroImage, isEntering && index === activeIndex && styles.entering)}
+                  className={styles.heroImage}
                   fill
                   priority={index === 0}
                   loading={index === 0 ? "eager" : "lazy"}
@@ -117,9 +118,6 @@ export function ImageGallery({
                   src={image.url}
                   style={getImageCropStyleRequired(image, isMobile)}
                   unoptimized
-                  onLoad={() => {
-                    if (index === 0) setIsLoaded(true);
-                  }}
                 />
                 {/* Counter on active slide */}
                 {index === activeIndex && (

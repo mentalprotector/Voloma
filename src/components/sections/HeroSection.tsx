@@ -64,12 +64,8 @@ export function HeroSection() {
             </picture>
           </motion.div>
 
-          <motion.div
-            className={styles.copy}
-            variants={heroStaggerContainer}
-            initial="hidden"
-            animate="visible"
-          >
+          <motion.div variants={heroStaggerContainer} initial="hidden" animate="visible">
+            <Link href="/configurator" className={styles.copy}>
             <motion.p className={styles.subtitle} variants={heroChild}>
               Для дома, террасы и сада.
             </motion.p>
@@ -80,11 +76,17 @@ export function HeroSection() {
               от 1 900 ₽ · готово от 1 до 3х дней · сборка за 10 минут
             </motion.p>
             <motion.div variants={heroChild}>
-              <Link href="/configurator" className={styles.ctaButton}>
+              <span className={styles.ctaButton}>
                 Собрать своё кашпо
-              </Link>
+              </span>
             </motion.div>
+            </Link>
           </motion.div>
+
+          <div className={styles.scrollHint} aria-hidden="true">
+            <span className={styles.scrollHintLine} />
+            <span className={styles.scrollHintText}>Листайте</span>
+          </div>
         </div>
       </div>
     </section>
