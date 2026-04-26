@@ -175,8 +175,8 @@ export const siteContent = {
   ],
   footer: {
     description: "Деревянные кашпо для спокойных интерьеров.",
-    email: "hello@voloma.ru",
-    phone: "+79992900919",
+    phone: "+7 (8142) 27-27-00",
+    phoneHref: "+78142272700",
     delivery: [
       "Вся Россия, транспортная компания на выбор",
       "Самовывоз: Петрозаводск",
@@ -192,7 +192,7 @@ export const siteContent = {
       "Пропитка DUFA: до 5 лет",
       "При повреждении при доставке — замена или компенсация",
     ],
-    copyright: "© 2025 Voloma. ИП",
+    copyright: "© 2026 Voloma. ИП",
   },
   finalCta: {
     title: "Подберите кашпо под свой интерьер",

@@ -1,0 +1,101 @@
+.cue {
+  position: fixed;
+  right: max(0.85rem, env(safe-area-inset-right));
+  top: 50%;
+  z-index: 12;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  color: rgba(26, 19, 16, 0.56);
+  font-size: 0.64rem;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transform: translateY(-50%);
+  opacity: 1;
+  pointer-events: none;
+  transition: opacity 0.24s ease, transform 0.24s ease;
+}
+
+.light {
+  color: rgba(250, 248, 245, 0.78);
+}
+
+.dark {
+  color: rgba(26, 19, 16, 0.56);
+}
+
+.hidden {
+  opacity: 0;
+  transform: translateY(calc(-50% + 0.4rem));
+}
+
+.line {
+  position: relative;
+  display: block;
+  width: 1px;
+  height: 3rem;
+  overflow: hidden;
+  background: color-mix(in srgb, currentColor 28%, transparent);
+}
+
+.line::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: -55%;
+  width: 100%;
+  height: 55%;
+  background: currentColor;
+  animation: scrollCueDrop 1.8s ease-in-out infinite;
+}
+
+.text {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+}
+
+@keyframes scrollCueDrop {
+  0% {
+    transform: translateY(0);
+    opacity: 0;
+  }
+
+  30% {
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateY(285%);
+    opacity: 0;
+  }
+}
+
+@media (max-width: 767px) {
+  .cue {
+    right: max(0.6rem, env(safe-area-inset-right));
+    gap: 0;
+  }
+
+  .line {
+    height: 2.65rem;
+  }
+
+  .text {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cue {
+    transition: none;
+  }
+
+  .line::after {
+    animation: none;
+    top: 0;
+    height: 100%;
+    opacity: 0.8;
+  }
+}

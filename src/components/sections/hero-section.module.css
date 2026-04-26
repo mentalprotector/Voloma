@@ -122,56 +122,7 @@
 }
 
 .scrollHint {
-  position: absolute;
-  left: 50%;
-  bottom: calc(1.2rem + var(--safe-bottom));
   z-index: 4;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.45rem;
-  color: rgba(250, 248, 245, 0.78);
-  font-size: 0.72rem;
-  line-height: 1;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  transform: translateX(-50%);
-  pointer-events: none;
-}
-
-.scrollHintLine {
-  position: relative;
-  display: block;
-  width: 1px;
-  height: 2.1rem;
-  overflow: hidden;
-  background: rgba(250, 248, 245, 0.28);
-}
-
-.scrollHintLine::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: -55%;
-  width: 100%;
-  height: 55%;
-  background: currentColor;
-  animation: scrollHintDrop 1.8s ease-in-out infinite;
-}
-
-@keyframes scrollHintDrop {
-  0% {
-    transform: translateY(0);
-    opacity: 0;
-  }
-
-  30% {
-    opacity: 1;
-  }
-
-  100% {
-    transform: translateY(280%);
-    opacity: 0;
-  }
 }
 
 @media (min-width: 768px) {
@@ -203,27 +154,5 @@
   .copy {
     left: clamp(8rem, 16vw, 16rem);
     max-width: 22.5rem;
-  }
-}
-
-@media (max-width: 767px) {
-  .scrollHint {
-    right: 1rem;
-    left: auto;
-    bottom: calc(15.5rem + var(--safe-bottom));
-    transform: none;
-  }
-
-  .scrollHintText {
-    display: none;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .scrollHintLine::after {
-    animation: none;
-    top: 0;
-    height: 100%;
-    opacity: 0.8;
   }
 }

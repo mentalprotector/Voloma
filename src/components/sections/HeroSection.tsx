@@ -9,6 +9,7 @@ import {
   heroChild,
   priceFadeScale,
 } from "@/lib/animations";
+import { ScrollCue } from "@/components/ui/ScrollCue";
 import styles from "./hero-section.module.css";
 
 export function HeroSection() {
@@ -83,10 +84,7 @@ export function HeroSection() {
             </Link>
           </motion.div>
 
-          <div className={styles.scrollHint} aria-hidden="true">
-            <span className={styles.scrollHintLine} />
-            <span className={styles.scrollHintText}>Листайте</span>
-          </div>
+          <ScrollCue className={styles.scrollHint} variant="light" />
         </div>
       </div>
     </section>

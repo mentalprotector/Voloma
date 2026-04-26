@@ -16,6 +16,7 @@ import { buildOrderMessage } from "@/lib/order-message";
 import { resolveVariantMatch } from "@/lib/product-matching";
 import { getImageCropStyleRequired } from "@/lib/image-crop";
 import { subtleSpring } from "@/lib/animations";
+import { ScrollCue } from "@/components/ui/ScrollCue";
 import type { Finish, Quality, Shape, Size } from "@/types/product";
 
 import { ConfiguratorControls } from "./ConfiguratorControls";
@@ -288,10 +289,7 @@ export function Configurator() {
             </div>
           </div>
         </div>
-        <div className={styles.controlsScrollHint} aria-hidden="true">
-          <span className={styles.controlsScrollHintLine} />
-          <span>Ниже</span>
-        </div>
+        <ScrollCue className={styles.controlsScrollHint} label="Ниже" threshold={48} />
       </section>
 
       {/* Specs modal (desktop + mobile) */}

@@ -1,12 +1,27 @@
 import Image from "next/image";
 
+import { MaxIcon, TelegramIcon } from "@/components/configurator/MessengerIcons";
 import { siteContent } from "@/content/site-content";
+import { buildMessengerUrl } from "@/lib/messenger-links";
 
 import styles from "./site-footer.module.css";
 
 export function SiteFooter() {
-  const { description, email, phone, delivery, payment, guarantee, copyright } =
+  const {
+    description,
+    phone,
+    phoneHref,
+    delivery,
+    payment,
+    guarantee,
+    copyright,
+  } =
     siteContent.footer;
+  const contactMessage = "Здравствуйте! Хочу уточнить детали по кашпо Волома.";
+  const messengerUrls = {
+    telegram: buildMessengerUrl("telegram", contactMessage),
+    max: buildMessengerUrl("max", contactMessage),
+  };
 
   return (
     <footer className={styles.footer}>
@@ -21,18 +36,34 @@ export function SiteFooter() {
               className={styles.brandLogo}
             />
             <p className={styles.description}>{description}</p>
-            <a
-              className={styles.email}
-              href={`mailto:${email}`}
-            >
-              {email}
-            </a>
-            <a
-              className={styles.phone}
-              href={`tel:${phone}`}
-            >
-              {phone}
-            </a>
+            <div className={styles.contacts}>
+              <a
+                className={styles.phone}
+                href={`tel:${phoneHref}`}
+              >
+                {phone}
+              </a>
+              <div className={styles.messengers} aria-label="Мессенджеры">
+                <a
+                  className={styles.messengerLink}
+                  href={messengerUrls.telegram}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Telegram"
+                >
+                  <TelegramIcon className={styles.messengerIcon} />
+                </a>
+                <a
+                  className={styles.messengerLink}
+                  href={messengerUrls.max}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="MAX"
+                >
+                  <MaxIcon className={styles.messengerIcon} />
+                </a>
+              </div>
+            </div>
           </div>
 
           <div className={styles.column}>
@@ -56,7 +87,7 @@ export function SiteFooter() {
               Свяжитесь с нами:{" "}
               <a
                 className={styles.emailInline}
-                href={`tel:${phone}`}
+                href={`tel:${phoneHref}`}
               >
                 {phone}
               </a>

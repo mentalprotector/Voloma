@@ -68,62 +68,7 @@
 }
 
 .controlsScrollHint {
-  position: fixed;
-  left: 50%;
-  bottom: calc(var(--cta-offset, 100px) + 0.7rem);
   z-index: 9;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-  padding: 0.35rem 0.55rem;
-  border: 1px solid rgba(26, 19, 16, 0.1);
-  border-radius: 999px;
-  background: rgba(250, 248, 245, 0.82);
-  color: rgba(26, 19, 16, 0.52);
-  font-size: 0.64rem;
-  font-weight: 500;
-  letter-spacing: 0.08em;
-  line-height: 1;
-  text-transform: uppercase;
-  transform: translateX(-50%);
-  pointer-events: none;
-  backdrop-filter: blur(8px);
-}
-
-.controlsScrollHintLine {
-  position: relative;
-  display: block;
-  width: 1px;
-  height: 1.1rem;
-  overflow: hidden;
-  background: rgba(26, 19, 16, 0.16);
-}
-
-.controlsScrollHintLine::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: -60%;
-  width: 100%;
-  height: 60%;
-  background: currentColor;
-  animation: configuratorScrollHintDrop 1.7s ease-in-out infinite;
-}
-
-@keyframes configuratorScrollHintDrop {
-  0% {
-    transform: translateY(0);
-    opacity: 0;
-  }
-
-  30% {
-    opacity: 1;
-  }
-
-  100% {
-    transform: translateY(270%);
-    opacity: 0;
-  }
 }
 
 /* ===== Top summary bar (simplified, lightweight) ===== */
@@ -1019,15 +964,6 @@
 
   .layoutNoThumbs .thumbnailStripCol {
     display: none;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .controlsScrollHintLine::after {
-    animation: none;
-    top: 0;
-    height: 100%;
-    opacity: 0.8;
   }
 }
 
