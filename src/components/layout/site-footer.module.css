@@ -30,11 +30,27 @@
 }
 
 .brandLogo {
-  display: block;
-  width: auto;
-  height: 3.75rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  width: fit-content;
   margin-bottom: 1rem;
   filter: brightness(0) invert(1) opacity(0.9);
+}
+
+.brandSymbol {
+  display: block;
+  width: auto;
+  height: 2.75rem;
+  flex: 0 0 auto;
+}
+
+.brandWordmark {
+  display: block;
+  width: auto;
+  height: 1.4rem;
+  max-width: 12rem;
+  flex: 0 1 auto;
 }
 
 .description {
@@ -135,5 +151,14 @@
   .grid {
     grid-template-columns: 1.3fr 1fr 1fr;
     gap: 60px;
+  }
+
+  .brandSymbol {
+    height: 3.5rem;
+  }
+
+  .brandWordmark {
+    height: 1.7rem;
+    max-width: 15rem;
   }
 }

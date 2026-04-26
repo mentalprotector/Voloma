@@ -21,10 +21,11 @@ export function ScrollCue({
 
   useEffect(() => {
     function handleScroll() {
-      setHidden(window.scrollY > threshold);
+      if (window.scrollY > threshold) {
+        setHidden(true);
+      }
     }
 
-    handleScroll();
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, [threshold]);

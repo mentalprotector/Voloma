@@ -28,13 +28,22 @@ export function SiteFooter() {
       <div className={styles.inner}>
         <div className={styles.grid}>
           <div className={styles.column}>
-            <Image
-              src="/voloma-logo.svg"
-              alt="Voloma"
-              width={220}
-              height={80}
-              className={styles.brandLogo}
-            />
+            <div className={styles.brandLogo} aria-label="Voloma">
+              <Image
+                src="/voloma-symbol.svg"
+                alt=""
+                width={386}
+                height={411}
+                className={styles.brandSymbol}
+              />
+              <Image
+                src="/voloma-wordmark.svg"
+                alt=""
+                width={802}
+                height={132}
+                className={styles.brandWordmark}
+              />
+            </div>
             <p className={styles.description}>{description}</p>
             <div className={styles.contacts}>
               <a
