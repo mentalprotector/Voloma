@@ -16,7 +16,6 @@ import { buildOrderMessage } from "@/lib/order-message";
 import { resolveVariantMatch } from "@/lib/product-matching";
 import { getImageCropStyleRequired } from "@/lib/image-crop";
 import { subtleSpring } from "@/lib/animations";
-import type { MessengerKey } from "@/types/messenger";
 import type { Finish, Quality, Shape, Size } from "@/types/product";
 
 import { ConfiguratorControls } from "./ConfiguratorControls";
@@ -121,6 +120,15 @@ export function Configurator() {
     showSize: showSizeSelector,
   });
 
+  const messengerUrls = useMemo(
+    () => ({
+      telegram: buildMessengerUrl("telegram", orderMessage),
+      vk: buildMessengerUrl("vk", orderMessage),
+      max: buildMessengerUrl("max", orderMessage),
+    }),
+    [orderMessage],
+  );
+
   function handleShapeChange(nextShape: Shape) {
     vibrate();
     setShape(nextShape);
@@ -161,11 +169,9 @@ export function Configurator() {
     );
   }
 
-  function handleMessengerClick(target: MessengerKey) {
-    // Open messenger URL synchronously (within user gesture to avoid popup blocking)
-    // The URL already contains the pre-filled message — no need to copy
-    const targetUrl = buildMessengerUrl(target, orderMessage);
-    window.open(targetUrl, "_blank", "noopener,noreferrer");
+  function handleMessengerClick() {
+    setSheetOpen(false);
+    document.body.style.overflow = "";
   }
 
   const showGallery = resolvedMatch.images.length > 0 && (resolvedMatch.galleryState === "exact" || resolvedMatch.galleryState === "fallback");
@@ -301,6 +307,7 @@ export function Configurator() {
         copyStatus={copyStatus}
         isOpen={sheetOpen}
         message={orderMessage}
+        messengerUrls={messengerUrls}
         price={total}
         pricePulseKey={0}
         selectionLine={summaryLine}

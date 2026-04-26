@@ -14,6 +14,7 @@ interface OrderSheetProps {
   isOpen: boolean;
   message: string;
   copyStatus: string | null;
+  messengerUrls: Record<MessengerKey, string>;
   onClose: () => void;
   onCopyMessage: () => void;
   onMessengerClick: (target: MessengerKey) => void;
@@ -36,6 +37,7 @@ export function OrderSheet({
   isOpen,
   message,
   copyStatus,
+  messengerUrls,
   onClose,
   onCopyMessage,
   onMessengerClick,
@@ -95,20 +97,28 @@ export function OrderSheet({
             <h2 className={styles.title}>Выберите мессенджер или скопируйте текст заказа.</h2>
 
             {/* Primary CTA: Telegram */}
-            <button
+            <a
               className={styles.telegramButton}
-              type="button"
+              href={messengerUrls.telegram}
+              target="_blank"
+              rel="noopener noreferrer"
               onClick={() => onMessengerClick("telegram")}
             >
               <span className={styles.ctaIcon} aria-hidden="true">
                 <TelegramIcon />
               </span>
               Написать менеджеру в Telegram
-            </button>
+            </a>
 
             {/* Secondary messenger options */}
             <div className={styles.messengers}>
-              <button className={styles.messengerButton} type="button" onClick={() => onMessengerClick("vk")}>
+              <a
+                className={styles.messengerButton}
+                href={messengerUrls.vk}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => onMessengerClick("vk")}
+              >
                 <span className={styles.messengerIconVk} aria-hidden="true">
                   <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
@@ -118,13 +128,19 @@ export function OrderSheet({
                   </svg>
                 </span>
                 ВК
-              </button>
-              <button className={styles.messengerButton} type="button" onClick={() => onMessengerClick("max")}>
+              </a>
+              <a
+                className={styles.messengerButton}
+                href={messengerUrls.max}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => onMessengerClick("max")}
+              >
                 <span className={styles.messengerIconMax} aria-hidden="true">
                   <MaxIcon />
                 </span>
                 Макс
-              </button>
+              </a>
             </div>
 
             {/* Preview with copy button inside */}

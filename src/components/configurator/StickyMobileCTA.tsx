@@ -12,6 +12,7 @@ interface StickyMobileCTAProps {
   copyStatus: string | null;
   isOpen: boolean;
   message: string;
+  messengerUrls: Record<MessengerKey, string>;
   price: number;
   pricePulseKey: number;
   selectionLine: string;
@@ -25,6 +26,7 @@ export function StickyMobileCTA({
   copyStatus,
   isOpen,
   message,
+  messengerUrls,
   price,
   selectionLine,
   onClose,
@@ -67,6 +69,7 @@ export function StickyMobileCTA({
         isOpen={isOpen}
         message={message}
         copyStatus={copyStatus}
+        messengerUrls={messengerUrls}
         onClose={onClose}
         onCopyMessage={onCopyMessage}
         onMessengerClick={onMessengerClick}
