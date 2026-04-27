@@ -134,7 +134,21 @@
 }
 
 .bottom {
+  display: grid;
+  gap: 0.85rem;
   padding-top: 1.5rem;
+}
+
+.legal {
+  display: grid;
+  gap: 0.2rem;
+}
+
+.legalLine {
+  margin: 0;
+  color: rgba(245, 243, 238, 0.62);
+  font-size: 12px;
+  line-height: 1.55;
 }
 
 .copyright {

@@ -14,6 +14,7 @@ export function SiteFooter() {
     delivery,
     payment,
     guarantee,
+    legal,
     copyright,
   } =
     siteContent.footer;
@@ -105,6 +106,11 @@ export function SiteFooter() {
         </div>
 
         <div className={styles.bottom}>
+          <div className={styles.legal}>
+            {legal.map((line) => (
+              <p className={styles.legalLine} key={line}>{line}</p>
+            ))}
+          </div>
           <p className={styles.copyright}>{copyright}</p>
         </div>
       </div>
