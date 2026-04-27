@@ -5,6 +5,7 @@ import { AnimatePresence, motion } from "framer-motion";
 
 import type { MessengerKey } from "@/types/messenger";
 
+import { siteContent } from "@/content/site-content";
 import { useFocusTrap } from "@/hooks/useFocusTrap";
 import { overlayFade, sheetSpring } from "@/lib/animations";
 import { MaxIcon, TelegramIcon } from "./MessengerIcons";
@@ -110,38 +111,25 @@ export function OrderSheet({
               Написать менеджеру в Telegram
             </a>
 
-            {/* Secondary messenger options */}
-            <div className={styles.messengers}>
-              <a
-                className={styles.messengerButton}
-                href={messengerUrls.vk}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={() => onMessengerClick("vk")}
-              >
-                <span className={styles.messengerIconVk} aria-hidden="true">
-                  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path
-                      d="M4.92 7.88c.12 5.73 2.88 9.18 7.73 9.18h.28v-3.27c1.83.18 3.21 1.52 3.77 3.27h2.59c-.72-2.62-2.61-4.06-3.79-4.62 1.18-.68 2.83-2.33 3.22-4.56h-2.36c-.5 1.81-2.03 3.46-3.43 3.61V7.88h-2.36v6.32c-1.42-.36-3.22-2.13-3.3-6.32H4.92Z"
-                      fill="currentColor"
-                    />
-                  </svg>
-                </span>
-                ВК
-              </a>
-              <a
-                className={styles.messengerButton}
-                href={messengerUrls.max}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={() => onMessengerClick("max")}
-              >
-                <span className={styles.messengerIconMax} aria-hidden="true">
-                  <MaxIcon />
-                </span>
-                Макс
-              </a>
-            </div>
+            <a
+              className={styles.maxButton}
+              href={messengerUrls.max}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => onMessengerClick("max")}
+            >
+              <span className={styles.ctaIcon} aria-hidden="true">
+                <MaxIcon />
+              </span>
+              Написать менеджеру в Макс
+            </a>
+
+            <a
+              className={styles.phoneButton}
+              href={`tel:${siteContent.footer.phoneHref}`}
+            >
+              {siteContent.footer.phone}
+            </a>
 
             {/* Preview with copy button inside */}
             <div className={styles.preview}>
