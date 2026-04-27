@@ -6,6 +6,8 @@ coverage
 *.log
 *.tsbuildinfo
 .env*
+.claude/
+.qwen/
 photo/
 new/
 cyberpunk-hud/
