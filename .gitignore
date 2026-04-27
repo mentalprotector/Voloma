@@ -15,6 +15,7 @@ cyberpunk-hud/
 # Deployment archives
 voloma-deploy.tar.gz
 *.tar.gz
+*.tgz
 
 # Development files
 conf.jpg
