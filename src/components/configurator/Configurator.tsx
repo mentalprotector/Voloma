@@ -273,7 +273,7 @@ export function Configurator() {
                 {formatPrice(total)}
               </p>
               <p className={styles.summaryBarConfig}>{summaryLine}</p>
-              <p className={styles.summaryBarDelivery}>Изготовим за {leadTime}</p>
+              <p className={styles.summaryBarDelivery}>Изготовим {leadTime}</p>
             </div>
             <div className={styles.summaryBarRight}>
               <button
