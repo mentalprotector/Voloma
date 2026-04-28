@@ -33,8 +33,7 @@ jobs:
       - name: Build static site
         env:
           GITHUB_PAGES: "true"
-          NEXT_PUBLIC_BASE_PATH: "/Voloma"
-          NEXT_PUBLIC_SITE_URL: "https://mentalprotector.github.io/Voloma"
+          NEXT_PUBLIC_SITE_URL: "https://xn--80adbi6agmb2c.xn--p1ai"
         run: npm run build
 
       - name: Disable Jekyll
