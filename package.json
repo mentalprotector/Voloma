@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "eslint . --max-warnings=0",
     "typecheck": "tsc --noEmit",
+    "indexnow": "node scripts/submit-indexnow.js",
     "test": "vitest run",
     "test:watch": "vitest"
   },

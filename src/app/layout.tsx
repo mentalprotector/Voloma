@@ -8,7 +8,8 @@ import { SiteFooter } from "@/components/layout/SiteFooter";
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import { siteContent } from "@/content/site-content";
 import { publicPath } from "@/lib/public-path";
-import { getOrganizationSchema } from "@/lib/structured-data";
+import { getSiteUrl } from "@/lib/site-url";
+import { getOrganizationSchema, getWebSiteSchema } from "@/lib/structured-data";
 
 import "./globals.css";
 
@@ -49,8 +50,7 @@ export const metadata: Metadata = {
   authors: [{ name: "Волома" }],
   creator: "Волома",
   publisher: "Волома",
-  // TODO: Update URL when custom domain is configured
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://voloma.94.140.224.220.sslip.io"),
+  metadataBase: new URL(getSiteUrl()),
   alternates: {
     canonical: "/",
   },
@@ -113,14 +113,14 @@ export const viewport: Viewport = {
 };
 
 export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
-  const organizationSchema = getOrganizationSchema();
+  const globalStructuredData = [getOrganizationSchema(), getWebSiteSchema()];
   
   return (
     <html lang="ru" suppressHydrationWarning>
       <head>
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(globalStructuredData) }}
         />
       </head>
       <body className={`${cormorant.variable} ${inter.variable}`}>

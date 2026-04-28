@@ -10,21 +10,31 @@
 
 import type { Finish, Quality, Shape, Size } from "@/types/product";
 import { BASE_PRICES, STAIN_SURCHARGE } from "@/config/pricing";
+import { absoluteUrl, getSiteUrl } from "@/lib/site-url";
 
 /**
  * Схема Organization - информация о компании
  */
 export function getOrganizationSchema() {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://voloma.94.140.224.220.sslip.io";
+  const baseUrl = getSiteUrl();
   
   return {
     "@context": "https://schema.org",
     "@type": "Organization",
+    "@id": `${baseUrl}/#organization`,
     "name": "Волома",
     "alternateName": "Voloma",
     "url": baseUrl,
     "logo": `${baseUrl}/voloma-logo.svg`,
+    "image": `${baseUrl}/images/hero/voloma-hero-desktop.webp`,
     "description": "Деревянные кашпо для интерьера из карельской сосны",
+    "address": {
+      "@type": "PostalAddress",
+      "addressCountry": "RU",
+      "addressRegion": "Республика Карелия",
+      "addressLocality": "Петрозаводск",
+      "streetAddress": "ул. Тапиола 1"
+    },
     "foundingLocation": {
       "@type": "Place",
       "name": "Петрозаводск, Карелия, Россия"
@@ -44,6 +54,26 @@ export function getOrganizationSchema() {
         "name": "Деревянные кашпо для интерьера",
         "description": "Интерьерные кашпо из карельской сосны различных форм и размеров"
       }
+    }
+  };
+}
+
+/**
+ * Схема WebSite помогает поисковикам и AI-поиску связать бренд с доменом.
+ */
+export function getWebSiteSchema() {
+  const baseUrl = getSiteUrl();
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "@id": `${baseUrl}/#website`,
+    "name": "Волома",
+    "alternateName": "Voloma",
+    "url": baseUrl,
+    "inLanguage": "ru-RU",
+    "publisher": {
+      "@id": `${baseUrl}/#organization`
     }
   };
 }
@@ -132,7 +162,7 @@ export function getBreadcrumbSchema(items: Array<{ name: string; url: string }>)
       "@type": "ListItem",
       "position": index + 1,
       "name": item.name,
-      "item": item.url
+      "item": absoluteUrl(item.url)
     }))
   };
 }

@@ -1,0 +1,38 @@
+# Voloma
+
+Voloma is a Russian brand that makes wooden planters from Karelian pine for homes, terraces, balconies, and gardens.
+
+Canonical site: https://xn--80adbi6agmb2c.xn--p1ai
+Human-readable domain: https://воломавуд.рф
+Language: ru-RU
+Location: Petrozavodsk, Republic of Karelia, Russia
+
+## Important Pages
+
+- Home: https://xn--80adbi6agmb2c.xn--p1ai/
+- Planter configurator: https://xn--80adbi6agmb2c.xn--p1ai/configurator
+- Sitemap: https://xn--80adbi6agmb2c.xn--p1ai/sitemap.xml
+- Robots: https://xn--80adbi6agmb2c.xn--p1ai/robots.txt
+
+## Products
+
+Voloma makes wooden interior and outdoor planters in several formats:
+
+- Узкое S
+- Узкое M
+- Узкое L
+- Квадратное
+- Прямоугольное
+
+Core product attributes:
+
+- Material: Karelian pine
+- Finishes: natural, oak stain, rosewood stain
+- Wood quality levels: standard and premium
+- Delivery: disassembled flat-pack delivery across Russia
+- Production time: usually 1 to 3 days
+
+## Contact
+
+- Phone: +7 8142 27-27-00
+- Email: hello@voloma.ru
