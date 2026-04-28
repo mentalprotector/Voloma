@@ -1,12 +1,14 @@
 import Image from "next/image";
 
+import { publicPath } from "@/lib/public-path";
+
 import styles from "./material-section.module.css";
 
 export function MaterialSection() {
   return (
     <section className={styles.section}>
       <Image
-        src="/images/landing/Фактура.jpg"
+        src={publicPath("/images/landing/Фактура.jpg")}
         alt="Фактура карельской сосны крупным планом — натуральная древесина для кашпо Волома"
         className={styles.image}
         loading="eager"

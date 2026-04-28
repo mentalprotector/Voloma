@@ -3,6 +3,7 @@
 import Image from "next/image";
 
 import type { FeatureImageTone, SiteFeature } from "@/content/site-content";
+import { publicPath } from "@/lib/public-path";
 
 import styles from "./feature-item.module.css";
 
@@ -38,7 +39,7 @@ export function FeatureItem({ description, image, index, title }: FeatureItemPro
             fill
             loading="lazy"
             sizes="(max-width: 1023px) 100vw, 56vw"
-            src={image.src}
+            src={publicPath(image.src)}
             style={{ objectPosition: image.position ?? "center" }}
           />
         ) : (

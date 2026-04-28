@@ -6,6 +6,7 @@ import { FooterVisibilityWrapper } from "@/components/layout/FooterVisibilityWra
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import { siteContent } from "@/content/site-content";
+import { publicPath } from "@/lib/public-path";
 import { getOrganizationSchema } from "@/lib/structured-data";
 import { YandexMetrika } from "@/lib/yandex-metrika";
 
@@ -60,7 +61,7 @@ export const metadata: Metadata = {
     siteName: "Волома",
     images: [
       {
-        url: "/voloma-logo.svg",
+        url: publicPath("/voloma-logo.svg"),
         width: 220,
         height: 80,
         alt: "Волома - деревянные кашпо для интерьера",
@@ -92,15 +93,15 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: "/favicon.ico?v=2", sizes: "any" },
-      { url: "/favicon.svg?v=2", type: "image/svg+xml" },
-      { url: "/favicon-32x32.png?v=2", sizes: "32x32", type: "image/png" },
-      { url: "/favicon-16x16.png?v=2", sizes: "16x16", type: "image/png" },
+      { url: publicPath("/favicon.ico?v=2"), sizes: "any" },
+      { url: publicPath("/favicon.svg?v=2"), type: "image/svg+xml" },
+      { url: publicPath("/favicon-32x32.png?v=2"), sizes: "32x32", type: "image/png" },
+      { url: publicPath("/favicon-16x16.png?v=2"), sizes: "16x16", type: "image/png" },
     ],
-    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
-    shortcut: ["/favicon.ico?v=2"],
+    apple: [{ url: publicPath("/apple-touch-icon.png"), sizes: "180x180", type: "image/png" }],
+    shortcut: [publicPath("/favicon.ico?v=2")],
   },
-  manifest: "/site.webmanifest",
+  manifest: publicPath("/site.webmanifest"),
 };
 
 export const viewport: Viewport = {

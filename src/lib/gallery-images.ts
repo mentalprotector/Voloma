@@ -1,5 +1,6 @@
 import type { CropPosition, Finish, ProductImage, Shape, Size } from "@/types/product";
 import imageOrderConfig from "../../public/images/cashpo/configs/image-order.json";
+import { publicPath } from "@/lib/public-path";
 
 /** Maps shape enum value to folder name */
 const shapeFolderMap: Record<Shape, string> = {
@@ -76,7 +77,7 @@ export function getGalleryImages(
   const sizeSuffix = shape === "narrow" ? `-${size.toUpperCase()}` : "";
   const finishFolder = finishFolderMap[finish];
 
-  const basePath = `/images/cashpo/configs/${shapeFolder}${sizeSuffix}/${finishFolder}`;
+  const basePath = publicPath(`/images/cashpo/configs/${shapeFolder}${sizeSuffix}/${finishFolder}`);
 
   // Load config from JSON
   const configKey = buildConfigKey(shape, size, finish);

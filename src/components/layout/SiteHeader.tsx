@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import { trackEvent } from "@/lib/analytics";
+import { publicPath } from "@/lib/public-path";
 
 import { Button } from "../ui/Button";
 
@@ -59,7 +60,7 @@ export function SiteHeader() {
 
             <Link className={styles.brand} href="/">
               <Image
-                src="/voloma-symbol.svg"
+                src={publicPath("/voloma-symbol.svg")}
                 alt="Voloma"
                 width={386}
                 height={411}
@@ -72,7 +73,7 @@ export function SiteHeader() {
           <>
             <Link className={styles.brand} href="/">
               <Image
-                src="/voloma-symbol.svg"
+                src={publicPath("/voloma-symbol.svg")}
                 alt="Voloma"
                 width={386}
                 height={411}
@@ -80,7 +81,7 @@ export function SiteHeader() {
                 priority
               />
               <Image
-                src="/voloma-wordmark.svg"
+                src={publicPath("/voloma-wordmark.svg")}
                 alt="Voloma Wood"
                 width={802}
                 height={132}

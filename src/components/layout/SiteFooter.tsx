@@ -3,6 +3,7 @@ import Image from "next/image";
 import { MaxIcon, TelegramIcon } from "@/components/configurator/MessengerIcons";
 import { siteContent } from "@/content/site-content";
 import { buildMessengerUrl } from "@/lib/messenger-links";
+import { publicPath } from "@/lib/public-path";
 
 import styles from "./site-footer.module.css";
 
@@ -31,14 +32,14 @@ export function SiteFooter() {
           <div className={styles.column}>
             <div className={styles.brandLogo} aria-label="Voloma">
               <Image
-                src="/voloma-symbol.svg"
+                src={publicPath("/voloma-symbol.svg")}
                 alt=""
                 width={386}
                 height={411}
                 className={styles.brandSymbol}
               />
               <Image
-                src="/voloma-wordmark.svg"
+                src={publicPath("/voloma-wordmark.svg")}
                 alt=""
                 width={802}
                 height={132}

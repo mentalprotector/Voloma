@@ -9,6 +9,7 @@ import {
   heroChild,
   priceFadeScale,
 } from "@/lib/animations";
+import { publicPath } from "@/lib/public-path";
 import { ScrollCue } from "@/components/ui/ScrollCue";
 import styles from "./hero-section.module.css";
 
@@ -50,15 +51,15 @@ export function HeroSection() {
             <picture className={styles.picture}>
               <source
                 media="(min-width: 768px)"
-                srcSet="/images/hero/voloma-hero-desktop.webp"
+                srcSet={publicPath("/images/hero/voloma-hero-desktop.webp")}
                 type="image/webp"
               />
-              <source srcSet="/images/hero/voloma-hero-mobile.webp" type="image/webp" />
+              <source srcSet={publicPath("/images/hero/voloma-hero-mobile.webp")} type="image/webp" />
               <img
                 alt="Деревянные кашпо Волома из карельской сосны для интерьера — различные формы и размеры"
                 className={styles.image}
                 fetchPriority="high"
-                src="/images/hero/voloma-hero-mobile.webp"
+                src={publicPath("/images/hero/voloma-hero-mobile.webp")}
                 width={800}
                 height={600}
               />

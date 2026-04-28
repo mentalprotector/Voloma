@@ -1,12 +1,14 @@
 import Image from "next/image";
 
+import { publicPath } from "@/lib/public-path";
+
 import styles from "./interior-section.module.css";
 
 export function InteriorSection() {
   return (
     <section className={styles.section}>
       <Image
-        src="/images/landing/DSC_7853-редакт.jpg"
+        src={publicPath("/images/landing/DSC_7853-редакт.jpg")}
         alt="Деревянное кашпо Волома в современном интерьере — у стеклянной двери, натуральное дерево"
         className={styles.image}
         loading="lazy"

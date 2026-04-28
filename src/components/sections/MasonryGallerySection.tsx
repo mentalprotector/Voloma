@@ -1,3 +1,5 @@
+import { publicPath } from "@/lib/public-path";
+
 import styles from "./masonry-gallery-section.module.css";
 
 const galleryImages = [
@@ -26,7 +28,7 @@ export function MasonryGallerySection() {
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src={src}
+                src={publicPath(src)}
                 alt={`Деревянное кашпо Волома в интерьере — вариант ${src.split("/").pop()?.replace(".jpg", "")}, карельская сосна`}
                 loading="lazy"
               />

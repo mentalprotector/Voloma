@@ -10,6 +10,7 @@ import {
   staggerChild,
   viewportOptions,
 } from "@/lib/animations";
+import { publicPath } from "@/lib/public-path";
 import styles from "./why-voloma-new-section.module.css";
 
 const facts = [
@@ -23,7 +24,7 @@ export function WhyVolomaNewSection() {
   return (
     <section className={styles.section}>
       <motion.img
-        src="/images/landing/plant.jpg"
+        src={publicPath("/images/landing/plant.jpg")}
         alt="Деревянные кашпо Волома с растениями — преимущества: быстрое изготовление, колёсики в комплекте, разборная конструкция"
         className={styles.image}
         loading="lazy"
