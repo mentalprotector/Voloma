@@ -15,8 +15,10 @@ import styles from "./site-header.module.css";
 export function SiteHeader() {
   const [isScrolled, setIsScrolled] = useState(false);
   const pathname = usePathname();
-  const isHome = pathname === "/";
-  const isConfigurator = pathname === "/configurator";
+  const normalizedPathname = pathname.replace(/\/$/, "");
+  const isHome = normalizedPathname === "";
+  const isConfigurator =
+    normalizedPathname === "/configurator" || normalizedPathname.startsWith("/configurator/");
 
   useEffect(() => {
     const handleScroll = () => {

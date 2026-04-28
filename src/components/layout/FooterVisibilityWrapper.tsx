@@ -5,8 +5,11 @@ import type { ReactNode } from "react";
 
 export function FooterVisibilityWrapper({ children }: { children: ReactNode }) {
   const pathname = usePathname();
-  if (pathname === "/configurator") {
+  const normalizedPathname = pathname.replace(/\/$/, "");
+
+  if (normalizedPathname === "/configurator" || normalizedPathname.startsWith("/configurator/")) {
     return null;
   }
+
   return children;
 }
