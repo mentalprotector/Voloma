@@ -2,13 +2,13 @@ import type { Metadata, Viewport } from "next";
 import { Cormorant_Garamond, Inter } from "next/font/google";
 import type { ReactNode } from "react";
 
+import { TrackingConsent } from "@/components/analytics/TrackingConsent";
 import { FooterVisibilityWrapper } from "@/components/layout/FooterVisibilityWrapper";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import { siteContent } from "@/content/site-content";
 import { publicPath } from "@/lib/public-path";
 import { getOrganizationSchema } from "@/lib/structured-data";
-import { YandexMetrika } from "@/lib/yandex-metrika";
 
 import "./globals.css";
 
@@ -122,7 +122,6 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
         />
-        <YandexMetrika />
       </head>
       <body className={`${cormorant.variable} ${inter.variable}`}>
         <SiteHeader />
@@ -130,6 +129,7 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
         <FooterVisibilityWrapper>
           <SiteFooter />
         </FooterVisibilityWrapper>
+        <TrackingConsent />
       </body>
     </html>
   );

@@ -1,14 +1,16 @@
-/**
- * Яндекс.Метрика — компонент для аналитики
- * 
- * Для активации:
- * 1. Зарегистрируйте счётчик в Яндекс.Метрике: https://metrika.yandex.ru/
- * 2. Добавьте ID счётчика в переменную окружения NEXT_PUBLIC_YANDEX_METRICA_ID
- *    или укажите напрямую в METRICA_ID ниже
- * 3. При желании настройте вебвизор, карту кликов и другие опции
- */
+"use client";
 
-const METRICA_ID = process.env.NEXT_PUBLIC_YANDEX_METRICA_ID;
+import Script from "next/script";
+
+export const TRACKING_CONSENT_STORAGE_KEY = "voloma_tracking_consent";
+
+const DEFAULT_PRODUCTION_METRICA_ID = "108819606";
+const METRICA_ID =
+  process.env.NEXT_PUBLIC_YANDEX_METRICA_ID ||
+  (process.env.NODE_ENV === "production" ? DEFAULT_PRODUCTION_METRICA_ID : undefined);
+const numericMetricaId = METRICA_ID ? Number(METRICA_ID) : null;
+
+export const IS_YANDEX_METRIKA_CONFIGURED = Boolean(numericMetricaId);
 
 interface YandexMetrikaProps {
   /** Дополнительные опции инициализации */
@@ -18,14 +20,16 @@ interface YandexMetrikaProps {
     trackLinks?: boolean;
     accurateTrackBounce?: boolean;
     ecommerce?: string;
+    ssr?: boolean;
   };
+  enabled: boolean;
 }
 
 /**
- * Компонент Яндекс.Метрики для вставки в <head>
+ * Компонент Яндекс.Метрики. Рендерится только после согласия пользователя.
  */
-export function YandexMetrika({ options = {} }: YandexMetrikaProps) {
-  if (!METRICA_ID) {
+export function YandexMetrika({ enabled, options = {} }: YandexMetrikaProps) {
+  if (!enabled || !numericMetricaId) {
     // В режиме разработки без ID — ничего не рендерим
     return null;
   }
@@ -35,6 +39,8 @@ export function YandexMetrika({ options = {} }: YandexMetrikaProps) {
     clickmap = true,
     trackLinks = true,
     accurateTrackBounce = true,
+    ecommerce = "dataLayer",
+    ssr = true,
   } = options;
 
   const metrikaScript = `
@@ -42,10 +48,14 @@ export function YandexMetrika({ options = {} }: YandexMetrikaProps) {
     m[i].l=1*new Date();
     for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
     k=e.createElement(t);a=e.getElementsByTagName(t)[0];k.async=1;k.src=r;a.parentNode.insertBefore(k,a)})
-    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js?id=${numericMetricaId}", "ym");
 
-    ym(${METRICA_ID}, "init", {
+    ym(${numericMetricaId}, "init", {
+      ssr: ${ssr},
       clickmap: ${clickmap},
+      ecommerce: ${JSON.stringify(ecommerce)},
+      referrer: document.referrer,
+      url: location.href,
       trackLinks: ${trackLinks},
       accurateTrackBounce: ${accurateTrackBounce},
       webvisor: ${webvisor}
@@ -53,31 +63,28 @@ export function YandexMetrika({ options = {} }: YandexMetrikaProps) {
   `;
 
   return (
-    <>
-      <noscript>
-        <div>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={`https://mc.yandex.ru/watch/${METRICA_ID}`}
-            style={{ position: "absolute", left: "-9999px" }}
-            alt=""
-          />
-        </div>
-      </noscript>
-      <script
-        type="text/javascript"
-        dangerouslySetInnerHTML={{ __html: metrikaScript }}
-      />
-    </>
+    <Script
+      id="yandex-metrika"
+      strategy="afterInteractive"
+      dangerouslySetInnerHTML={{ __html: metrikaScript }}
+    />
   );
+}
+
+function hasTrackingConsent() {
+  if (typeof window === "undefined") {
+    return false;
+  }
+
+  return window.localStorage.getItem(TRACKING_CONSENT_STORAGE_KEY) === "accepted";
 }
 
 /**
  * Утилита для отправки целей в Яндекс.Метрику
- * 
+ *
  * @param target - Идентификатор цели
  * @param params - Дополнительные параметры
- * 
+ *
  * @example
  * ```ts
  * yandexReachGoal("order_button_click");
@@ -87,12 +94,12 @@ export function yandexReachGoal(
   target: string,
   params?: Record<string, string | number | boolean | undefined>
 ) {
-  if (typeof window === "undefined" || !METRICA_ID) {
+  if (typeof window === "undefined" || !numericMetricaId || !hasTrackingConsent()) {
     return;
   }
 
   if (typeof window.ym === "function") {
-    window.ym(Number(METRICA_ID), "reachGoal", target, params);
+    window.ym(numericMetricaId, "reachGoal", target, params);
   }
 }
 
