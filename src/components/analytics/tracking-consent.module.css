@@ -29,6 +29,18 @@
   line-height: 1.5;
 }
 
+.policyLink {
+  color: var(--color-accent);
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.16em;
+}
+
+.policyLink:hover {
+  color: var(--color-accent-hover);
+}
+
 .actions {
   display: flex;
   flex-wrap: wrap;

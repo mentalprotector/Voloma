@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useSyncExternalStore } from "react";
 
 import {
@@ -58,7 +59,15 @@ export function TrackingConsent() {
           <p className={styles.title}>Аналитика сайта</p>
           <p className={styles.text}>
             Яндекс.Метрика поможет понять, какие разделы полезны посетителям. Включим её только
-            после вашего согласия.
+            после вашего согласия. Подробнее —{" "}
+            <Link className={styles.policyLink} href="/privacy">
+              в политике конфиденциальности
+            </Link>{" "}
+            и{" "}
+            <Link className={styles.policyLink} href="/personal-data">
+              политике обработки персональных данных
+            </Link>
+            .
           </p>
           <div className={styles.actions}>
             <button className={styles.acceptButton} type="button" onClick={() => updateConsent("accepted")}>

@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 import { MaxIcon, TelegramIcon } from "@/components/configurator/MessengerIcons";
 import { siteContent } from "@/content/site-content";
@@ -113,6 +114,14 @@ export function SiteFooter() {
             ))}
           </div>
           <p className={styles.copyright}>{copyright}</p>
+          <nav className={styles.legalLinks} aria-label="Правовые документы">
+            <Link className={styles.privacyLink} href="/personal-data">
+              Политика обработки персональных данных
+            </Link>
+            <Link className={styles.privacyLink} href="/privacy">
+              Политика конфиденциальности сайта
+            </Link>
+          </nav>
         </div>
       </div>
     </footer>

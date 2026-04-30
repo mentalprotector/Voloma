@@ -157,6 +157,27 @@
   font-size: 13px;
 }
 
+.privacyLink {
+  width: fit-content;
+  color: rgba(245, 243, 238, 0.62);
+  font-size: 12px;
+  line-height: 1.55;
+  text-decoration: underline;
+  text-decoration-color: rgba(245, 243, 238, 0.28);
+  text-underline-offset: 0.2em;
+}
+
+.legalLinks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 1rem;
+}
+
+.privacyLink:hover {
+  color: rgba(245, 243, 238, 0.9);
+  text-decoration-color: currentColor;
+}
+
 @media (min-width: 768px) {
   .inner {
     width: min(100% - 3rem, 68.75rem);
