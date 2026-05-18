@@ -41,7 +41,7 @@ export function getOrganizationSchema() {
     },
     "contactPoint": {
       "@type": "ContactPoint",
-      "telephone": "+7 921 709-88-82",
+      "telephone": "+7 8142 27-27-00",
       "email": "hello@voloma.ru",
       "contactType": "sales",
       "availableLanguage": "Russian"
