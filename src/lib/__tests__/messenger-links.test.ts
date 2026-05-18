@@ -5,7 +5,7 @@ describe('messenger-links', () => {
   describe('buildMessengerUrl', () => {
     it('returns Telegram contact URL', () => {
       const url = buildMessengerUrl('telegram', 'Hello World');
-      expect(url).toContain('t.me/');
+      expect(url).toBe('https://t.me/+79218041026');
       expect(url).not.toContain(encodeURIComponent('Hello World'));
     });
 
