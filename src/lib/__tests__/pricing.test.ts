@@ -1,18 +1,18 @@
 import { describe, it, expect } from 'vitest';
-import { getBasePrice, getFinishSurcharge, calculateTotalPrice } from '@/config/pricing';
+import { getBasePrice, getFinishSurcharge, getPriceForFinish, calculateTotalPrice } from '@/config/pricing';
 
 describe('pricing', () => {
   describe('getBasePrice', () => {
     it('returns correct price for narrow-s-standard', () => {
-      expect(getBasePrice('narrow', 's', 'standard')).toBe(1900);
+      expect(getBasePrice('narrow', 's', 'standard')).toBe(2090);
     });
 
     it('returns correct price for narrow-m-premium', () => {
-      expect(getBasePrice('narrow', 'm', 'premium')).toBe(2600);
+      expect(getBasePrice('narrow', 'm', 'premium')).toBe(2860);
     });
 
     it('returns correct price for rect-m-premium', () => {
-      expect(getBasePrice('rect', 'm', 'premium')).toBe(5000);
+      expect(getBasePrice('rect', 'm', 'premium')).toBe(5500);
     });
 
     it('premium costs more than standard for the same shape and size', () => {
@@ -27,12 +27,18 @@ describe('pricing', () => {
       expect(getFinishSurcharge('natural')).toBe(0);
     });
 
-    it('returns STAIN_SURCHARGE (800) for oak_stain finish', () => {
-      expect(getFinishSurcharge('oak_stain')).toBe(800);
+    it('returns model-specific surcharge for oak_stain finish', () => {
+      expect(getFinishSurcharge('oak_stain', 'rect', 'm', 'premium')).toBe(1320);
     });
 
-    it('returns STAIN_SURCHARGE (800) for rosewood_stain finish', () => {
-      expect(getFinishSurcharge('rosewood_stain')).toBe(800);
+    it('returns model-specific surcharge for rosewood_stain finish', () => {
+      expect(getFinishSurcharge('rosewood_stain', 'narrow', 'l', 'premium')).toBe(1100);
+    });
+  });
+
+  describe('getPriceForFinish', () => {
+    it('returns stained price for square premium', () => {
+      expect(getPriceForFinish('square', 'm', 'premium', 'oak_stain')).toBe(4840);
     });
   });
 
@@ -43,16 +49,16 @@ describe('pricing', () => {
         finish: 'natural',
         hasWheels: false,
       });
-      expect(price).toBe(1900);
+      expect(price).toBe(2090);
     });
 
-    it('adds stain surcharge for oak finish', () => {
+    it('uses stained price for oak finish', () => {
       const price = calculateTotalPrice('narrow', 's', {
         quality: 'standard',
         finish: 'oak_stain',
         hasWheels: false,
       });
-      expect(price).toBe(1900 + 800);
+      expect(price).toBe(2860);
     });
 
     it('premium quality costs more than standard', () => {
@@ -89,8 +95,7 @@ describe('pricing', () => {
         finish: 'rosewood_stain',
         hasWheels: false,
       });
-      // Base: 3300 + stain: 800 = 4100
-      expect(price).toBe(4100);
+      expect(price).toBe(4730);
     });
   });
 });

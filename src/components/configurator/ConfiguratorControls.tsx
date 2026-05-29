@@ -7,7 +7,7 @@ import { useState } from "react";
 import { FINISHES, QUALITIES, SIZES, type Finish, type Quality, type Shape, type Size } from "@/types/product";
 import { finishHint, qualityLabels, shapeLabels, sizeLabels, woodTypeHints } from "@/content/site-content";
 import { hasSizeOptions, isSizeAvailable } from "@/config/availability";
-import { BASE_PRICES, STAIN_SURCHARGE } from "@/config/pricing";
+import { getPriceForFinish } from "@/config/pricing";
 import { cn } from "@/lib/format";
 import { useRelativePricing } from "@/hooks/useRelativePricing";
 
@@ -50,12 +50,6 @@ const finishShortLabels: Record<Finish, string> = {
   rosewood_stain: "Палисандр",
 };
 
-/** Finish options with priceExtra for relative pricing calculation */
-const finishOptions = FINISHES.map((id) => ({
-  id,
-  priceExtra: id === "natural" ? 0 : STAIN_SURCHARGE,
-}));
-
 export function ConfiguratorControls({
   shape,
   size,
@@ -73,19 +67,23 @@ export function ConfiguratorControls({
   const noWheelsNote = shape === "narrow" && size === "s";
 
   // Calculate relative price badges for finish options
+  const finishOptions = FINISHES.map((id) => ({
+    id,
+    priceExtra: getPriceForFinish(shape, size, quality, id),
+  }));
   const finishWithBadges = useRelativePricing(finishOptions, finish);
 
   // Size options: priceExtra = base price for this size with current shape+quality
   const sizeOptions = SIZES.map((id) => ({
     id,
-    priceExtra: isSizeAvailable(shape, id) ? BASE_PRICES[shape][quality][id] : Infinity,
+    priceExtra: isSizeAvailable(shape, id) ? getPriceForFinish(shape, id, quality, finish) : Infinity,
   }));
   const sizesWithBadges = useRelativePricing(sizeOptions, size);
 
   // Quality options: priceExtra = base price for this quality with current shape+size
   const qualityPricingOptions = QUALITIES.map((id) => ({
     id,
-    priceExtra: BASE_PRICES[shape][id][size],
+    priceExtra: getPriceForFinish(shape, size, id, finish),
   }));
   const qualitiesWithBadges = useRelativePricing(qualityPricingOptions, quality);
 

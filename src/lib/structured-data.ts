@@ -9,7 +9,7 @@
  */
 
 import type { Finish, Quality, Shape, Size } from "@/types/product";
-import { BASE_PRICES, STAIN_SURCHARGE } from "@/config/pricing";
+import { getPriceForFinish } from "@/config/pricing";
 import { absoluteUrl, getSiteUrl } from "@/lib/site-url";
 
 /**
@@ -90,9 +90,7 @@ export function getProductSchema(
   finish: Finish,
   dimensions?: { length: number; width: number; height: number }
 ) {
-  const basePrice = BASE_PRICES[shape][quality][size];
-  const finishSurcharge = finish === "natural" ? 0 : STAIN_SURCHARGE;
-  const finalPrice = basePrice + finishSurcharge;
+  const finalPrice = getPriceForFinish(shape, size, quality, finish);
 
   const finishNames: Record<Finish, string> = {
     natural: "натуральная",

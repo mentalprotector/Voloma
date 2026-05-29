@@ -22,7 +22,7 @@ export function InteriorSection() {
           Стоит честно.
         </h2>
         <p className={styles.body}>
-          От 1 900 ₽ за готовое изделие —<br />
+          От 2 090 ₽ за готовое изделие —<br />
           с доставкой по всей России.
         </p>
       </div>

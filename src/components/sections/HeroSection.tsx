@@ -75,7 +75,7 @@ export function HeroSection() {
               Деревянные кашпо из карельской сосны
             </motion.h1>
             <motion.p className={styles.priceAnchor} variants={priceFadeScale}>
-              от 1 900 ₽ · готово от 1 до 3х дней · сборка за 10 минут
+              от 2 090 ₽ · готово от 1 до 3х дней · сборка за 10 минут
             </motion.p>
             <motion.div variants={heroChild}>
               <span className={styles.ctaButton}>

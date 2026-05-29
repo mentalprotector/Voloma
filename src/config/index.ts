@@ -5,8 +5,9 @@ export {
   calculateTotalPrice,
   getBasePrice,
   getFinishSurcharge,
+  getPriceForFinish,
   BASE_PRICES,
-  STAIN_SURCHARGE,
+  STAINED_PRICES,
 } from "./pricing";
 export {
   SHAPE_AVAILABILITY,
