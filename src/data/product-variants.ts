@@ -37,7 +37,7 @@ export const productVariants: ProductVariant[] = [
     images: narrowSNaturalImages,
     availability: "made_to_order",
     isCustomizable: true,
-    dimensions: { length: 46, width: 23.5, height: 22 },
+    dimensions: { length: 46, width: 23.5, height: 19.5 },
   },
   {
     id: "narrow-s-oak-standard",
@@ -50,7 +50,7 @@ export const productVariants: ProductVariant[] = [
     images: narrowSOakImages,
     availability: "made_to_order",
     isCustomizable: true,
-    dimensions: { length: 46, width: 23.5, height: 22 },
+    dimensions: { length: 46, width: 23.5, height: 19.5 },
   },
   {
     id: "narrow-s-rosewood-standard",
@@ -63,7 +63,7 @@ export const productVariants: ProductVariant[] = [
     images: narrowSRosewoodImages,
     availability: "made_to_order",
     isCustomizable: true,
-    dimensions: { length: 46, width: 23.5, height: 22 },
+    dimensions: { length: 46, width: 23.5, height: 19.5 },
   },
 
   // Narrow (Узкое) — M
@@ -78,7 +78,7 @@ export const productVariants: ProductVariant[] = [
     images: narrowMNaturalImages,
     availability: "made_to_order",
     isCustomizable: true,
-    dimensions: { length: 66, width: 23.5, height: 22 },
+    dimensions: { length: 66, width: 23.5, height: 19.5 },
   },
   {
     id: "narrow-m-oak-standard",
@@ -91,7 +91,7 @@ export const productVariants: ProductVariant[] = [
     images: narrowMOakImages,
     availability: "made_to_order",
     isCustomizable: true,
-    dimensions: { length: 66, width: 23.5, height: 22 },
+    dimensions: { length: 66, width: 23.5, height: 19.5 },
   },
   {
     id: "narrow-m-rosewood-standard",
@@ -104,7 +104,7 @@ export const productVariants: ProductVariant[] = [
     images: narrowMRosewoodImages,
     availability: "made_to_order",
     isCustomizable: true,
-    dimensions: { length: 66, width: 23.5, height: 22 },
+    dimensions: { length: 66, width: 23.5, height: 19.5 },
   },
 
   // Narrow (Узкое) — L
@@ -119,7 +119,7 @@ export const productVariants: ProductVariant[] = [
     images: narrowLNaturalImages,
     availability: "made_to_order",
     isCustomizable: true,
-    dimensions: { length: 86, width: 23.5, height: 22 },
+    dimensions: { length: 86, width: 23.5, height: 19.5 },
   },
   {
     id: "narrow-l-oak-standard",
@@ -132,7 +132,7 @@ export const productVariants: ProductVariant[] = [
     images: narrowLOakImages,
     availability: "made_to_order",
     isCustomizable: true,
-    dimensions: { length: 86, width: 23.5, height: 22 },
+    dimensions: { length: 86, width: 23.5, height: 19.5 },
   },
   {
     id: "narrow-l-rosewood-standard",
@@ -145,7 +145,7 @@ export const productVariants: ProductVariant[] = [
     images: narrowLRosewoodImages,
     availability: "made_to_order",
     isCustomizable: true,
-    dimensions: { length: 86, width: 23.5, height: 22 },
+    dimensions: { length: 86, width: 23.5, height: 19.5 },
   },
 
   // Square (Квадратное) — HAS IMAGES for natural & rosewood-stain
@@ -160,7 +160,7 @@ export const productVariants: ProductVariant[] = [
     images: squareNaturalImages,
     availability: "made_to_order",
     isCustomizable: true,
-    dimensions: { length: 40, width: 40, height: 22 },
+    dimensions: { length: 36.5, width: 36.5, height: 35.5 },
   },
   {
     id: "square-m-rosewood-standard",
@@ -173,7 +173,7 @@ export const productVariants: ProductVariant[] = [
     images: squareRosewoodImages,
     availability: "made_to_order",
     isCustomizable: true,
-    dimensions: { length: 40, width: 40, height: 22 },
+    dimensions: { length: 36.5, width: 36.5, height: 35.5 },
   },
   {
     id: "square-m-oak-standard",
@@ -186,7 +186,7 @@ export const productVariants: ProductVariant[] = [
     images: squareOakImages, // empty — no originals yet
     availability: "made_to_order",
     isCustomizable: true,
-    dimensions: { length: 40, width: 40, height: 22 },
+    dimensions: { length: 36.5, width: 36.5, height: 35.5 },
   },
 
   // Rectangular (Прямоугольное) — HAS IMAGES for all 3 finishes
@@ -201,7 +201,7 @@ export const productVariants: ProductVariant[] = [
     images: rectNaturalImages,
     availability: "made_to_order",
     isCustomizable: true,
-    dimensions: { length: 61.5, width: 42.5, height: 22 },
+    dimensions: { length: 61.2, width: 42.5, height: 30 },
   },
   {
     id: "rect-m-oak-standard",
@@ -214,7 +214,7 @@ export const productVariants: ProductVariant[] = [
     images: rectOakImages,
     availability: "made_to_order",
     isCustomizable: true,
-    dimensions: { length: 61.5, width: 42.5, height: 22 },
+    dimensions: { length: 61.2, width: 42.5, height: 30 },
   },
   {
     id: "rect-m-rosewood-standard",
@@ -227,6 +227,6 @@ export const productVariants: ProductVariant[] = [
     images: rectRosewoodImages,
     availability: "made_to_order",
     isCustomizable: true,
-    dimensions: { length: 61.5, width: 42.5, height: 22 },
+    dimensions: { length: 61.2, width: 42.5, height: 30 },
   },
 ];

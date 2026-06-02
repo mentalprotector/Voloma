@@ -19,6 +19,7 @@ interface DimensionsModalProps {
 export function DimensionsModal({ isOpen, shape, size, onClose }: DimensionsModalProps) {
   const focusTrapRef = useFocusTrap<HTMLDivElement>(isOpen);
   const dims = getDimensions(shape, size);
+  const maxInsertWidth = Math.min(dims.internal.l, dims.internal.w);
 
   if (!isOpen) return null;
 
@@ -99,11 +100,7 @@ export function DimensionsModal({ isOpen, shape, size, onClose }: DimensionsModa
             <div className={styles.section}>
               <h3 className={styles.sectionTitle}>Совместимость</h3>
               <div className={styles.compatibilityNote}>
-                {dims.external.w <= 300
-                  ? "Подходит для кашпо и горшков шириной до 170 мм"
-                  : dims.external.w <= 500
-                    ? "Подходит для кашпо и горшков диаметром до 340 мм"
-                    : "Подходит для кашпо и горшков диаметром до 365 мм"}
+                Подходит для вкладышей, кашпо и горшков шириной до {maxInsertWidth} мм
               </div>
               {/* ТУТ будут данные о совместимости с горшками — точные диаметры и глубина */}
             </div>

@@ -19,7 +19,7 @@ export const PACKAGING_SPECS: Record<Shape, Record<Size, {
     s: {
       packageLength: 470,
       packageWidth: 205,
-      packageHeight: 160,
+      packageHeight: 110,
       weight: 4.0,
       комплектация: "no_wheels",
     },
