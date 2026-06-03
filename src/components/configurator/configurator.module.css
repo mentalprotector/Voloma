@@ -416,6 +416,14 @@
   font-weight: 600;
 }
 
+.finishNote {
+  max-width: 30rem;
+  margin: 0.15rem 0 0;
+  color: var(--color-text-muted);
+  font-size: 0.78rem;
+  line-height: 1.35;
+}
+
 /* ===== Chip controls (quality, wheels) ===== */
 .chipControls {
   gap: 0.4rem;

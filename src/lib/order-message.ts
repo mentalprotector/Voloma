@@ -14,10 +14,14 @@ export function buildOrderMessage(params: {
   showSize: boolean;
 }): string {
   const finishLabel = params.finish === "natural" ? "Натуральная" : finishLabels[params.finish];
+  const finishNote =
+    params.finish === "natural"
+      ? "\nВажно: бесцветная сосна без защитного покрытия. Если оставляем натуральный цвет, нужно обсудить защитный слой."
+      : "";
 
   return `Здравствуйте!
 Хочу заказать кашпо Волома:
 Модель: ${shapeLabels[params.shape]}${params.showSize ? " " + sizeLabels[params.size] : ""}
 Тип дерева: ${qualityLabels[params.quality]}
-Пропитка: ${finishLabel}`;
+Пропитка: ${finishLabel}${finishNote}`;
 }

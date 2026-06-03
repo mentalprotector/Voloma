@@ -181,6 +181,11 @@ export function ConfiguratorControls({
             );
           })}
         </div>
+        {finish === "natural" && (
+          <p className={styles.finishNote}>
+            Бесцветная сосна без защитного покрытия. Если оставляете натуральный цвет, добавьте защитный слой.
+          </p>
+        )}
       </section>
 
       {/* Quality — Standard / Premium */}
