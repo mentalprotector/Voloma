@@ -1,7 +1,5 @@
 "use client";
 
-"use client";
-
 import { useState } from "react";
 
 import { FINISHES, QUALITIES, SIZES, type Finish, type Quality, type Shape, type Size } from "@/types/product";
@@ -181,11 +179,6 @@ export function ConfiguratorControls({
             );
           })}
         </div>
-        {finish === "natural" && (
-          <p className={styles.finishNote}>
-            Бесцветная сосна без защитного покрытия. Если оставляете натуральный цвет, добавьте защитный слой.
-          </p>
-        )}
       </section>
 
       {/* Quality — Standard / Premium */}
@@ -211,9 +204,15 @@ export function ConfiguratorControls({
         </div>
       </section>
 
+      {finish === "natural" && (
+        <p className={styles.microNote}>
+          Бесцветная сосна без защитного покрытия. Если оставляете натуральный цвет, добавьте защитный слой.
+        </p>
+      )}
+
       {/* Micro-note for narrow S: no wheels */}
       {noWheelsNote && (
-        <p className={styles.noWheelsNote}>Узкое S поставляется без колёсиков</p>
+        <p className={styles.microNote}>Узкое S поставляется без колёсиков</p>
       )}
 
       <DimensionsModal
